@@ -1,0 +1,1 @@
+class BaseCommandException implements Exception {}
