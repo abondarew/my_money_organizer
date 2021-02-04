@@ -18,4 +18,3 @@ class DashboardWidgetDomainModel {
   DashboardWidgetDomainModel._(
       {@required this.id, @required this.parentId, @required this.position, @required this.widgetSetting});
 }
-
