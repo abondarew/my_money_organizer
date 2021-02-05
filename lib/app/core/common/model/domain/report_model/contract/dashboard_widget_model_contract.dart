@@ -1,0 +1,3 @@
+class DashboardWidgetModelContract{}
+
+class DashboardWidgetSettingModelContract{}

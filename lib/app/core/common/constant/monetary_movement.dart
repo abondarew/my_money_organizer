@@ -1,5 +1,6 @@
 enum MonetaryMovementType{
   receipt,  //приход
   spending, //расход
-  transfer  //перевод
+  transfer, //перевод
+  all       //все движения
 }
