@@ -23,7 +23,7 @@ class AccountCommandDispatcher {
       @required this.updateSignOfActivityHandler});
 
    /*Метод диспетчера: в зависимости от переданной команды отправляет ее (команду) в нужный хендлер
-
+    если команда не найдена - бросает исключение
    */
   Future<void> dispatch(BaseCommand command){
     bool commandIsExecuting = false;
