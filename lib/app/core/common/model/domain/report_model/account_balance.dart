@@ -6,7 +6,8 @@ class AccountBalanceModel implements DashboardWidgetModelContract {
   final AccountReadModel account;
   final double balance;
 
-  AccountBalanceModel({@required this.account, this.balance});
+  AccountBalanceModel({@required this.account, @required this.balance});
+
 }
 
 class AccountBalanceSettingModel implements DashboardWidgetSettingModelContract{
