@@ -19,17 +19,16 @@ class ExpensesByCategoryModel implements DashboardWidgetContract {
 */
 class ExpensesByCategorySettingModel implements DashboardWidgetSettingModelContract {
   final DateTime startDate;
-  DateTime endDate;
-  List<CategoryReadModel> includingCategory;
-  List<MonetaryMovementType> includingMonetaryMovement;
-  List<MonetaryMovementType> excludingMonetaryMovement;
+  final DateTime endDate;
+  final List<CategoryReadModel> includingCategory;
+  final List<MonetaryMovementType> includingMonetaryMovement;
+  final List<MonetaryMovementType> excludingMonetaryMovement;
 
   ExpensesByCategorySettingModel(
       {@required ReportingPeriodType periodType,
       this.includingCategory,
       this.includingMonetaryMovement,
       this.excludingMonetaryMovement})
-      :
-        startDate = getPeriodReport(periodType)["startDate"],
-        endDate = getPeriodReport(periodType)["endDate"] {}
+      : startDate = getPeriodReport(periodType)["startDate"],
+        endDate = getPeriodReport(periodType)["endDate"];
 }
