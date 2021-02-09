@@ -7,26 +7,29 @@ class CategoryDomainModel {
   String categoryName;
   String idParentPath;
   String natureOfCost;
+  UriData icoUri;
   bool isProfit;
   bool isSystemCategory;
 
   CategoryDomainModel._(
       {@required this.id,
-      @required this.parentId,
+      this.parentId,
       @required this.categoryName,
       @required this.idParentPath,
       this.natureOfCost,
+      this.icoUri,
       this.isProfit,
-      @required this.isSystemCategory});
+      this.isSystemCategory});
 
   factory CategoryDomainModel(
       {String id,
-      @required String parentId,
+      String parentId,
       @required String categoryName,
       @required String idParentPath,
       String natureOfCost,
-      bool isProfit,
-      @required bool isSystemCategory}) {
+      UriData icoUri,
+      bool isProfit = false,
+      bool isSystemCategory = false}) {
     if (id == null) {
       id = Uuid().v4();
     }
@@ -36,6 +39,7 @@ class CategoryDomainModel {
         categoryName: categoryName,
         idParentPath: idParentPath,
         natureOfCost: natureOfCost,
+        icoUri: icoUri,
         isProfit: isProfit,
         isSystemCategory: isSystemCategory);
   }
