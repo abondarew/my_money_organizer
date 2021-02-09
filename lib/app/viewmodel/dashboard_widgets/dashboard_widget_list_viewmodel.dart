@@ -2,4 +2,6 @@ import 'package:mymoneyorganizer/app/core/common/model/domain/report_model/contr
 
 class DashboardWidgetsListViewModel{
   final List<DashboardWidgetModelContract> widgetList;
+
+  DashboardWidgetsListViewModel({this.widgetList});
 }

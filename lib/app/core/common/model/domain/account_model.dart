@@ -4,7 +4,7 @@ import 'package:uuid/uuid.dart';
 
 class AccountDomainModel {
   final String id;
-  String accountType;
+  String accountTypeId;
   String accountName;
   bool isActive;
   bool isSavingAccount;
@@ -13,7 +13,7 @@ class AccountDomainModel {
 
   AccountDomainModel._(
       {@required this.id,
-      @required this.accountType,
+      @required this.accountTypeId,
       @required this.accountName,
       @required this.isActive,
       @required this.isSavingAccount,
@@ -22,7 +22,7 @@ class AccountDomainModel {
 
   factory AccountDomainModel(
       {String id,
-      @required String accountType,
+      @required String accountTypeId,
       @required String accountName,
       @required bool isActive,
       @required bool isSavingAccount,
@@ -33,7 +33,7 @@ class AccountDomainModel {
     }
     return AccountDomainModel._(
         id: id,
-        accountType: accountType,
+        accountTypeId: accountTypeId,
         accountName: accountName,
         isActive: isActive,
         isSavingAccount: isSavingAccount,

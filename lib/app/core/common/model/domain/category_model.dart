@@ -5,28 +5,28 @@ class CategoryDomainModel {
   final String id;
   String parentId;
   String categoryName;
-  bool isProfit;
   String idParentPath;
+  String natureOfCost;
+  bool isProfit;
   bool isSystemCategory;
-  String uniqueSystemTag;
 
   CategoryDomainModel._(
       {@required this.id,
       @required this.parentId,
       @required this.categoryName,
-      this.isProfit,
       @required this.idParentPath,
-      @required this.isSystemCategory,
-      this.uniqueSystemTag});
+      this.natureOfCost,
+      this.isProfit,
+      @required this.isSystemCategory});
 
   factory CategoryDomainModel(
       {String id,
       @required String parentId,
       @required String categoryName,
-      bool isProfit,
       @required String idParentPath,
-      @required bool isSystemCategory,
-      String uniqueSystemTag}) {
+      String natureOfCost,
+      bool isProfit,
+      @required bool isSystemCategory}) {
     if (id == null) {
       id = Uuid().v4();
     }
@@ -34,9 +34,9 @@ class CategoryDomainModel {
         id: id,
         parentId: parentId,
         categoryName: categoryName,
-        isProfit: isProfit,
         idParentPath: idParentPath,
-        isSystemCategory: isSystemCategory,
-        uniqueSystemTag: uniqueSystemTag);
+        natureOfCost: natureOfCost,
+        isProfit: isProfit,
+        isSystemCategory: isSystemCategory);
   }
 }
