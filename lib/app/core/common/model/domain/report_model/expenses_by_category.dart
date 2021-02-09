@@ -3,7 +3,7 @@ import 'package:mymoneyorganizer/app/core/common/model/domain/report_model/contr
 import 'package:mymoneyorganizer/app/core/common/model/read/category_model.dart';
 import 'package:mymoneyorganizer/app/core/common/util/monetary_movement.dart';
 import 'package:mymoneyorganizer/app/core/common/util/report_period.dart';
-import 'package:mymoneyorganizer/app/core/dashboard_widgets/dashboard_widget_contact.dart';
+import 'package:mymoneyorganizer/app/core/dashboard_widgets/dashboard_widget_contract.dart';
 
 class ExpensesByCategoryModel implements DashboardWidgetContract {
   final CategoryReadModel category;
