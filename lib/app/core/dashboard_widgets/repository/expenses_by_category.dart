@@ -2,5 +2,5 @@ import 'package:mymoneyorganizer/app/core/common/model/domain/report_model/expen
 
 abstract class ExpenseByCategoryBaseRepository{
 
-  Future <List<ExpensesByCategoryModel>> getListCategory(ExpensesByCategorySettingModel settingModel);
+  Future <List<ExpensesByCategoryModel>> getListExpenseCategory(ExpensesByCategorySettingModel settingModel);
 }
