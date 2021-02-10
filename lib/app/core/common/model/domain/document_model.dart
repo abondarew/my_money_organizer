@@ -5,16 +5,16 @@ import 'package:mymoneyorganizer/app/core/common/model/domain/uses_currency_mode
 import 'package:uuid/uuid.dart';
 
 class DocumentDomainModel {
-  @required final String id;
-  @required bool isNew;
-  @required DateTime documentEntryTimePoint;
-  @required DateTime documentDateTime;
-  @required double amount;
+  final String id;
+  bool isNew;
+  DateTime documentEntryTimePoint;
+  DateTime documentDateTime;
+  double amount;
   ProjectDomainModel documentProject;
-  @required UsesCurrencyDomainModel documentCurrency;
-  @required double currencyAmount;
+  UsesCurrencyDomainModel documentCurrency;
+  double currencyAmount;
   String description;
-  @required List<TransactionDomainModel> transactions;
+  List<TransactionDomainModel> transactions;
 
   DocumentDomainModel._(
       {@required this.id,

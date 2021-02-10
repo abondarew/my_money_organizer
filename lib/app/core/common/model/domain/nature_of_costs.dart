@@ -6,4 +6,11 @@
 class NatureOfCostsDomainModel{
   String id;
   String name;
+  UriData ico;
+
+  NatureOfCostsDomainModel({
+    this.id,
+    this.name,
+    this.ico
+});
 }

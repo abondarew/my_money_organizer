@@ -9,8 +9,7 @@ class CheckUseAccount implements CheckUseAccountContract {
 
   @override
   Future<bool> accountFromIdIsUse(String id) {
-    // TODO: implement accountFromIdIsUse
-    throw UnimplementedError();
+    return _repository.accountIsUse(id);
   }
 
   @override

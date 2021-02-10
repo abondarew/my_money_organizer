@@ -9,6 +9,7 @@ class AccountCreateCommand extends BaseCommand {
   final bool isSavingAccount;
   final UriData icoUri;
   final UsesCurrencyDomainModel currency;
+  double balance;
 
   AccountCreateCommand(
       {@required this.name,
@@ -16,5 +17,6 @@ class AccountCreateCommand extends BaseCommand {
       @required this.isActive,
       @required this.isSavingAccount,
       this.icoUri,
-      @required this.currency});
+      @required this.currency,
+      @required this.balance});
 }
