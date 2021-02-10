@@ -1,4 +1,0 @@
-class DashboardWidgetModelContract{
-}
-
-class DashboardWidgetSettingModelContract{}

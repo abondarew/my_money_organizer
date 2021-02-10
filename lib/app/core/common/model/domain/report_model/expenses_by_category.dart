@@ -1,11 +1,10 @@
 import 'package:flutter/foundation.dart';
-import 'package:mymoneyorganizer/app/core/common/model/domain/report_model/contract/dashboard_widget_model_contract.dart';
+import 'package:mymoneyorganizer/app/core/common/model/domain/report_model/contract/report_model_contract.dart';
 import 'package:mymoneyorganizer/app/core/common/model/read/category_model.dart';
 import 'package:mymoneyorganizer/app/core/common/util/monetary_movement.dart';
 import 'package:mymoneyorganizer/app/core/common/util/report_period.dart';
-import 'package:mymoneyorganizer/app/core/dashboard_widgets/dashboard_widget_contract.dart';
 
-class ExpensesByCategoryModel implements DashboardWidgetContract {
+class ExpensesByCategoryModel implements ReportModelContract {
   final CategoryReadModel category;
   final double totalAmount;
 
@@ -17,7 +16,7 @@ class ExpensesByCategoryModel implements DashboardWidgetContract {
 /// @endDate   дата окончания отчета.
 /// Формируются, исходя из переданного типа отчетного периода [ReportingPeriodType]
 */
-class ExpensesByCategorySettingModel implements DashboardWidgetSettingModelContract {
+class ExpensesByCategorySettingModel implements ReportSettingModelContract {
   final DateTime startDate;
   final DateTime endDate;
   final List<CategoryReadModel> includingCategory;
