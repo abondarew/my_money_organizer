@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/account/command/create_command.dart';
 import 'package:mymoneyorganizer/app/core/account/command/delete_command.dart';
 import 'package:mymoneyorganizer/app/core/account/command/open_close_account_command.dart';
+import 'package:mymoneyorganizer/app/core/account/command/update_command.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_command.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_handler.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/exceptions.dart';
@@ -12,7 +13,7 @@ import 'package:mymoneyorganizer/app/core/common/base/command/exceptions.dart';
 class AccountCommandDispatcher {
   final BaseCommandHandler<AccountCreateCommand> createCommandHandler;
   final BaseCommandHandler<AccountDeleteCommand> deleteCommandHandler;
-  final BaseCommandHandler<AccountUpdateSignOfActivity> updateSignOfActivityHandler;
+  final BaseCommandHandler<UpdateAccountCommand> updateCommandHandler;
 
   /* Конструктор принимает все доступные хендлеры
 
@@ -20,7 +21,7 @@ class AccountCommandDispatcher {
   const AccountCommandDispatcher(
       {@required this.createCommandHandler,
       @required this.deleteCommandHandler,
-      @required this.updateSignOfActivityHandler});
+      @required this.updateCommandHandler});
 
    /*Метод диспетчера: в зависимости от переданной команды отправляет ее (команду) в нужный хендлер
     если команда не найдена - бросает исключение
@@ -37,7 +38,7 @@ class AccountCommandDispatcher {
     }
     if (command is AccountUpdateSignOfActivity){
       commandIsExecuting = true;
-      updateSignOfActivityHandler.execute(command);
+      updateCommandHandler.execute(command);
     }
     if (!commandIsExecuting){
       throw InvalidCommandException("command not identified");

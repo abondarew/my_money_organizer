@@ -5,11 +5,11 @@ import 'package:mymoneyorganizer/app/core/common/base/command/base_handler.dart'
 import 'package:mymoneyorganizer/app/core/common/base/command/base_validator.dart';
 import 'package:mymoneyorganizer/app/core/common/model/domain/account_model.dart';
 
-class AccountCreateHandler extends BaseCommandHandler<AccountCreateCommand> {
+class AccountCreateCommandHandler extends BaseCommandHandler<AccountCreateCommand> {
   final AccountBaseRepository repository;
   final BaseCommandValidator<AccountCreateCommand> validator;
 
-  AccountCreateHandler({@required this.repository, @required this.validator});
+  AccountCreateCommandHandler({@required this.repository, @required this.validator});
 
   @override
   Future<void> execute(AccountCreateCommand command) async {

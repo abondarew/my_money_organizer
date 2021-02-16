@@ -4,13 +4,11 @@ import 'package:mymoneyorganizer/app/core/account/command/validator/delete_comma
 import 'package:mymoneyorganizer/app/core/account/repository/base_repository.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_handler.dart';
 
-class AccountDeleteCommandHandler
-    extends BaseCommandHandler<AccountDeleteCommand> {
+class AccountDeleteCommandHandler extends BaseCommandHandler<AccountDeleteCommand> {
   final AccountBaseRepository repository;
   final DeleteAccountCommandValidator validator;
 
-  AccountDeleteCommandHandler(
-      {@required this.repository, @required this.validator});
+  AccountDeleteCommandHandler({@required this.repository, @required this.validator});
 
   @override
   Future<void> execute(AccountDeleteCommand deleteCommand) {
@@ -18,5 +16,4 @@ class AccountDeleteCommandHandler
 
     return this.repository.delete(deleteCommand);
   }
-
 }

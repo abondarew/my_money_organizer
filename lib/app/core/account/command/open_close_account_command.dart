@@ -1,3 +1,3 @@
-import 'package:mymoneyorganizer/app/core/common/base/command/base_command.dart';
+import 'package:mymoneyorganizer/app/core/account/command/update_command.dart';
 
-class AccountUpdateSignOfActivity extends BaseCommand {}
+class AccountUpdateSignOfActivity extends UpdateAccountCommand {}
