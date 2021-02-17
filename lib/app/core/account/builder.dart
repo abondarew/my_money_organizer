@@ -4,6 +4,7 @@ import 'package:mymoneyorganizer/app/core/account/command/handler/delete_command
 import 'package:mymoneyorganizer/app/core/account/command/handler/update_command_handler.dart';
 import 'package:mymoneyorganizer/app/core/account/command/validator/create_comand_validator.dart';
 import 'package:mymoneyorganizer/app/core/account/command/validator/delete_command_validator.dart';
+import 'package:mymoneyorganizer/app/core/account/command/validator/update_command_validator.dart';
 import 'package:mymoneyorganizer/app/core/account/query/dispatcher/query_dispatcher.dart';
 import 'package:mymoneyorganizer/app/core/account/query/handler/account_query_handler.dart';
 import 'package:mymoneyorganizer/app/core/account/query/handler/list_query_handler.dart';
@@ -17,7 +18,7 @@ class AccountCoreBuilder {
         AccountCreateCommandHandler(repository: repository, validator: CreateAccountCommandValidator());
     final AccountDeleteCommandHandler deleteCommandHandler =
         AccountDeleteCommandHandler(repository: repository, validator: DeleteAccountCommandValidator(repository));
-    final AccountUpdateCommandHandler updateCommandHandler = AccountUpdateCommandHandler(repository: repository);
+    final AccountUpdateCommandHandler updateCommandHandler = AccountUpdateCommandHandler(repository: repository, validator: UpdateAccountCommandValidator());
 
     return AccountCommandDispatcher(
         createCommandHandler: createCommandHandler,
