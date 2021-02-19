@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:mymoneyorganizer/app/core/accounting_entities/account/repository/base_repository.dart';
 import 'package:mymoneyorganizer/app/core/common/base/query/base_handler.dart';
 import 'package:mymoneyorganizer/app/core/common/model/read/account_model.dart';
+import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/repository/base_repository.dart';
 
 import '../fetch_account_list.dart';
 

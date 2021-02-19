@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:mymoneyorganizer/app/core/accounting_entities/category/command/handler/delete_command_handler.dart';
-import 'package:mymoneyorganizer/app/core/accounting_entities/category/repository/base_repository.dart';
+import 'package:mymoneyorganizer/app/core/entities_of_accounting/category/repository/base_repository.dart';
 
 import 'command/dispatcher/command_dispatcher.dart';
 import 'command/handler/create_command_handler.dart';
+import 'command/handler/delete_command_handler.dart';
 import 'command/validator/create_validator.dart';
 
 class CategoryCoreBuilder{

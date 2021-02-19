@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:mymoneyorganizer/app/core/accounting_entities/account/command/validator/delete_command_validator.dart';
-import 'package:mymoneyorganizer/app/core/accounting_entities/account/repository/base_repository.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_handler.dart';
+import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/command/validator/delete_command_validator.dart';
+import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/repository/base_repository.dart';
 
 import '../delete_command.dart';
 

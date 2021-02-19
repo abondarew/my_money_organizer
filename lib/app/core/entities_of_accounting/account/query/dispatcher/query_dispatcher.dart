@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:mymoneyorganizer/app/core/accounting_entities/account/query/handler/account_query_handler.dart';
-import 'package:mymoneyorganizer/app/core/accounting_entities/account/query/handler/list_query_handler.dart';
 import 'package:mymoneyorganizer/app/core/common/base/query/base_query.dart';
 import 'package:mymoneyorganizer/app/core/common/base/query/exceptions.dart';
+import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/query/handler/account_query_handler.dart';
+import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/query/handler/list_query_handler.dart';
 
 import '../fetch_account.dart';
 import '../fetch_account_list.dart';

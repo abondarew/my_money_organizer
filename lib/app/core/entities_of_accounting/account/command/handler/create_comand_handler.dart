@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:mymoneyorganizer/app/core/accounting_entities/account/repository/base_repository.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_handler.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_validator.dart';
 import 'package:mymoneyorganizer/app/core/common/model/domain/account_model.dart';
+import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/repository/base_repository.dart';
 
 import '../create_command.dart';
 

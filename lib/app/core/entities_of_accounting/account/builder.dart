@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:mymoneyorganizer/app/core/accounting_entities/account/query/dispatcher/query_dispatcher.dart';
-import 'package:mymoneyorganizer/app/core/accounting_entities/account/query/handler/account_query_handler.dart';
-import 'package:mymoneyorganizer/app/core/accounting_entities/account/query/handler/list_query_handler.dart';
-import 'package:mymoneyorganizer/app/core/accounting_entities/account/repository/base_repository.dart';
+import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/query/dispatcher/query_dispatcher.dart';
+import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/query/handler/account_query_handler.dart';
+import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/query/handler/list_query_handler.dart';
+import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/repository/base_repository.dart';
 
 import 'command/dispather/command_dispather.dart';
 import 'command/handler/create_comand_handler.dart';

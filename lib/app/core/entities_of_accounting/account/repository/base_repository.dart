@@ -1,8 +1,8 @@
-import 'package:mymoneyorganizer/app/core/accounting_entities/account/command/delete_command.dart';
-import 'package:mymoneyorganizer/app/core/accounting_entities/account/query/fetch_account.dart';
-import 'package:mymoneyorganizer/app/core/accounting_entities/account/query/fetch_account_list.dart';
 import 'package:mymoneyorganizer/app/core/common/model/domain/account_model.dart';
 import 'package:mymoneyorganizer/app/core/common/model/read/account_model.dart';
+import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/command/delete_command.dart';
+import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/query/fetch_account.dart';
+import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/query/fetch_account_list.dart';
 
 abstract class AccountBaseRepository {
   // save account
