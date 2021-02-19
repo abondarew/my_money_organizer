@@ -8,5 +8,6 @@ class CategoryCoreBuilder{
   static CategoryCommandDispather buildCategoryCommandDispatcher({@required CategoryBaseRepository repository}){
     final CategoryCreateCommandHandler createCommandHandler = CategoryCreateCommandHandler(repository: repository, validator: CategoryCreateCommandValidator());
 
+    return CategoryCommandDispather();
   }
 }

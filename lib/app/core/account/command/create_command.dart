@@ -18,5 +18,5 @@ class AccountCreateCommand extends BaseCommand {
       @required this.isSavingAccount,
       this.icoUri,
       @required this.currency,
-      @required this.balance});
+      this.balance = 0});
 }
