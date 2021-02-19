@@ -5,9 +5,9 @@ import 'package:mymoneyorganizer/app/core/category/command/validator/create_vali
 import 'package:mymoneyorganizer/app/core/category/repository/base_repository.dart';
 
 class CategoryCoreBuilder{
-  static CategoryCommandDispather buildCategoryCommandDispatcher({@required CategoryBaseRepository repository}){
+  static CategoryCommandDispatcher buildCategoryCommandDispatcher({@required CategoryBaseRepository repository}){
     final CategoryCreateCommandHandler createCommandHandler = CategoryCreateCommandHandler(repository: repository, validator: CategoryCreateCommandValidator());
 
-    return CategoryCommandDispather();
+    return CategoryCommandDispatcher();
   }
 }
