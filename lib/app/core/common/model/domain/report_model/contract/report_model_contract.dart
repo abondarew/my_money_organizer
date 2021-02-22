@@ -1,4 +1,0 @@
-class ReportModelContract{
-}
-
-class ReportSettingModelContract{}

@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/model/domain/report_model/contract/report_model_contract.dart';
 import 'package:mymoneyorganizer/app/core/common/model/read/category_model.dart';
@@ -11,11 +12,13 @@ class ExpensesByCategoryModel implements ReportModelContract {
   ExpensesByCategoryModel({@required this.category, @required this.totalAmount});
 }
 
+*/
 /*
 /// @startDate дата начала отчета
 /// @endDate   дата окончания отчета.
 /// Формируются, исходя из переданного типа отчетного периода [ReportingPeriodType]
-*/
+*//*
+
 class ExpensesByCategorySettingModel implements ReportSettingModelContract {
   final DateTime startDate;
   final DateTime endDate;
@@ -31,3 +34,4 @@ class ExpensesByCategorySettingModel implements ReportSettingModelContract {
       : startDate = getPeriodReport(periodType)["startDate"],
         endDate = getPeriodReport(periodType)["endDate"];
 }
+*/
