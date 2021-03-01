@@ -1,0 +1,7 @@
+class ExpensesByCategoryModel{
+
+}
+
+class ExpensesByCategorySettingModel{
+
+}
