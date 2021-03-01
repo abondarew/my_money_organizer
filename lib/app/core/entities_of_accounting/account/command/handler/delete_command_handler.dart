@@ -12,7 +12,7 @@ class AccountDeleteCommandHandler extends BaseCommandHandler<AccountDeleteComman
   AccountDeleteCommandHandler({@required this.repository, @required this.validator});
 
   @override
-  Future<void> execute(AccountDeleteCommand deleteCommand) {
+  Future<void> execute(AccountDeleteCommand deleteCommand) async {
     this.validator.validate(deleteCommand);
 
     return this.repository.delete(deleteCommand);

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_command.dart';
-import 'package:mymoneyorganizer/app/core/common/model/domain/uses_currency_model.dart';
 
 class AccountCreateCommand extends BaseCommand {
   final String name;
@@ -8,7 +7,7 @@ class AccountCreateCommand extends BaseCommand {
   final bool isActive;
   final bool isSavingAccount;
   final UriData icoUri;
-  final UsesCurrencyDomainModel currency;
+  final String currency;
   double balance;
 
   AccountCreateCommand(

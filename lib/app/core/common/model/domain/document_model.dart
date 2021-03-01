@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/model/domain/project_model.dart';
 import 'package:mymoneyorganizer/app/core/common/model/domain/transaction_model.dart';
-import 'package:mymoneyorganizer/app/core/common/model/domain/uses_currency_model.dart';
 import 'package:uuid/uuid.dart';
 
 class DocumentDomainModel {
@@ -11,7 +10,7 @@ class DocumentDomainModel {
   DateTime documentDateTime;
   double amount;
   ProjectDomainModel documentProject;
-  UsesCurrencyDomainModel documentCurrency;
+  String documentCurrency;
   double currencyAmount;
   String description;
   List<TransactionDomainModel> transactions;
@@ -34,7 +33,7 @@ class DocumentDomainModel {
       @required DateTime documentDateTime,
       @required double amount,
       ProjectDomainModel documentProject,
-      @required UsesCurrencyDomainModel documentCurrency,
+      @required String documentCurrency,
       @required double currencyAmount,
       String description,
       List<TransactionDomainModel> transactions}) {

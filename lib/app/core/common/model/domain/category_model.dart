@@ -6,7 +6,7 @@ class CategoryDomainModel {
   String parentId;
   String categoryName;
   String idParentPath;
-  String natureOfCost;
+  String natureOfCostId;
   UriData icoUri;
   bool isProfit;
   bool isSystemCategory;
@@ -16,7 +16,7 @@ class CategoryDomainModel {
       this.parentId,
       @required this.categoryName,
       @required this.idParentPath,
-      this.natureOfCost,
+      this.natureOfCostId,
       this.icoUri,
       this.isProfit,
       this.isSystemCategory});
@@ -26,7 +26,7 @@ class CategoryDomainModel {
       String parentId,
       @required String categoryName,
       @required String idParentPath,
-      String natureOfCost,
+      String natureOfCostId,
       UriData icoUri,
       bool isProfit = false,
       bool isSystemCategory = false}) {
@@ -38,7 +38,7 @@ class CategoryDomainModel {
         parentId: parentId,
         categoryName: categoryName,
         idParentPath: idParentPath,
-        natureOfCost: natureOfCost,
+        natureOfCostId: natureOfCostId,
         icoUri: icoUri,
         isProfit: isProfit,
         isSystemCategory: isSystemCategory);

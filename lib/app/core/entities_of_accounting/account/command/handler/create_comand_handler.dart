@@ -21,7 +21,7 @@ class AccountCreateCommandHandler extends BaseCommandHandler<AccountCreateComman
         accountName: command.name,
         isActive: command.isActive,
         isSavingAccount: command.isSavingAccount,
-        accountCurrency: command.currency,
+        accountCurrencyId: command.currency,
         accountBalance: command.balance,
         icoUri: command.icoUri);
     repository.save(account);

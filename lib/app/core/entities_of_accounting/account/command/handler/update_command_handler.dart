@@ -12,7 +12,7 @@ class AccountUpdateCommandHandler extends BaseCommandHandler<UpdateAccountComman
   AccountUpdateCommandHandler({@required this.repository, @required this.validator});
 
   @override
-  Future<void> execute(UpdateAccountCommand command) {
+  Future<void> execute(UpdateAccountCommand command) async {
     validator.validate(command);
 
     // TODO: implement execute

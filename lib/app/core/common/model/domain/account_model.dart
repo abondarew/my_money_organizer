@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:mymoneyorganizer/app/core/common/model/domain/uses_currency_model.dart';
 import 'package:uuid/uuid.dart';
 
 class AccountDomainModel {
@@ -9,7 +8,7 @@ class AccountDomainModel {
   bool isActive;
   bool isSavingAccount;
   UriData icoUri;
-  UsesCurrencyDomainModel accountCurrency;
+  String accountCurrencyId;
   final double accountBalance;
   final bool isNew;
 
@@ -21,7 +20,7 @@ class AccountDomainModel {
       @required this.isActive,
       @required this.isSavingAccount,
       this.icoUri,
-      @required this.accountCurrency,
+      @required this.accountCurrencyId,
       @required this.accountBalance});
 
   factory AccountDomainModel(
@@ -31,7 +30,7 @@ class AccountDomainModel {
       @required bool isActive,
       @required bool isSavingAccount,
       UriData icoUri,
-      @required UsesCurrencyDomainModel accountCurrency,
+      @required String accountCurrencyId,
       @required double accountBalance}) {
     bool isNew = false;
     if (id == null) {
@@ -46,7 +45,7 @@ class AccountDomainModel {
         isActive: isActive,
         isSavingAccount: isSavingAccount,
         icoUri: icoUri,
-        accountCurrency: accountCurrency,
+        accountCurrencyId: accountCurrencyId,
         accountBalance: accountBalance);
   }
 }

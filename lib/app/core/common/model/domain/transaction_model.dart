@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/model/domain/account_model.dart';
 import 'package:mymoneyorganizer/app/core/common/model/domain/category_model.dart';
-import 'package:mymoneyorganizer/app/core/common/model/domain/uses_currency_model.dart';
 import 'package:uuid/uuid.dart';
 
 class TransactionDomainModel {
@@ -12,7 +11,7 @@ class TransactionDomainModel {
   AccountDomainModel account;
   CategoryDomainModel category;
   double amount;
-  UsesCurrencyDomainModel currency;
+  String currency;
   double currencyAmount;
 
   TransactionDomainModel._(
@@ -30,7 +29,7 @@ class TransactionDomainModel {
       @required AccountDomainModel account,
       @required CategoryDomainModel category,
       @required double amount,
-      @required UsesCurrencyDomainModel currency,
+      @required String currency,
       @required double currencyAmount}) {
     if (id == null) {
       id = Uuid().v4();

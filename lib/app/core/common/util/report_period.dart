@@ -1,12 +1,12 @@
 enum ReportingPeriodType {
-  day, //текущий день
-  week, //текущая неделя
-  seven_days, //последние 7 дней
-  month, //месяц
-  three_months, //3 месяца (квартал)
-  year, //год
-  specified, //явно указанный
-  all //весь период
+  day,            //текущий день
+  week,           //текущая неделя
+  seven_days,     //последние 7 дней
+  month,          //месяц
+  three_months,   //3 месяца (квартал)
+  year,           //год
+  specified,      //явно указанный
+  all             //весь период
 }
 
 Map<String, DateTime> getPeriodReport(ReportingPeriodType periodType) {
@@ -45,6 +45,15 @@ Map<String, DateTime> getPeriodReport(ReportingPeriodType periodType) {
         result["endDate"] = currentDate;
         return result;
       }
+    case ReportingPeriodType.three_months:
+      // TODO: Handle this case.
+      break;
+    case ReportingPeriodType.specified:
+      // TODO: Handle this case.
+      break;
+    case ReportingPeriodType.all:
+      // TODO: Handle this case.
+      break;
   }
   return result;
 }

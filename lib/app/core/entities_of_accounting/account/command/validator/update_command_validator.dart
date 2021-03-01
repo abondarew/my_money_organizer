@@ -4,7 +4,7 @@ import '../update_command.dart';
 
 class UpdateAccountCommandValidator extends BaseCommandValidator<UpdateAccountCommand>{
   @override
-  Future<void> validate(UpdateAccountCommand command) {
+  Future<void> validate(UpdateAccountCommand command) async {
     // TODO: implement validate
     throw UnimplementedError();
   }

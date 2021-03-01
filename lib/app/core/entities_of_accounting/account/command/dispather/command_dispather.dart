@@ -27,7 +27,7 @@ class AccountCommandDispatcher {
    /*Метод диспетчера: в зависимости от переданной команды отправляет ее (команду) в нужный хендлер
     если команда не найдена - бросает исключение
    */
-  Future<void> dispatch(BaseCommand command){
+  Future<void> dispatch(BaseCommand command) async {
     bool commandIsExecuting = false;
     if (command is AccountCreateCommand){
       commandIsExecuting = true;

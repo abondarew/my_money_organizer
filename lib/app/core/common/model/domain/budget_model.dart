@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/model/domain/category_model.dart';
 import 'package:mymoneyorganizer/app/core/common/model/domain/project_model.dart';
-import 'package:mymoneyorganizer/app/core/common/model/domain/uses_currency_model.dart';
 import 'package:uuid/uuid.dart';
 
 class BudgetDomainModel {
@@ -13,7 +12,7 @@ class BudgetDomainModel {
   bool isPeriodic;
   String periodRules;
   double requiredAmount;
-  UsesCurrencyDomainModel currency;
+  String currency;
   List<ProjectDomainModel> includingProjects;
   List<ProjectDomainModel> excludingProjects;
   List<CategoryDomainModel> includingCategories;
@@ -41,7 +40,7 @@ class BudgetDomainModel {
       @required bool isPeriodic,
       String periodRules,
       @required double requiredAmount,
-      @required UsesCurrencyDomainModel currency,
+      @required String currency,
       List<ProjectDomainModel> includingProjects,
       List<ProjectDomainModel> excludingProjects,
       List<CategoryDomainModel> includingCategories}) {
