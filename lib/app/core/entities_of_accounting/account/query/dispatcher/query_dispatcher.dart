@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:mymoneyorganizer/app/core/common/base/query/base_dispatcher.dart';
 import 'package:mymoneyorganizer/app/core/common/base/query/base_query.dart';
 import 'package:mymoneyorganizer/app/core/common/base/query/exceptions.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/query/handler/account_query_handler.dart';
@@ -7,13 +8,14 @@ import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/query/h
 import '../fetch_account.dart';
 import '../fetch_account_list.dart';
 
-class AccountQueryDispatcher {
+class AccountQueryDispatcher extends BaseQueryDispatcher {
   final FetchAccountListQueryHandler listQueryHandler;
   final FetchAccountQueryHandler accountQueryHandler;
 
-  AccountQueryDispatcher({@required this.accountQueryHandler, @required this.listQueryHandler});
+  const AccountQueryDispatcher({@required this.accountQueryHandler, @required this.listQueryHandler});
 
-  Future<dynamic> dispatch(BaseQuery query) {
+  @override
+  Future<dynamic> dispatch(BaseQuery query) async {
     bool queryIsExecuting = false;
     if (query is FetchAccountListQuery) {
       queryIsExecuting = true;

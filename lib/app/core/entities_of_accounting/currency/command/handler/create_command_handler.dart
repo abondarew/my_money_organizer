@@ -7,7 +7,7 @@ import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/reposi
 
 class CurrencyCreateCommandHandler extends BaseCommandHandler<CurrencyCreateCommand> {
   final BaseCommandValidator<CurrencyCreateCommand> validator;
-  final CurrencyBaseRopesitory repository;
+  final CurrencyBaseRepository repository;
 
   CurrencyCreateCommandHandler({@required this.validator, @required this.repository});
 

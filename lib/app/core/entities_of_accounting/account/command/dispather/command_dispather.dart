@@ -3,6 +3,7 @@
  */
 import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_command.dart';
+import 'package:mymoneyorganizer/app/core/common/base/command/base_dispatcher.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_handler.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/exceptions.dart';
 
@@ -11,7 +12,7 @@ import '../delete_command.dart';
 import '../open_close_account_command.dart';
 import '../update_command.dart';
 
-class AccountCommandDispatcher {
+class AccountCommandDispatcher extends BaseCommandDispatcher{
   final BaseCommandHandler<AccountCreateCommand> createCommandHandler;
   final BaseCommandHandler<AccountDeleteCommand> deleteCommandHandler;
   final BaseCommandHandler<UpdateAccountCommand> updateCommandHandler;
