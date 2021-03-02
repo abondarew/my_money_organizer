@@ -4,6 +4,8 @@ import 'package:mymoneyorganizer/app/core/common/model/read/uses_currency_model.
 abstract class CurrencyBaseRepository{
   Future<void> save(UsesCurrencyDomainModel model);
 
+  Future<void> delete (String id);
+
   Future<List<UsesCurrencyReadModel>> fetchCurrencyList();
 
   Future<UsesCurrencyReadModel> getCurrencyFromId(String id);
