@@ -9,7 +9,7 @@ class CurrencyDeleteCommandHandler extends BaseCommandHandler<CurrencyDeleteComm
   CurrencyDeleteCommandHandler({@required this.repository});
 
   @override
-  Future<void> execute(CurrencyDeleteCommand command) {
+  Future<void> execute(CurrencyDeleteCommand command) async {
     // TODO: implement execute
     throw UnimplementedError();
   }

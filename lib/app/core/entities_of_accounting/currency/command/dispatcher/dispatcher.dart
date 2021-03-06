@@ -14,7 +14,7 @@ class CurrencyCommandDispatcher extends BaseCommandDispatcher{
   CurrencyCommandDispatcher({@required this.createCommandHandler, @required this.deleteCommandHandler});
 
   @override
-  Future<void> dispatch(BaseCommand c) {
+  Future<void> dispatch(BaseCommand c) async {
     bool commandIsExecuting = false;
 
     if(c is CurrencyCreateCommand){
