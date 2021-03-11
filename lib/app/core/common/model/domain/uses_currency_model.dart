@@ -20,4 +20,14 @@ class UsesCurrencyDomainModel {
     return UsesCurrencyDomainModel._(
         id: id, name: name, symbol: symbol, fraction: fraction);
   }
+
+  Map<String, dynamic> toMap(){
+    Map<String, dynamic> map = {
+      'id':this.id,
+      'name':this.name,
+      'symbol':this.symbol,
+      'fraction':this.fraction
+    };
+    return map;
+  }
 }

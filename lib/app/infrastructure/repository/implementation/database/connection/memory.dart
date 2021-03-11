@@ -1,18 +1,18 @@
 import 'package:mymoneyorganizer/app/infrastructure/repository/implementation/database/connection/base_connection.dart';
 
-class DatabaseConnectionSqlite extends DatabaseBaseConnection{
-  static DatabaseConnectionSqlite _instance;
+class DataBaseConnectionMemory extends DatabaseBaseConnection{
+  static DataBaseConnectionMemory _instance;
   @override
   Future<void> transaction() {
     // TODO: implement transaction
     throw UnimplementedError();
   }
 
-  DatabaseConnectionSqlite._();
+  DataBaseConnectionMemory._();
 
-  factory DatabaseConnectionSqlite.getInstance(){
+  factory DataBaseConnectionMemory.getInstance(){
     if(_instance == null){
-      _instance = DatabaseConnectionSqlite._();
+      _instance = DataBaseConnectionMemory._();
     }
     return _instance;
   }
