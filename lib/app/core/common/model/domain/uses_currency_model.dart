@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:mymoneyorganizer/app/core/common/model/domain/base_domain_model.dart';
 
-class UsesCurrencyDomainModel {
+class UsesCurrencyDomainModel implements BaseDomainModel{
   final String id;
   String name;
   String symbol;
@@ -29,5 +30,15 @@ class UsesCurrencyDomainModel {
       'fraction':this.fraction
     };
     return map;
+  }
+
+  @override
+  UsesCurrencyDomainModel fromMap(Map<String, dynamic> map) {
+    return(UsesCurrencyDomainModel(
+      id: map['id'],
+      name: map['name'],
+      symbol: map['symbol'],
+      fraction: map['fraction']
+    ));
   }
 }

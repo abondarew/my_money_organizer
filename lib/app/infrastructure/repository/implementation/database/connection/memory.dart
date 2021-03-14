@@ -16,4 +16,28 @@ class DataBaseConnectionMemory extends DatabaseBaseConnection{
     }
     return _instance;
   }
+
+  @override
+  Future<void> delete(String table, Map<String, dynamic> data) {
+    // TODO: implement delete
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> insert(String table, Map<String,dynamic> data) {
+    // TODO: implement insert
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> select(String table, {String where, List whereArg, List<String> columns}) {
+    // TODO: implement select
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> update(String table, Map<String, dynamic> data) {
+    // TODO: implement update
+    throw UnimplementedError();
+  }
 }
