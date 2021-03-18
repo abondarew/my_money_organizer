@@ -18,8 +18,7 @@ class DatabaseConnectionSqlite extends DatabaseBaseConnection {
 
   Future<Database> _getDB() async {
     if (_db == null) {
-      _db =
-          await openDatabase(_patch, onCreate: _onCreateDB, version: _version);
+      _db = await openDatabase(_patch, onCreate: _onCreateDB, version: _version);
     }
     return _db;
   }
@@ -30,10 +29,11 @@ class DatabaseConnectionSqlite extends DatabaseBaseConnection {
   }
 
   @override
-  Future<void> transaction(
-      Future<void> Function(DataBaseTransaction transaction) action) async {
+  Future<void> transaction(Future<void> Function(DataBaseTransaction transaction) action) async {
     Database _db = await this._getDB();
-    await _db.transaction((txn) async => await action(new DataBaseTransactionSqlite(txn)));
+    await _db.transaction((txn) async {
+      await action(new DataBaseTransactionSqlite(txn));
+    });
   }
 
 // @override
@@ -127,7 +127,7 @@ class DataBaseTransactionSqlite implements DataBaseTransaction {
       String orderBy,
       int limit,
       int offset}) async {
-    return this._executor.query(table,
+    return await this._executor.query(table,
         distinct: distinct,
         columns: columns,
         where: where,
@@ -140,8 +140,12 @@ class DataBaseTransactionSqlite implements DataBaseTransaction {
   }
 
   @override
-  Future<void> update(String table, Map<String, dynamic> data,
-      {String where, List whereArgs}) async {
-    this._executor.update(table, data);
+  Future<void> update(String table, Map<String, dynamic> data, {String where, List whereArgs}) async {
+    await this._executor.update(table, data);
+  }
+
+  @override
+  Future<void> delete(String table, Map<String, dynamic> data) async{
+    await this._executor.delete(table,); //TODO <--
   }
 }

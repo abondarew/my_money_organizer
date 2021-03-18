@@ -39,4 +39,6 @@ abstract class DataBaseTransaction{
         int limit,
         int offset,
       });
+
+  Future<void> delete(String table, Map<String, dynamic> data);
 }

@@ -7,7 +7,15 @@ class UsesCurrencyRepository{
 
   UsesCurrencyRepository(this._databaseBaseConnection);
 
-  // Future<void> save(UsesCurrencyDomainModel model){
-  //   return _databaseBaseConnection.insert(_tableName, model.toMap());
-  // }
+  Future<void> save(UsesCurrencyDomainModel model)async {
+    _databaseBaseConnection.transaction((transaction) async{
+      transaction.insert(_tableName, model.toMap());
+    });
+  }
+
+  Future<void> delete(UsesCurrencyDomainModel model)async {
+    _databaseBaseConnection.transaction((transaction) async{
+      transaction.delete(_tableName, model.toMap());
+    });
+  }
 }

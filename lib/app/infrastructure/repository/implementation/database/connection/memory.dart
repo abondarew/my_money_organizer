@@ -1,7 +1,9 @@
 import 'package:mymoneyorganizer/app/infrastructure/repository/implementation/database/connection/base_connection.dart';
+import 'package:mymoneyorganizer/app/infrastructure/repository/implementation/memory/memory_db.dart';
 
 class DataBaseConnectionMemory extends DatabaseBaseConnection {
   static DataBaseConnectionMemory _instance;
+  MemoryDbExecutor _memoryDb;
 
   DataBaseConnectionMemory._();
 
@@ -10,11 +12,17 @@ class DataBaseConnectionMemory extends DatabaseBaseConnection {
     return _instance;
   }
 
+  MemoryDb _getDb() {
+    return MemoryDb.getInstance();
+  }
+
   @override
-  Future<void> transaction(
-      Future<void> Function(DataBaseTransaction transaction) action) {
-    // TODO: implement transaction
-    throw UnimplementedError();
+  Future<void> transaction(Future<void> Function(DataBaseTransaction transaction) action) async {
+    MemoryDb db = _getDb();
+    //action(new DataBaseTransactionMemory(_memoryDb));
+    db.transaction((txn) async {
+      action(new DataBaseTransactionMemory(txn));
+    });
   }
 // @override
 // Future<void> transaction() {
@@ -57,10 +65,13 @@ class DataBaseConnectionMemory extends DatabaseBaseConnection {
 }
 
 class DataBaseTransactionMemory implements DataBaseTransaction {
+  MemoryDbExecutor _executor;
+
+  DataBaseTransactionMemory(this._executor);
+
   @override
-  Future<void> insert(String table, Map<String, dynamic> data) {
-    // TODO: implement insert
-    throw UnimplementedError();
+  Future<void> insert(String table, Map<String, dynamic> data) async {
+    _executor.insert(table, data);
   }
 
   @override
@@ -79,9 +90,14 @@ class DataBaseTransactionMemory implements DataBaseTransaction {
   }
 
   @override
-  Future<void> update(String table, Map<String, dynamic> data,
-      {String where, List<dynamic> whereArgs}) {
+  Future<void> update(String table, Map<String, dynamic> data, {String where, List<dynamic> whereArgs}) {
     // TODO: implement update
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> delete(String table, Map<String, dynamic> data) {
+    // TODO: implement delete
     throw UnimplementedError();
   }
 }
