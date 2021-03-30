@@ -1,3 +1,4 @@
+/*
 import 'package:mymoneyorganizer/app/infrastructure/repository/implementation/database/connection/base_connection.dart';
 import 'package:mymoneyorganizer/app/infrastructure/repository/implementation/memory/memory_db.dart';
 
@@ -86,7 +87,7 @@ class DataBaseTransactionMemory implements DataBaseTransaction {
       int limit,
       int offset}) {
     // TODO: implement select
-    throw UnimplementedError();
+    //throw UnimplementedError();
   }
 
   @override
@@ -101,3 +102,4 @@ class DataBaseTransactionMemory implements DataBaseTransaction {
     throw UnimplementedError();
   }
 }
+*/

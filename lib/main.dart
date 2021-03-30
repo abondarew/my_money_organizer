@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:mymoneyorganizer/app.dart';
 import 'package:mymoneyorganizer/environment.dart';
 
 void main() {
   Environment.init(debug: false, dataBaseType: DataBaseType.MEMORY);
-  runApp(MyApp());
+  runApp(MainApp());
 }
 
+/*
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -28,7 +37,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: CurrencyListScreen(),//MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -117,3 +126,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+*/

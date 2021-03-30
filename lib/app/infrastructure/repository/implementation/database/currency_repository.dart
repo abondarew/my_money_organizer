@@ -22,9 +22,18 @@ class CurrencyDatabaseRepository implements CurrencyBaseRepository{
   }
 
   @override
-  Future<List<UsesCurrencyReadModel>> fetchCurrencyList() {
-    // TODO: implement fetchCurrencyList
-    throw UnimplementedError();
+  Future<List<UsesCurrencyReadModel>> fetchCurrencyList() async{
+    /*// TODO: implement fetchCurrencyList
+    throw UnimplementedError();*/
+    List<UsesCurrencyReadModel> result = [];
+    await _databaseBaseConnection.transaction((DataBaseTransaction transaction) async {
+      List<Map<String, dynamic>> list =  await transaction.select(_tableName);
+      list.forEach((Map<String, dynamic> data) {
+        result.add(UsesCurrencyReadModel(id: data['id'], symbol: data['symbol'], name: data['name']));
+      });
+
+    });
+    return result;
   }
 
   @override
