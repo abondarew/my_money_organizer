@@ -5,7 +5,7 @@ class CurrencyCreateCommandValidator extends BaseCommandValidator<CurrencyCreate
   @override
   Future<void> validate(CurrencyCreateCommand command) async {
     // TODO: implement validate
-    //throw UnimplementedError();
+    throw UnimplementedError();
   }
 
 }

@@ -15,7 +15,7 @@ class CurrencyListScreen extends StatefulWidget{
 }
 
 class _State extends State<CurrencyListScreen>{
-  final List<UsesCurrencyReadModel> currencyList = [];
+  final List<UsesCurrencyListReadModel> currencyList = [];
   final CurrencyListViewModel viewModel = CurrencyListViewModelBuilder.build();
 
 
@@ -38,7 +38,7 @@ class _State extends State<CurrencyListScreen>{
       body: ListView.builder(
           controller: this.widget._scrollController,
           itemBuilder: (context, index){
-            UsesCurrencyReadModel currencyReadModel = currencyList[index];
+            UsesCurrencyListReadModel currencyReadModel = currencyList[index];
             return ListTile(
               title: Text(currencyReadModel.name),
               subtitle: Text(currencyReadModel.id),

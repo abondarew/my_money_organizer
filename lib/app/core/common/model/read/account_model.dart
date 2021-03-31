@@ -6,7 +6,7 @@ class AccountReadModel {
   final String accountType;
   final String accountName;
   final UriData icoURI;
-  final UsesCurrencyReadModel currency;
+  final UsesCurrencyListReadModel currency;
   final double accountBalance;
 
   AccountReadModel(

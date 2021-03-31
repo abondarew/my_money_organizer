@@ -5,10 +5,10 @@ import 'package:mymoneyorganizer/generated/l10n.dart';
 
 class CurrencyDetailScreen extends StatefulWidget{
   final ScrollController _scrollController = ScrollController();
-  CurrencyDetailScreen();
+  final String currencyId;
+  CurrencyDetailScreen({this.currencyId});
   @override
   State<StatefulWidget> createState() => _State();
-
 }
 
 class _State extends State<CurrencyDetailScreen>{

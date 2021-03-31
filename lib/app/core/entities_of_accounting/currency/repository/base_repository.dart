@@ -6,7 +6,7 @@ abstract class CurrencyBaseRepository{
 
   Future<void> delete (String id);
 
-  Future<List<UsesCurrencyReadModel>> fetchCurrencyList();
+  Future<List<UsesCurrencyListReadModel>> fetchCurrencyList();
 
-  Future<UsesCurrencyReadModel> getCurrencyFromId(String id);
+  Future<UsesCurrencyListReadModel> getCurrencyFromId(String id);
 }

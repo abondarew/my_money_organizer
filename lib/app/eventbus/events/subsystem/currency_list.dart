@@ -14,7 +14,7 @@ class ResultCurrencyListNotification extends CurrencyListNotification{
 }*/
 
 class CurrencyListChangedWithDataEvent extends CurrencyChangedEvent{
-  final List<UsesCurrencyReadModel> data;
+  final List<UsesCurrencyListReadModel> data;
 
   CurrencyListChangedWithDataEvent(this.data);
 }

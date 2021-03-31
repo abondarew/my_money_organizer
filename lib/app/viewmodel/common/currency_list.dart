@@ -17,7 +17,7 @@ class CurrencyListViewModel {
   CurrencyListViewModel(this._queryDispatcher);
 
   Future<void> load() async {
-    List<UsesCurrencyReadModel> result = await _queryDispatcher.dispatch(CurrencyQueryFetchList());
+    List<UsesCurrencyListReadModel> result = await _queryDispatcher.dispatch(CurrencyQueryFetchList());
     //eventBus.addEvent(CurrencyListChangedWithDataEvent(result));
     this._eventController.add(ResultCurrencyListNotification(result));
   }
@@ -37,6 +37,6 @@ class CurrencyListViewModelBuilder {
 class CurrencyListNotification{}
 
 class ResultCurrencyListNotification implements CurrencyListNotification{
-  final List<UsesCurrencyReadModel> currencyList;
+  final List<UsesCurrencyListReadModel> currencyList;
   ResultCurrencyListNotification(this.currencyList);
 }

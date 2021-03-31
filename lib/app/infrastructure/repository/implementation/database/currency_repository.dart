@@ -10,8 +10,8 @@ class CurrencyDatabaseRepository implements CurrencyBaseRepository{
   CurrencyDatabaseRepository(this._databaseBaseConnection);
 
   Future<void> save(UsesCurrencyDomainModel model)async {
-    _databaseBaseConnection.transaction((transaction) async{
-      transaction.insert(_tableName, model.toMap());
+    _databaseBaseConnection.transaction((DataBaseTransaction txn) async{
+      txn.insert(_tableName, model.toMap());
     });
   }
 
@@ -22,14 +22,12 @@ class CurrencyDatabaseRepository implements CurrencyBaseRepository{
   }
 
   @override
-  Future<List<UsesCurrencyReadModel>> fetchCurrencyList() async{
-    /*// TODO: implement fetchCurrencyList
-    throw UnimplementedError();*/
-    List<UsesCurrencyReadModel> result = [];
-    await _databaseBaseConnection.transaction((DataBaseTransaction transaction) async {
-      List<Map<String, dynamic>> list =  await transaction.select(_tableName);
+  Future<List<UsesCurrencyListReadModel>> fetchCurrencyList() async{
+    List<UsesCurrencyListReadModel> result = [];
+    await _databaseBaseConnection.transaction((DataBaseTransaction txn) async {
+      List<Map<String, dynamic>> list =  await txn.select(_tableName);
       list.forEach((Map<String, dynamic> data) {
-        result.add(UsesCurrencyReadModel(id: data['id'], symbol: data['symbol'], name: data['name']));
+        result.add(UsesCurrencyListReadModel(id: data['id'], symbol: data['symbol'], name: data['name']));
       });
 
     });
@@ -37,7 +35,7 @@ class CurrencyDatabaseRepository implements CurrencyBaseRepository{
   }
 
   @override
-  Future<UsesCurrencyReadModel> getCurrencyFromId(String id) {
+  Future<UsesCurrencyListReadModel> getCurrencyFromId(String id) {
     // TODO: implement getCurrencyFromId
     throw UnimplementedError();
   }
