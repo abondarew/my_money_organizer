@@ -8,5 +8,5 @@ abstract class CurrencyBaseRepository{
 
   Future<List<UsesCurrencyListReadModel>> fetchCurrencyList();
 
-  Future<UsesCurrencyListReadModel> getCurrencyFromId(String id);
+  Future<UsesCurrencyDetailReadModel> getCurrencyFromId(String id);
 }

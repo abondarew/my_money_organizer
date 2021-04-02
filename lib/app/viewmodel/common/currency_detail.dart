@@ -1,48 +1,85 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/model/read/uses_currency_model.dart';
+import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/command/create_command.dart';
+import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/command/dispatcher/dispatcher.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/query/dispatcher/query_dispatcher.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/query/get_currency_from_id.dart';
+import 'package:mymoneyorganizer/app/infrastructure/container/currency_core_container.dart';
 
-class CurrencyDetailViewModel{
+class CurrencyDetailViewModel {
   final CurrencyQueryDispatcher _queryDispatcher;
+  final CurrencyCommandDispatcher _commandDispatcher;
   final StreamController<CurrencyDetailNotification> eventController = StreamController<CurrencyDetailNotification>.broadcast();
+  final Map<String, dynamic> newData = Map<String, dynamic>();
   UsesCurrencyDetailReadModel model;
   bool _isNew = true;
   bool _isModification = false;
 
-  CurrencyDetailViewModel(this._queryDispatcher);
+  CurrencyDetailViewModel(this._queryDispatcher, this._commandDispatcher);
 
-  void dispose(){
+  void dispose() {
     eventController.close();
   }
 
   Future<void> load({String id}) async {
-    if (id != null){
+    if (id != null) {
       _isNew = false;
       model = await _queryDispatcher.dispatch(CurrencyQueryGetFromId(id: id));
+      newData.addAll(model.toMap());
     }
-    eventController.add(ResultCurrencyDetailNotification(visibleSaveButton: _isModification, currencyReadModel: model));
+    eventController.add(ResultCurrencyDetailNotification(currencyReadModel: model));
   }
 
-  void setModified(bool isModification){
-    if(isModification != this._isModification){
+  void updateData(String key, dynamic value) {
+    newData[key] = value;
+  }
+
+  bool get isNew => _isNew;
+
+  void setModified(bool isModification) {
+    if (isModification != this._isModification) {
       this._isModification = isModification;
-      eventController.add(ResultCurrencyDetailNotification(visibleSaveButton: _isModification, currencyReadModel: model));
+      eventController.add(CurrencyDetailChangeVisibleSaveButtonNotification(visibleSaveButton: _isModification));
     }
+  }
+
+  Stream<CurrencyDetailNotification> get event {
+    return eventController.stream;
+  }
+
+  save() {
+    //eventController.add(CurrencyDetailChangeVisibleSaveButtonNotification(visibleSaveButton: true));
+    //if (_isNew) {
+      _commandDispatcher.dispatch(CurrencyCreateCommand(
+          id: newData['id'], isNew: _isNew, name: newData['name'], symbol: newData['symbol'], fraction: newData['fraction']));
+    //}
   }
 }
 
-class CurrencyDetailNotification{}
-
-class ResultCurrencyDetailNotification implements CurrencyDetailNotification{
-  final UsesCurrencyDetailReadModel currencyReadModel;
-  final bool visibleSaveButton;
-  ResultCurrencyDetailNotification({this.currencyReadModel, @required this.visibleSaveButton});
+class CurrencyDetailViewModelBuilder {
+  static CurrencyDetailViewModel build() {
+    return CurrencyDetailViewModel(
+        CurrencyCoreContainer.getInstance().queryDispatcher, CurrencyCoreContainer.getInstance().commandDispatcher);
+  }
 }
 
-class ErrorCurrencyDetailNotification implements CurrencyDetailNotification{
+class CurrencyDetailNotification {}
+
+class ResultCurrencyDetailNotification implements CurrencyDetailNotification {
+  final UsesCurrencyDetailReadModel currencyReadModel;
+
+  ResultCurrencyDetailNotification({this.currencyReadModel});
+}
+
+class CurrencyDetailChangeVisibleSaveButtonNotification implements CurrencyDetailNotification {
+  final bool visibleSaveButton;
+
+  CurrencyDetailChangeVisibleSaveButtonNotification({this.visibleSaveButton});
+}
+
+class ErrorCurrencyDetailNotification implements CurrencyDetailNotification {
   final String error;
+
   ErrorCurrencyDetailNotification({this.error});
 }

@@ -1,7 +1,7 @@
 {
   "currency" : "Currency",
   "currency_list_title" : "Available currencies",
-  "currency_detail_title" : "Currency detail",
+  "currency_detail_title" : "Редактирование валюты",
   "loading" : "Loading, place wait",
   "code" : "{name} code",
   "name" : "name",

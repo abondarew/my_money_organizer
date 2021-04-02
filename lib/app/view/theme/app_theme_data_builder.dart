@@ -13,7 +13,7 @@ class AppThemeBuilder {
         ),
         canvasColor: Colors.white,
         appBarTheme: AppBarTheme(
-            color: Colors.white,
+            color: Colors.blueGrey,
             brightness: Brightness.light,
             iconTheme: IconThemeData(
               color: Colors.black,

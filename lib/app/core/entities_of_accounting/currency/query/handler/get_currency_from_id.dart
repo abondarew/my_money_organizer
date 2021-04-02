@@ -4,13 +4,13 @@ import 'package:mymoneyorganizer/app/core/common/model/read/uses_currency_model.
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/query/get_currency_from_id.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/repository/base_repository.dart';
 
-class CurrencyQueryHandlerGetFromId extends BaseQueryHandler<CurrencyQueryGetFromId, UsesCurrencyListReadModel>{
+class CurrencyQueryHandlerGetFromId extends BaseQueryHandler<CurrencyQueryGetFromId, UsesCurrencyDetailReadModel>{
   final CurrencyBaseRepository repository;
 
   CurrencyQueryHandlerGetFromId({@required this.repository});
 
   @override
-  Future<UsesCurrencyListReadModel> execute(CurrencyQueryGetFromId query) async {
+  Future<UsesCurrencyDetailReadModel> execute(CurrencyQueryGetFromId query) async {
     return repository.getCurrencyFromId(query.id);
   }
 

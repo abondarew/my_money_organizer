@@ -35,6 +35,16 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Currency`
+  String get currency {
+    return Intl.message(
+      'Currency',
+      name: 'currency',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Available currencies`
   String get currency_list_title {
     return Intl.message(
@@ -54,6 +64,56 @@ class S {
       args: [],
     );
   }
+
+  /// `Loading, place wait`
+  String get loading {
+    return Intl.message(
+      'Loading, place wait',
+      name: 'loading',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{name} code`
+  String code(Object name) {
+    return Intl.message(
+      '$name code',
+      name: 'code',
+      desc: '',
+      args: [name],
+    );
+  }
+
+  /// `name`
+  String get name {
+    return Intl.message(
+      'name',
+      name: 'name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `symbol`
+  String get symbol {
+    return Intl.message(
+      'symbol',
+      name: 'symbol',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `fraction`
+  String get fraction {
+    return Intl.message(
+      'fraction',
+      name: 'fraction',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -62,6 +122,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'ru'),
     ];
   }
 
