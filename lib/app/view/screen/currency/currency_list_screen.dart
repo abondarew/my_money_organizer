@@ -74,4 +74,10 @@ class _State extends State<CurrencyListScreen> {
       });
     }
   }
+
+  @override
+  void dispose() {
+    viewModel.dispose();
+    super.dispose();
+  }
 }

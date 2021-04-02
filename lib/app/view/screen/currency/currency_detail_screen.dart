@@ -56,7 +56,10 @@ class _State extends State<CurrencyDetailScreen> {
           )),*/ //
         action: [
           Visibility(
-            child: IconButton(icon: Icon(Icons.save_alt), onPressed: viewModel.save),
+            child: IconButton(icon: Icon(Icons.save_alt), onPressed:() {
+              viewModel.save();
+              Navigator.pop(context);
+            }),
             visible: _visibleSaveButton,
           ),
         ],
@@ -85,8 +88,11 @@ class _State extends State<CurrencyDetailScreen> {
           children: [
             TextFormField(
               initialValue: model?.id,
-              onChanged: (value) => setModified(),
-              onSaved: (value) => viewModel.updateData('id', value),
+              //onChanged: (value) => setModified(),
+              onFieldSubmitted: (value) {
+                viewModel.updateData('id', value);
+                setModified();
+              },
               decoration: InputDecoration(
                   labelText: S.of(context).code(S.of(context).currency),
                   hintText: S.of(context).code(''),
@@ -97,8 +103,15 @@ class _State extends State<CurrencyDetailScreen> {
             TextFormField(
               initialValue: model?.name,
               //onEditingComplete: setModified,
-              onChanged: (value) => setModified(),
-              onSaved: (value) => viewModel.updateData('name', value),
+              //onChanged: (value) => setModified(),
+              onFieldSubmitted: (value) {
+                viewModel.updateData('name', value);
+                viewModel.updateData('symbol', 'p');
+                viewModel.updateData('fraction', 2);
+
+
+                setModified();
+                },
             )
           ],
         ),
@@ -108,5 +121,11 @@ class _State extends State<CurrencyDetailScreen> {
 
   setModified() {
     viewModel.setModified(true);
+  }
+
+  @override
+  void dispose() {
+    viewModel.dispose();
+    super.dispose();
   }
 }
