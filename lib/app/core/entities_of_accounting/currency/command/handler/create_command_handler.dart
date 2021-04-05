@@ -7,6 +7,7 @@ import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/reposi
 
 class CurrencyCreateCommandHandler extends BaseCommandHandler<CurrencyCreateCommand> {
   final BaseCommandValidator<CurrencyCreateCommand> validator;
+  //final ServiceCurrencyNotExist serviceCurrencyNotExist;
   final CurrencyBaseRepository repository;
 
   CurrencyCreateCommandHandler({@required this.validator, @required this.repository});
@@ -15,7 +16,7 @@ class CurrencyCreateCommandHandler extends BaseCommandHandler<CurrencyCreateComm
   Future<void> execute(CurrencyCreateCommand command) async {
     this.validator.validate(command);
     UsesCurrencyDomainModel model =
-        UsesCurrencyDomainModel(id: command.id, name: command.name, symbol: command.symbol, fraction: command.fraction);
+        UsesCurrencyDomainModel(id: command.id, isNew: command.isNew, name: command.name, symbol: command.symbol, fraction: command.fraction);
     this.repository.save(model);
   }
 }

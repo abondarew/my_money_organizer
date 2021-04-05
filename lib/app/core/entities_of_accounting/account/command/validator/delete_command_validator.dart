@@ -13,9 +13,9 @@ class DeleteAccountCommandValidator extends BaseCommandValidator<AccountDeleteCo
 
   @override
   Future<void> validate(AccountDeleteCommand command) async {
-    ContainerValidator containerValidator = new ContainerValidator();
-    ListValidator notUse = ListValidator([AccountCanBeDeleteValidator(repository: repository)]);
-    containerValidator.addValidator(notUse, command.id);
+    ValidatorContainer containerValidator = new ValidatorContainer();
+    ValidatorList notUse = ValidatorList([AccountCanBeDeleteValidator(repository: repository)]);
+    containerValidator.add(notUse, command.id);
     // TODO: implement validate
     throw UnimplementedError();
   }

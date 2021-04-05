@@ -1,9 +1,9 @@
 import 'package:mymoneyorganizer/app/core/common/validator/base_validator.dart';
 
-class ListValidator extends BaseValidator {
-  final List<BaseValidator> _validators = List();
+class ValidatorList extends BaseValidator {
+  final List<BaseValidator> _validators = [];
 
-  ListValidator(List<BaseValidator> validators) {
+  ValidatorList(List<BaseValidator> validators) {
     this._validators.addAll(validators);
   }
 

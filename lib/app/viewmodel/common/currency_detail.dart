@@ -5,6 +5,8 @@ import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/comman
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/command/dispatcher/dispatcher.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/query/dispatcher/query_dispatcher.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/query/get_currency_from_id.dart';
+import 'package:mymoneyorganizer/app/eventbus/eventbus_core.dart';
+import 'package:mymoneyorganizer/app/eventbus/events/base/currency_changed.dart';
 import 'package:mymoneyorganizer/app/infrastructure/container/currency_core_container.dart';
 
 class CurrencyDetailViewModel {
@@ -49,11 +51,18 @@ class CurrencyDetailViewModel {
   }
 
   save() {
-    //eventController.add(CurrencyDetailChangeVisibleSaveButtonNotification(visibleSaveButton: true));
-    //if (_isNew) {
+    try {
       _commandDispatcher.dispatch(CurrencyCreateCommand(
-          id: newData['id'], isNew: _isNew, name: newData['name'], symbol: newData['symbol'], fraction: newData['fraction']));
-    //}
+          id: newData['id'],
+          isNew: _isNew,
+          name: newData['name'],
+          symbol: newData['symbol'],
+          fraction: newData['fraction']));
+      eventController.add(SuccessfulSaveCurrency());
+    } catch (e){
+      eventController.add(ErrorCurrencyDetailNotification(error: e));
+    }
+    EventBusCore.getInstance().addEvent(CurrencyChangedEvent());
   }
 }
 
@@ -79,7 +88,9 @@ class CurrencyDetailChangeVisibleSaveButtonNotification implements CurrencyDetai
 }
 
 class ErrorCurrencyDetailNotification implements CurrencyDetailNotification {
-  final String error;
+  final Exception error;
 
   ErrorCurrencyDetailNotification({this.error});
 }
+
+class SuccessfulSaveCurrency implements CurrencyDetailNotification {}

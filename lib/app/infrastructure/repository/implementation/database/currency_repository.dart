@@ -11,11 +11,17 @@ class CurrencyDatabaseRepository implements CurrencyBaseRepository {
 
   Future<void> save(UsesCurrencyDomainModel model) async {
     await this._databaseBaseConnection.transaction((txn) async {
-      /*if (await _currencyExist(model.id, txn)) {
+      //print(model.isNew);
+      if (!model.isNew) {
+        //await _currencyExist(model.id, txn)) {
         txn.update(_tableName, model.toMap(), where: "id = ?", whereArgs: [model.id]);
-      } else {*/
+      } else {
+        //if (await _currencyNotExist(model.id, txn)) {
         txn.insert(_tableName, model.toMap());
-      //}
+        /*}else{
+          print('error save!');
+        }*/
+      }
     });
   }
 
@@ -47,8 +53,24 @@ class CurrencyDatabaseRepository implements CurrencyBaseRepository {
     return result;
   }
 
-  Future<bool> _currencyExist(String id, DataBaseTransaction txn) async {
+  Future<bool> _currencyNotExist(String id, DataBaseTransaction txn) async {
     List<Map<String, dynamic>> list = await txn.select(_tableName, where: 'id = ?', whereArgs: [id], limit: 1);
-    return list.isNotEmpty;
+    return list.isEmpty;
+  }
+
+  @override
+  Future<bool> currencyNotExist(String id) async {
+    bool exists = false;
+    //print('1');
+    await this._databaseBaseConnection.transaction((txn) async {
+      //print('2');
+      List<Map<String, dynamic>> list = await txn.select(_tableName, where: 'id = ?', whereArgs: [id], limit: 1);
+      //print('3');
+      exists = list.isNotEmpty;
+      //print('4');
+    });
+    //print('5');
+    //print ('e = $exists');
+    return exists;
   }
 }

@@ -3,6 +3,7 @@ import 'package:mymoneyorganizer/app/core/common/model/domain/base_domain_model.
 
 class UsesCurrencyDomainModel implements BaseDomainModel{
   final String id;
+  final bool isNew;
   String name;
   String symbol;
   int fraction;
@@ -11,15 +12,17 @@ class UsesCurrencyDomainModel implements BaseDomainModel{
       {@required this.id,
       @required this.name,
       @required this.symbol,
-      @required this.fraction});
+      @required this.fraction,
+      @required this.isNew});
 
   factory UsesCurrencyDomainModel(
       {@required String id,
       @required String name,
       @required String symbol,
-      @required int fraction}) {
+      @required int fraction,
+      bool isNew = false}) {
     return UsesCurrencyDomainModel._(
-        id: id, name: name, symbol: symbol, fraction: fraction);
+        id: id, name: name, symbol: symbol, fraction: fraction, isNew: isNew);
   }
 
   Map<String, dynamic> toMap(){

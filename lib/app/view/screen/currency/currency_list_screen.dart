@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mymoneyorganizer/app/core/common/model/read/uses_currency_model.dart';
+import 'package:mymoneyorganizer/app/eventbus/eventbus_core.dart';
+import 'package:mymoneyorganizer/app/eventbus/events/base/currency_changed.dart';
 import 'package:mymoneyorganizer/app/view/common/scroll_handled_appbar.dart';
 import 'package:mymoneyorganizer/app/view/screen/currency/currency_detail_screen.dart';
 import 'package:mymoneyorganizer/app/viewmodel/common/currency_list.dart';
@@ -20,6 +22,11 @@ class _State extends State<CurrencyListScreen> {
   void initState() {
     viewModel.event.listen((CurrencyListNotification event) {
       dispatch(event);
+    });
+    EventBusCore.getInstance().events.listen((event) {
+      if(event is CurrencyChangedEvent){
+        viewModel.load();
+      }
     });
     viewModel.load();
     super.initState();

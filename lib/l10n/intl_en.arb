@@ -6,5 +6,9 @@
   "code" : "{name} code",
   "name" : "name",
   "symbol" : "symbol",
-  "fraction" : "fraction"
+  "fraction" : "fraction",
+  "not_a_string" : "value is not string",
+  "string_empty" : "the string must not be empty",
+  "is_null" : "the value must not be empty",
+  "currency_exist" : "currency with this code is already in the database"
 }

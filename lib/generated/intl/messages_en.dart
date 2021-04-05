@@ -26,10 +26,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "code" : m0,
     "currency" : MessageLookupByLibrary.simpleMessage("Currency"),
     "currency_detail_title" : MessageLookupByLibrary.simpleMessage("Currency detail"),
+    "currency_exist" : MessageLookupByLibrary.simpleMessage("currency with this code is already in the database"),
     "currency_list_title" : MessageLookupByLibrary.simpleMessage("Available currencies"),
     "fraction" : MessageLookupByLibrary.simpleMessage("fraction"),
+    "is_null" : MessageLookupByLibrary.simpleMessage("the value must not be empty"),
     "loading" : MessageLookupByLibrary.simpleMessage("Loading, place wait"),
     "name" : MessageLookupByLibrary.simpleMessage("name"),
+    "not_a_string" : MessageLookupByLibrary.simpleMessage("value is not string"),
+    "string_empty" : MessageLookupByLibrary.simpleMessage("the string must not be empty"),
     "symbol" : MessageLookupByLibrary.simpleMessage("symbol")
   };
 }

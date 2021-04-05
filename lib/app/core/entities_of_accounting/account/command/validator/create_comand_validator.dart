@@ -10,20 +10,20 @@ import 'exception/create_command_exception.dart';
 class CreateAccountCommandValidator extends BaseCommandValidator<AccountCreateCommand> {
   @override
   Future<void> validate(AccountCreateCommand command) async {
-    ContainerValidator containerValidator = ContainerValidator();
+    ValidatorContainer containerValidator = ValidatorContainer();
 
-    ListValidator name = ListValidator([StringNotEmptyValidator()]);
-    ListValidator type = ListValidator([StringNotEmptyValidator()]);
-    ListValidator isActive = ListValidator([ValueNotNullValidator()]);
-    ListValidator isSaving = ListValidator([ValueNotNullValidator()]);
-    ListValidator currency = ListValidator([ValueNotNullValidator()]);
+    ValidatorList name = ValidatorList([StringNotEmptyValidator()]);
+    ValidatorList type = ValidatorList([StringNotEmptyValidator()]);
+    ValidatorList isActive = ValidatorList([ValueNotNullValidator()]);
+    ValidatorList isSaving = ValidatorList([ValueNotNullValidator()]);
+    ValidatorList currency = ValidatorList([ValueNotNullValidator()]);
 
     containerValidator
-      ..addValidator(name, command.name)
-      ..addValidator(type, command.type)
-      ..addValidator(isActive, command.isActive)
-      ..addValidator(isSaving, command.isSavingAccount)
-      ..addValidator(currency, command.currency);
+      ..add(name, command.name)
+      ..add(type, command.type)
+      ..add(isActive, command.isActive)
+      ..add(isSaving, command.isSavingAccount)
+      ..add(currency, command.currency);
 
     if (!(await containerValidator.isValid())) {
       throw new AccountCreateException(

@@ -114,6 +114,46 @@ class S {
       args: [],
     );
   }
+
+  /// `value is not string`
+  String get not_a_string {
+    return Intl.message(
+      'value is not string',
+      name: 'not_a_string',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `the string must not be empty`
+  String get string_empty {
+    return Intl.message(
+      'the string must not be empty',
+      name: 'string_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `the value must not be empty`
+  String get is_null {
+    return Intl.message(
+      'the value must not be empty',
+      name: 'is_null',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `currency with this code is already in the database`
+  String get currency_exist {
+    return Intl.message(
+      'currency with this code is already in the database',
+      name: 'currency_exist',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -122,7 +162,6 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
-      Locale.fromSubtags(languageCode: 'ru'),
     ];
   }
 

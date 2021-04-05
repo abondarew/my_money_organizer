@@ -10,8 +10,9 @@ import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/comman
 class CurrencyCommandDispatcher extends BaseCommandDispatcher{
   final CurrencyCreateCommandHandler createCommandHandler;
   final CurrencyDeleteCommandHandler deleteCommandHandler;
+  //final CurrencyUpdateCommandHandler updateCommandHandler;
 
-  CurrencyCommandDispatcher({@required this.createCommandHandler, @required this.deleteCommandHandler});
+  CurrencyCommandDispatcher({@required this.createCommandHandler, @required this.deleteCommandHandler});//, @required this.updateCommandHandler});
 
   @override
   Future<void> dispatch(BaseCommand c) async {
