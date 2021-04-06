@@ -17,9 +17,13 @@ class DatabaseConnectionSqlite extends DatabaseBaseConnection {
   }
 
   Future<Database> _getDB() async {
+    print('open db');
     if (_db == null) {
+      print('get db');
       _db = await openDatabase(_patch, onCreate: _onCreateDB, version: _version);
+      print('getting db');
     }
+    print('return db');
     return _db;
   }
 
@@ -29,9 +33,13 @@ class DatabaseConnectionSqlite extends DatabaseBaseConnection {
 
   @override
   Future<void> transaction(Future<void> Function(DataBaseTransaction transaction) action) async {
+    print('db start');
     Database _db = await this._getDB();
+    print('db 1');
     await _db.transaction((txn) async {
+      print('db 2');
       await action(new DataBaseTransactionSqlite(txn));
+      print('db 3');
     });
   }
 }

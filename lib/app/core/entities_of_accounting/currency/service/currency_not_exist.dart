@@ -6,7 +6,10 @@ class ServiceCurrencyNotExist{
 
   ServiceCurrencyNotExist({@required this.repository});
 
-  Future<bool> currencyNotExist(String id) {
-    return repository.currencyNotExist(id);
+  Future<bool> currencyNotExist(String id) async{
+    print('exist service start');
+    bool res = await repository.currencyNotExist(id);
+    print('exist service end');
+    return res;
   }
 }
