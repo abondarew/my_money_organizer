@@ -55,21 +55,10 @@ class CurrencyDatabaseRepository implements CurrencyBaseRepository {
   @override
   Future<bool> currencyIsExist(String id) async {
     bool exists = false;
-    //print('exist repo start');
-    //print('1');
-    //print ('exist repo aw0');
     await this._databaseBaseConnection.transaction((txn) async {
-      //print('exist repo aw1');
-      //print('2');
       List<Map<String, dynamic>> list = await txn.select(_tableName, where: 'id = ?', whereArgs: [id], limit: 1);
-      //print('exist repo aw2');
-      //print('3');
       exists = list.isNotEmpty;
-      //print('4');
     });
-    //print('5');
-    //print ('e = $exists');
-    //print('exist repo end');
     return exists;
   }
 }
