@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:mymoneyorganizer/app/core/common/model/read/uses_currency_model.dart';
+import 'package:mymoneyorganizer/app/core/common/model/read/currency_model.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/query/dispatcher/query_dispatcher.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/query/fetch_currency_list.dart';
 import 'package:mymoneyorganizer/app/infrastructure/container/currency_core_container.dart';
@@ -17,8 +17,7 @@ class CurrencyListViewModel {
   CurrencyListViewModel(this._queryDispatcher);
 
   Future<void> load() async {
-    List<UsesCurrencyListReadModel> result = await _queryDispatcher.dispatch(CurrencyQueryFetchList());
-    //eventBus.addEvent(CurrencyListChangedWithDataEvent(result));
+    List<CurrencyListReadModel> result = await _queryDispatcher.dispatch(CurrencyQueryFetchList());
     this._eventController.add(ResultCurrencyListNotification(result));
   }
 
@@ -37,6 +36,6 @@ class CurrencyListViewModelBuilder {
 class CurrencyListNotification{}
 
 class ResultCurrencyListNotification implements CurrencyListNotification{
-  final List<UsesCurrencyListReadModel> currencyList;
+  final List<CurrencyListReadModel> currencyList;
   ResultCurrencyListNotification(this.currencyList);
 }

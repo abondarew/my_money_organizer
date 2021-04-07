@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mymoneyorganizer/app/core/common/model/read/uses_currency_model.dart';
+import 'package:mymoneyorganizer/app/core/common/model/read/currency_model.dart';
 import 'package:mymoneyorganizer/app/eventbus/eventbus_core.dart';
 import 'package:mymoneyorganizer/app/eventbus/events/base/currency_changed.dart';
 import 'package:mymoneyorganizer/app/view/common/scroll_handled_appbar.dart';
@@ -15,7 +15,7 @@ class CurrencyListScreen extends StatefulWidget {
 }
 
 class _State extends State<CurrencyListScreen> {
-  final List<UsesCurrencyListReadModel> currencyList = [];
+  final List<CurrencyListReadModel> currencyList = [];
   final CurrencyListViewModel viewModel = CurrencyListViewModelBuilder.build();
 
   @override
@@ -42,7 +42,7 @@ class _State extends State<CurrencyListScreen> {
       body: ListView.builder(
         controller: this.widget._scrollController,
         itemBuilder: (context, index) {
-          UsesCurrencyListReadModel currencyReadModel = currencyList[index];
+          CurrencyListReadModel currencyReadModel = currencyList[index];
           return ListTile(
             title: Text(currencyReadModel.name),
             subtitle: Text(currencyReadModel.id),
@@ -64,10 +64,6 @@ class _State extends State<CurrencyListScreen> {
         child: Icon(Icons.add),
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => CurrencyDetailScreen()));
-          /*CurrencyCommandDispatcher commandDispatcher = CurrencyCoreContainer.getInstance().commandDispatcher;
-          //UsesCurrencyDomainModel model = UsesCurrencyDomainModel(id: 'UAH', name: 'hryvna', symbol: 'Hrn', fraction: 2);
-          commandDispatcher.dispatch(CurrencyCreateCommand(id: 'usd', isNew: true, name: 'dollar', symbol: '\$', fraction: 2));
-          //Navigator.push(context, MaterialPageRoute(builder:() => CurrencyListScreen()));*/
         },
       ),
     );

@@ -1,27 +1,27 @@
 import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/model/domain/base_domain_model.dart';
 
-class UsesCurrencyDomainModel implements BaseDomainModel{
+class CurrencyDomainModel implements BaseDomainModel{
   final String id;
   final bool isNew;
   String name;
   String symbol;
   int fraction;
 
-  UsesCurrencyDomainModel._(
+  CurrencyDomainModel._(
       {@required this.id,
       @required this.name,
       @required this.symbol,
       @required this.fraction,
       @required this.isNew});
 
-  factory UsesCurrencyDomainModel(
+  factory CurrencyDomainModel(
       {@required String id,
       @required String name,
       @required String symbol,
       @required int fraction,
       bool isNew = false}) {
-    return UsesCurrencyDomainModel._(
+    return CurrencyDomainModel._(
         id: id, name: name, symbol: symbol, fraction: fraction, isNew: isNew);
   }
 
@@ -36,8 +36,8 @@ class UsesCurrencyDomainModel implements BaseDomainModel{
   }
 
   @override
-  UsesCurrencyDomainModel fromMap(Map<String, dynamic> map) {
-    return(UsesCurrencyDomainModel(
+  CurrencyDomainModel fromMap(Map<String, dynamic> map) {
+    return(CurrencyDomainModel(
       id: map['id'],
       name: map['name'],
       symbol: map['symbol'],

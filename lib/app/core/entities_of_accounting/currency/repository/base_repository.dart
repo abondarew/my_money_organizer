@@ -1,14 +1,14 @@
-import 'package:mymoneyorganizer/app/core/common/model/domain/uses_currency_model.dart';
-import 'package:mymoneyorganizer/app/core/common/model/read/uses_currency_model.dart';
+import 'package:mymoneyorganizer/app/core/common/model/domain/currency_model.dart';
+import 'package:mymoneyorganizer/app/core/common/model/read/currency_model.dart';
 
 abstract class CurrencyBaseRepository{
-  Future<void> save(UsesCurrencyDomainModel model);
+  Future<void> save(CurrencyDomainModel model);
 
   Future<void> delete (String id);
 
-  Future<List<UsesCurrencyListReadModel>> fetchCurrencyList();
+  Future<List<CurrencyListReadModel>> fetchCurrencyList();
 
-  Future<UsesCurrencyDetailReadModel> getCurrencyFromId(String id);
+  Future<CurrencyDetailReadModel> getCurrencyFromId(String id);
 
-  Future<bool> currencyNotExist(String id);
+  Future<bool> currencyIsExist(String id);
 }

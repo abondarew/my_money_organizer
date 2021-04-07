@@ -13,7 +13,7 @@ import 'repository/base_repository.dart';
 class CurrencyCoreBuilder {
   static CurrencyCommandDispatcher buildCommandDispatcher({@required CurrencyBaseRepository repository}) {
     final CurrencyCreateCommandHandler createCommandHandler = CurrencyCreateCommandHandler(
-        validator: CurrencyCreateCommandValidator(serviceCurrencyNotExist: ServiceCurrencyNotExist(repository: repository)),
+        validator: CurrencyCreateCommandValidator(serviceCurrencyNotExist: ServiceCurrencyIsExist(repository: repository)),
         repository: repository);
     final CurrencyDeleteCommandHandler deleteCommandHandler = CurrencyDeleteCommandHandler(repository: repository);
 

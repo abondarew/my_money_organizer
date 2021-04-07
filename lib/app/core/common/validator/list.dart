@@ -12,10 +12,15 @@ class ValidatorList extends BaseValidator {
   }
 
   @override
-  Future<void> validate(value) async {
-    this._validators.forEach((validator) async {
-      validator.validate(value);
-      this.addErrors(validator.getErrors());
+  Future<bool> validate(value) async {
+    List<Future<bool>> lst = [];
+    this._validators.forEach((element) async {
+      lst.add(element.validate(value));
     });
+    List<bool> resList = await Future.wait(lst);
+    this._validators.forEach((element) {
+      this.addErrors(element.getErrors());
+    });
+    return !resList.any((element) => !element);
   }
 }

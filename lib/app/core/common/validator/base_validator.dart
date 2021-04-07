@@ -1,17 +1,15 @@
 abstract class BaseValidator {
   // List ошибок
-  final List<String> errors = List();
+  final List<String> errors = [];
 
   //Карта перехода к ошибкам
   final Map<String, dynamic> mapErrors = Map();
 
   Future<bool> isValid(var value) async {
-    await this.validate(value);
-
-    return this.errors.isEmpty;
+    return await this.validate(value);
   }
 
-  Future<void> validate(var value);
+  Future<bool> validate(var value);
 
   void addError(String error) {
     this.errors.add(error);

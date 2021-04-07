@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:mymoneyorganizer/app/core/common/model/read/uses_currency_model.dart';
+import 'package:mymoneyorganizer/app/core/common/model/read/currency_model.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/command/create_command.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/command/dispatcher/dispatcher.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/query/dispatcher/query_dispatcher.dart';
@@ -14,7 +14,7 @@ class CurrencyDetailViewModel {
   final CurrencyCommandDispatcher _commandDispatcher;
   final StreamController<CurrencyDetailNotification> eventController = StreamController<CurrencyDetailNotification>.broadcast();
   final Map<String, dynamic> newData = Map<String, dynamic>();
-  UsesCurrencyDetailReadModel model;
+  CurrencyDetailReadModel model;
   bool _isNew = true;
   bool _isModification = false;
 
@@ -29,6 +29,8 @@ class CurrencyDetailViewModel {
       _isNew = false;
       model = await _queryDispatcher.dispatch(CurrencyQueryGetFromId(id: id));
       newData.addAll(model.toMap());
+    } else {
+      _isNew = true;
     }
     eventController.add(ResultCurrencyDetailNotification(currencyReadModel: model));
   }
@@ -50,19 +52,17 @@ class CurrencyDetailViewModel {
     return eventController.stream;
   }
 
-  save() {
+  Future<void> save() async{
     try {
-      _commandDispatcher.dispatch(CurrencyCreateCommand(
-          id: newData['id'],
-          isNew: _isNew,
-          name: newData['name'],
-          symbol: newData['symbol'],
-          fraction: newData['fraction']));
+      await _commandDispatcher.dispatch(CurrencyCreateCommand(
+          id: newData['id'], isNew: _isNew, name: newData['name'], symbol: newData['symbol'], fraction: newData['fraction']));
+      EventBusCore.getInstance().addEvent(CurrencyChangedEvent());
       eventController.add(SuccessfulSaveCurrency());
-    } catch (e){
+    } catch (e) {
       eventController.add(ErrorCurrencyDetailNotification(error: e));
+    } finally {
+
     }
-    EventBusCore.getInstance().addEvent(CurrencyChangedEvent());
   }
 }
 
@@ -76,7 +76,7 @@ class CurrencyDetailViewModelBuilder {
 class CurrencyDetailNotification {}
 
 class ResultCurrencyDetailNotification implements CurrencyDetailNotification {
-  final UsesCurrencyDetailReadModel currencyReadModel;
+  final CurrencyDetailReadModel currencyReadModel;
 
   ResultCurrencyDetailNotification({this.currencyReadModel});
 }

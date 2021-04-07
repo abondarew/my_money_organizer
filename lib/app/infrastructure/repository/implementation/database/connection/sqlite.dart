@@ -1,9 +1,9 @@
 import 'package:mymoneyorganizer/app/infrastructure/repository/implementation/database/connection/base_connection.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:sqflite/sqflite.dart' as SQFLite;
 
 class DatabaseConnectionSqlite extends DatabaseBaseConnection {
   static DatabaseConnectionSqlite _instance;
-  Database _db;
+  SQFLite.Database _db;
   final int _version = 1;
   final String _patch = 'mmo';
 
@@ -16,36 +16,28 @@ class DatabaseConnectionSqlite extends DatabaseBaseConnection {
     return _instance;
   }
 
-  Future<Database> _getDB() async {
-    print('open db');
+  Future<SQFLite.Database> _getDB() async {
     if (_db == null) {
-      print('get db');
-      _db = await openDatabase(_patch, onCreate: _onCreateDB, version: _version);
-      print('getting db');
+      _db = await SQFLite.openDatabase(_patch, onCreate: _onCreateDB, version: _version);
     }
-    print('return db');
     return _db;
   }
 
-  Future<void> _onCreateDB(Database db, int version) async {
+  Future<void> _onCreateDB(SQFLite.Database db, int version) async {
     await db.execute('CREATE TABLE uses_currency (id STRING PRIMARY KEY NOT NULL, name STRING, symbol STRING, fraction INTEGER)');
   }
 
   @override
-  Future<void> transaction(Future<void> Function(DataBaseTransaction transaction) action) async {
-    print('db start');
-    Database _db = await this._getDB();
-    print('db 1');
+  Future<void> transaction(Future<void> Function(DataBaseTransaction txn) action) async {
+    SQFLite.Database _db = await this._getDB();
     await _db.transaction((txn) async {
-      print('db 2');
       await action(new DataBaseTransactionSqlite(txn));
-      print('db 3');
     });
   }
 }
 
 class DataBaseTransactionSqlite implements DataBaseTransaction {
-  DatabaseExecutor _executor;
+  SQFLite.DatabaseExecutor _executor;
 
   DataBaseTransactionSqlite(this._executor);
 
@@ -79,7 +71,7 @@ class DataBaseTransactionSqlite implements DataBaseTransaction {
 
   @override
   Future<void> update(String table, Map<String, dynamic> data, {String where, List whereArgs}) async {
-    await this._executor.update(table, data);
+    await this._executor.update(table, data, where: where, whereArgs: whereArgs);
   }
 
   @override

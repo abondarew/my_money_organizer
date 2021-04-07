@@ -1,3 +1,4 @@
+import 'package:mymoneyorganizer/generated/l10n.dart';
 class BaseCommandException implements Exception {}
 
 class InvalidCommandException implements BaseCommandException{
@@ -8,8 +9,8 @@ class InvalidCommandException implements BaseCommandException{
   @override
   String toString() {
     if (this.message == null){
-      return "InvalidCommandException";
+      return S.current.invalid_command_exception;
     }
-    return "InvalidCommandException: "+this.message;
+    return "${S.current.invalid_command_exception}: "+this.message;
   }
 }

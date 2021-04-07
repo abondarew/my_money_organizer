@@ -154,6 +154,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Unknown error: `
+  String get unknown_error {
+    return Intl.message(
+      'Unknown error: ',
+      name: 'unknown_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `InvalidCommandException`
+  String get invalid_command_exception {
+    return Intl.message(
+      'InvalidCommandException',
+      name: 'invalid_command_exception',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `command not identified`
+  String get command_not_identifier {
+    return Intl.message(
+      'command not identified',
+      name: 'command_not_identifier',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

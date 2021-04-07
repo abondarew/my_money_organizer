@@ -1,5 +1,5 @@
-import 'package:mymoneyorganizer/app/core/common/model/domain/uses_currency_model.dart';
-import 'package:mymoneyorganizer/app/core/common/model/read/uses_currency_model.dart';
+import 'package:mymoneyorganizer/app/core/common/model/domain/currency_model.dart';
+import 'package:mymoneyorganizer/app/core/common/model/read/currency_model.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/repository/base_repository.dart';
 import 'package:mymoneyorganizer/app/infrastructure/repository/implementation/database/connection/base_connection.dart';
 
@@ -9,18 +9,12 @@ class CurrencyDatabaseRepository implements CurrencyBaseRepository {
 
   CurrencyDatabaseRepository(this._databaseBaseConnection);
 
-  Future<void> save(UsesCurrencyDomainModel model) async {
+  Future<void> save(CurrencyDomainModel model) async {
     await this._databaseBaseConnection.transaction((txn) async {
-      //print(model.isNew);
       if (!model.isNew) {
-        //await _currencyExist(model.id, txn)) {
         txn.update(_tableName, model.toMap(), where: "id = ?", whereArgs: [model.id]);
       } else {
-        //if (await _currencyNotExist(model.id, txn)) {
         txn.insert(_tableName, model.toMap());
-        /*}else{
-          print('error save!');
-        }*/
       }
     });
   }
@@ -32,50 +26,50 @@ class CurrencyDatabaseRepository implements CurrencyBaseRepository {
   }
 
   @override
-  Future<List<UsesCurrencyListReadModel>> fetchCurrencyList() async {
-    List<UsesCurrencyListReadModel> result = [];
+  Future<List<CurrencyListReadModel>> fetchCurrencyList() async {
+    List<CurrencyListReadModel> result = [];
     await _databaseBaseConnection.transaction((DataBaseTransaction txn) async {
       List<Map<String, dynamic>> list = await txn.select(_tableName);
       list.forEach((Map<String, dynamic> data) {
-        result.add(UsesCurrencyListReadModel(id: data['id'], symbol: data['symbol'], name: data['name']));
+        result.add(CurrencyListReadModel(id: data['id'].toString(), symbol: data['symbol'].toString(), name: data['name'].toString()));
       });
     });
     return result;
   }
 
   @override
-  Future<UsesCurrencyDetailReadModel> getCurrencyFromId(String id) async {
-    UsesCurrencyDetailReadModel result;
+  Future<CurrencyDetailReadModel> getCurrencyFromId(String id) async {
+    CurrencyDetailReadModel result;
     await this._databaseBaseConnection.transaction((txn) async {
       List<Map<String, dynamic>> queryResult = await txn.select(_tableName, where: 'id = ?', whereArgs: [id]);
-      if (queryResult.isNotEmpty) result = UsesCurrencyDetailReadModel.fromMap(queryResult.first);
+      if (queryResult.isNotEmpty) result = CurrencyDetailReadModel.fromMap(queryResult.first);
     });
     return result;
   }
 
-  Future<bool> _currencyNotExist(String id, DataBaseTransaction txn) async {
+  /*Future<bool> _currencyNotExist(String id, DataBaseTransaction txn) async {
     List<Map<String, dynamic>> list = await txn.select(_tableName, where: 'id = ?', whereArgs: [id], limit: 1);
     return list.isEmpty;
-  }
+  }*/
 
   @override
-  Future<bool> currencyNotExist(String id) async {
+  Future<bool> currencyIsExist(String id) async {
     bool exists = false;
-    print('exist repo start');
+    //print('exist repo start');
     //print('1');
-    print ('exist repo aw0');
+    //print ('exist repo aw0');
     await this._databaseBaseConnection.transaction((txn) async {
-      print('exist repo aw1');
+      //print('exist repo aw1');
       //print('2');
       List<Map<String, dynamic>> list = await txn.select(_tableName, where: 'id = ?', whereArgs: [id], limit: 1);
-      print('exist repo aw2');
+      //print('exist repo aw2');
       //print('3');
       exists = list.isNotEmpty;
       //print('4');
     });
     //print('5');
     //print ('e = $exists');
-    print('exist repo end');
+    //print('exist repo end');
     return exists;
   }
 }

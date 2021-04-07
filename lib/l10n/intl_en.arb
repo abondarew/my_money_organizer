@@ -10,5 +10,8 @@
   "not_a_string" : "value is not string",
   "string_empty" : "the string must not be empty",
   "is_null" : "the value must not be empty",
-  "currency_exist" : "currency with this code is already in the database"
+  "currency_exist" : "currency with this code is already in the database",
+  "unknown_error" : "Unknown error: ",
+  "invalid_command_exception" : "InvalidCommandException",
+  "command_not_identifier" : "command not identified"
 }

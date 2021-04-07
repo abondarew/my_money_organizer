@@ -6,7 +6,7 @@ class EventBusCore {
   static EventBusCore _instance;
   final StreamController<BaseEvent> _streamController = StreamController.broadcast();
 
-  EventBusCore._() {}
+  EventBusCore._();
 
   factory EventBusCore.getInstance() {
     if (_instance == null) {

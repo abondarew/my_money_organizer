@@ -8,8 +8,7 @@ class AccountCanBeDeleteValidator extends BaseValidator{
   AccountCanBeDeleteValidator({@required this.repository});
 
   @override
-  Future<void> validate(value) async {
+  Future<bool> validate(value) async {
     //bool accountIsUse = await
   }
-  
 }
