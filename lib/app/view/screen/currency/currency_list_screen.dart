@@ -17,6 +17,7 @@ class CurrencyListScreen extends StatefulWidget {
 class _State extends State<CurrencyListScreen> {
   final List<CurrencyListReadModel> currencyList = [];
   final CurrencyListViewModel viewModel = CurrencyListViewModelBuilder.build();
+  bool _visibleDelButton = false;
 
   @override
   void initState() {
@@ -24,7 +25,7 @@ class _State extends State<CurrencyListScreen> {
       dispatch(event);
     });
     EventBusCore.getInstance().events.listen((event) {
-      if(event is CurrencyChangedEvent){
+      if (event is CurrencyChangedEvent) {
         viewModel.load();
       }
     });
@@ -38,14 +39,49 @@ class _State extends State<CurrencyListScreen> {
       appBar: ScrollHandledAppBar(
         title: Text(S.of(context).currency_list_title),
         scrollController: this.widget._scrollController,
+        action: [
+          Visibility(
+            child: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () => viewModel.delete(currencyList),
+            ),
+            visible: _visibleDelButton,
+          )
+        ],
       ),
       body: ListView.builder(
         controller: this.widget._scrollController,
+        padding: EdgeInsets.all(16),
         itemBuilder: (context, index) {
           CurrencyListReadModel currencyReadModel = currencyList[index];
+          print('color: ${currencyReadModel.avatarColor}');
           return ListTile(
-            title: Text(currencyReadModel.name),
-            subtitle: Text(currencyReadModel.id),
+            leading: CircleAvatar(
+              child: Text(currencyReadModel.symbol),
+
+              backgroundColor: Color(currencyReadModel.avatarColor),
+            ),
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(currencyReadModel.id),
+                Divider(
+                  height: 2,
+                  color: Colors.orange,
+                ),
+              ],
+            ),
+            //Text(currencyReadModel.name),
+            subtitle: Text(currencyReadModel.name),
+            selectedTileColor: Colors.lightBlueAccent,
+            onLongPress: () {
+              setState(() {
+                currencyList[index].selected = !currencyList[index].selected;
+                _visibleDelButton = currencyList.any((element) => element.selected);
+              });
+            },
+            selected: currencyReadModel.selected,
+            trailing: IconButton(icon: Icon(Icons.more_vert), onPressed: () => viewModel.delete(currencyList)),
             onTap: () => {
               Navigator.push(
                 context,
@@ -57,6 +93,7 @@ class _State extends State<CurrencyListScreen> {
               ),
             },
           );
+          //return ListItem();
         },
         itemCount: currencyList.length,
       ),
@@ -68,6 +105,56 @@ class _State extends State<CurrencyListScreen> {
       ),
     );
   }
+
+  /*Widget buildItem(List<CurrencyListReadModel> currencyList, int index) {
+    return GestureDetector(
+      onTap: () => {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CurrencyDetailScreen(
+              currencyId: currencyList[index].id,
+            ),
+          ),
+        ),
+      },
+      onLongPress: () => {
+        setState(() {
+          currencyList[index].selected = !currencyList[index].selected;
+          _visibleDelButton = currencyList.any((element) => element.selected);
+        })
+      },
+      child: Container(
+        padding: EdgeInsets.all(8),
+        child: Card(
+          child: Row(
+            children: [
+              Visibility(
+                child: Checkbox(
+                  value: currencyList[index].selected,
+                  onChanged: (value) {
+                    setState(() {
+                      currencyList[index].selected = value;
+                    });
+                  },
+                ),
+                visible: _visibleDelButton,
+              ),
+              CircleAvatar(
+                child: Text(currencyList[index].symbol),
+              ),
+              Column(
+                children: [
+                  Text(currencyList[index].id),
+                  Text(currencyList[index].name),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }*/
 
   void dispatch(CurrencyListNotification event) {
     if (event is ResultCurrencyListNotification) {
@@ -82,5 +169,18 @@ class _State extends State<CurrencyListScreen> {
   void dispose() {
     viewModel.dispose();
     super.dispose();
+  }
+}
+
+class ListItem extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _ListItemState();
+}
+
+class _ListItemState extends State<ListItem> {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
   }
 }

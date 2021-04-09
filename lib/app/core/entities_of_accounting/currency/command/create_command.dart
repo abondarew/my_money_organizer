@@ -7,7 +7,8 @@ class CurrencyCreateCommand extends BaseCommand {
   final String name;
   final String symbol;
   final int fraction;
+  final int avatarColor;
 
   CurrencyCreateCommand(
-      {@required this.id, @required this.isNew, @required this.name, @required this.symbol, @required this.fraction});
+      {@required this.id, @required this.isNew, @required this.name, @required this.symbol, @required this.fraction, @required this.avatarColor});
 }

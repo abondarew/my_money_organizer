@@ -6,8 +6,9 @@ class CurrencyCreateCommandException extends BaseCommandException {
   final List<String> name;
   final List<String> symbol;
   final List<String> fraction;
+  final List<String> avatarColor;
 
   final String message;
 
-  CurrencyCreateCommandException({@required this.id, @required this.name, @required this.symbol, @required this.fraction, this.message});
+  CurrencyCreateCommandException({@required this.id, @required this.name, @required this.symbol, @required this.fraction, this.avatarColor, this.message});
 }

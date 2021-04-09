@@ -44,7 +44,7 @@ class DocumentDomainModel {
       id = Uuid().v4();
     }
     if (transactions == null){
-      transactions = List<TransactionDomainModel>();
+      transactions = [];
     }
     return DocumentDomainModel._(
         id: id,

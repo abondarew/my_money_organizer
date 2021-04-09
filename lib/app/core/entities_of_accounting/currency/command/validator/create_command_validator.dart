@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_validator.dart';
+import 'package:mymoneyorganizer/app/core/common/validator/color.dart';
 import 'package:mymoneyorganizer/app/core/common/validator/container.dart';
 import 'package:mymoneyorganizer/app/core/common/validator/list.dart';
 import 'package:mymoneyorganizer/app/core/common/validator/not_null.dart';
@@ -27,7 +28,8 @@ class CurrencyCreateCommandValidator extends BaseCommandValidator<CurrencyCreate
     ValidatorList name = ValidatorList([StringNotEmptyValidator()]);
     ValidatorList symbol = ValidatorList([StringNotEmptyValidator()]);
     ValidatorList fraction = ValidatorList([ValueNotNullValidator()]);
-    container..add(code, command.id)..add(name, command.name)..add(symbol, command.symbol)..add(fraction, command.fraction);
+    ValidatorList color = ValidatorList([ColorValidator()]);
+    container..add(code, command.id)..add(name, command.name)..add(symbol, command.symbol)..add(fraction, command.fraction)..add(color, command.avatarColor);
     bool res = await container.isValid();
     if (!(res)) {
       throw CurrencyCreateCommandException(id: code.errors, name: name.errors, symbol: symbol.errors, fraction: fraction.errors);

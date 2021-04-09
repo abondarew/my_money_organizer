@@ -13,5 +13,6 @@
   "currency_exist" : "currency with this code is already in the database",
   "unknown_error" : "Unknown error: ",
   "invalid_command_exception" : "InvalidCommandException",
-  "command_not_identifier" : "command not identified"
+  "command_not_identifier" : "command not identified",
+  "invalid_color" : "Invalid color value"
 }

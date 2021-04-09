@@ -30,6 +30,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "currency_exist" : MessageLookupByLibrary.simpleMessage("currency with this code is already in the database"),
     "currency_list_title" : MessageLookupByLibrary.simpleMessage("Available currencies"),
     "fraction" : MessageLookupByLibrary.simpleMessage("fraction"),
+    "invalid_color" : MessageLookupByLibrary.simpleMessage("Invalid color value"),
     "invalid_command_exception" : MessageLookupByLibrary.simpleMessage("InvalidCommandException"),
     "is_null" : MessageLookupByLibrary.simpleMessage("the value must not be empty"),
     "loading" : MessageLookupByLibrary.simpleMessage("Loading, place wait"),

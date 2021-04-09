@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mymoneyorganizer/app/core/common/model/read/currency_model.dart';
@@ -6,6 +5,7 @@ import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/comman
 import 'package:mymoneyorganizer/app/view/common/scroll_handled_appbar.dart';
 import 'package:mymoneyorganizer/app/viewmodel/common/currency_detail.dart';
 import 'package:mymoneyorganizer/generated/l10n.dart';
+import 'package:intl/intl.dart';
 
 class CurrencyDetailScreen extends StatefulWidget {
   final ScrollController _scrollController = ScrollController();
@@ -78,6 +78,7 @@ class _State extends State<CurrencyDetailScreen> {
                 onChanged: setModified,
                 child: Column(
                   children: [
+                    Text(NumberFormat.currency(name: 'UAH').simpleCurrencySymbol('ATH')),//currency(name: 'UAH').currencySymbol),//simpleCurrencySymbol('GBP')),
                     TextFormField(
                       initialValue: model?.id,
                       readOnly: (!viewModel.isNew),
@@ -87,7 +88,7 @@ class _State extends State<CurrencyDetailScreen> {
                       decoration: InputDecoration(
                           labelText: S.of(context).code(S.of(context).currency),
                           hintText: S.of(context).code(''),
-                          icon: Icon(Icons.monetization_on_outlined)),
+                          icon: CircleAvatar(child: Text(NumberFormat.currency().simpleCurrencySymbol('${widget.currencyId}')))),//Icon(Icons.monetization_on_outlined)),
                       maxLength: 3,
                       textCapitalization: TextCapitalization.characters,
                     ),

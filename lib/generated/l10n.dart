@@ -184,6 +184,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Invalid color value`
+  String get invalid_color {
+    return Intl.message(
+      'Invalid color value',
+      name: 'invalid_color',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

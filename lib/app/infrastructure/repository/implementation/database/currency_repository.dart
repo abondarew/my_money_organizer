@@ -31,7 +31,7 @@ class CurrencyDatabaseRepository implements CurrencyBaseRepository {
     await _databaseBaseConnection.transaction((DataBaseTransaction txn) async {
       List<Map<String, dynamic>> list = await txn.select(_tableName);
       list.forEach((Map<String, dynamic> data) {
-        result.add(CurrencyListReadModel(id: data['id'].toString(), symbol: data['symbol'].toString(), name: data['name'].toString()));
+        result.add(CurrencyListReadModel(id: data['id'].toString(), symbol: data['symbol'].toString(), name: data['name'].toString(), avatarColor: data['color']));
       });
     });
     return result;

@@ -25,6 +25,8 @@ class CurrencyListViewModel {
     this._eventController.close();
   }
 
+  delete(List<CurrencyListReadModel> currencyList) {}
+
 }
 
 class CurrencyListViewModelBuilder {

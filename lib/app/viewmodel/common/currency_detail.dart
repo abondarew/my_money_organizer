@@ -52,17 +52,21 @@ class CurrencyDetailViewModel {
     return eventController.stream;
   }
 
-  Future<void> save() async{
+  Future<void> save() async {
+    newData['color'] = 0xFF2233FF;
     try {
       await _commandDispatcher.dispatch(CurrencyCreateCommand(
-          id: newData['id'], isNew: _isNew, name: newData['name'], symbol: newData['symbol'], fraction: newData['fraction']));
+          id: newData['id'],
+          isNew: _isNew,
+          name: newData['name'],
+          symbol: newData['symbol'],
+          fraction: newData['fraction'],
+          avatarColor: newData['color']));
       EventBusCore.getInstance().addEvent(CurrencyChangedEvent());
       eventController.add(SuccessfulSaveCurrency());
     } catch (e) {
       eventController.add(ErrorCurrencyDetailNotification(error: e));
-    } finally {
-
-    }
+    } finally {}
   }
 }
 

@@ -14,11 +14,11 @@ class CategoryCreateCommandHandler extends BaseCommandHandler<CategoryCreateComm
   CategoryCreateCommandHandler({@required this.repository, @required this.validator});
 
   @override
-  Future<void> execute(CategoryCreateCommand command) {
-    this.validator.validate(command);
+  Future<void> execute(CategoryCreateCommand command) async {
+    await this.validator.validate(command);
 
     CategoryDomainModel categoryDomainModel = CategoryDomainModel(categoryName: null, idParentPath: null);
-    this.repository.save(categoryDomainModel);
+    await this.repository.save(categoryDomainModel);
   }
 
 }

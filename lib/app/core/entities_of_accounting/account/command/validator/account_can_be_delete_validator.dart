@@ -9,6 +9,7 @@ class AccountCanBeDeleteValidator extends BaseValidator{
 
   @override
   Future<bool> validate(value) async {
-    //bool accountIsUse = await
+    //TODO
+    throw UnimplementedError();
   }
 }
