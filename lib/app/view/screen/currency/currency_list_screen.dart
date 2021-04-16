@@ -18,6 +18,7 @@ class _State extends State<CurrencyListScreen> {
   final List<CurrencyListReadModel> currencyList = [];
   final CurrencyListViewModel viewModel = CurrencyListViewModelBuilder.build();
   bool _visibleDelButton = false;
+  bool _selectMode = false;
 
   @override
   void initState() {
@@ -35,74 +36,112 @@ class _State extends State<CurrencyListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: ScrollHandledAppBar(
-        title: Text(S.of(context).currency_list_title),
-        scrollController: this.widget._scrollController,
-        action: [
-          Visibility(
-            child: IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () => viewModel.delete(currencyList),
-            ),
-            visible: _visibleDelButton,
-          )
-        ],
-      ),
-      body: ListView.builder(
-        controller: this.widget._scrollController,
-        padding: EdgeInsets.all(16),
-        itemBuilder: (context, index) {
-          CurrencyListReadModel currencyReadModel = currencyList[index];
-          print('color: ${currencyReadModel.avatarColor}');
-          return ListTile(
-            leading: CircleAvatar(
-              child: Text(currencyReadModel.symbol),
-
-              backgroundColor: Color(currencyReadModel.avatarColor),
-            ),
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(currencyReadModel.id),
-                Divider(
-                  height: 2,
-                  color: Colors.orange,
-                ),
-              ],
-            ),
-            //Text(currencyReadModel.name),
-            subtitle: Text(currencyReadModel.name),
-            selectedTileColor: Colors.lightBlueAccent,
-            onLongPress: () {
-              setState(() {
-                currencyList[index].selected = !currencyList[index].selected;
-                _visibleDelButton = currencyList.any((element) => element.selected);
-              });
-            },
-            selected: currencyReadModel.selected,
-            trailing: IconButton(icon: Icon(Icons.more_vert), onPressed: () => viewModel.delete(currencyList)),
-            onTap: () => {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CurrencyDetailScreen(
-                    currencyId: currencyReadModel.id,
-                  ),
-                ),
+    return WillPopScope(
+      child: Scaffold(
+        appBar: ScrollHandledAppBar(
+          title: Text(S.of(context).currency_list_title),
+          scrollController: this.widget._scrollController,
+          action: [
+            Visibility(
+              child: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () => viewModel.delete(currencyList),
               ),
-            },
-          );
-          //return ListItem();
-        },
-        itemCount: currencyList.length,
+              visible: _visibleDelButton,
+            )
+          ],
+        ),
+        body: ListView.builder(
+          controller: this.widget._scrollController,
+          padding: EdgeInsets.all(2),
+          itemBuilder: (context, index) {
+            CurrencyListReadModel currencyReadModel = currencyList[index];
+            return ListTile(
+              leading: CircleAvatar(
+                child: Text(currencyReadModel.symbol),
+                backgroundColor: Color(currencyReadModel.avatarColor),
+              ),
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(currencyReadModel.id),
+                  Divider(
+                    height: 2,
+                    color: Colors.orange,
+                  ),
+                  Text(currencyReadModel.name),
+                ],
+              ),
+              //subtitle: Text(currencyReadModel.name),
+              selectedTileColor: Colors.blueGrey,
+              selected: currencyReadModel.selected,
+              trailing: IconButton(
+                icon: Icon(Icons.more_vert_sharp),
+                onPressed: () => viewModel.delete(currencyList),
+                iconSize: 20,
+              ),
+              onTap: () => {
+                if (_selectMode)
+                  {
+                    setState(() {
+                      currencyList[index].selected = !currencyList[index].selected;
+                    })
+                  }
+                else
+                  {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CurrencyDetailScreen(
+                          currencyId: currencyReadModel.id,
+                        ),
+                      ),
+                    ),
+                  }
+              },
+              onLongPress: () {
+                setState(() {
+                  currencyList[index].selected = !currencyList[index].selected;
+                  _visibleDelButton = currencyList.any((element) => element.selected);
+                  _selectMode = true;
+                });
+              },
+            );
+          },
+          itemCount: currencyList.length,
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => CurrencyDetailScreen()));
+          },
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => CurrencyDetailScreen()));
-        },
-      ),
+      onWillPop: () async {
+        bool returnFlag = false;
+        if(_selectMode){
+          setState(() {
+            currencyList.forEach((element) {
+              element.selected = false;
+            });
+            _selectMode = false;
+            _visibleDelButton = false;
+          });
+        } else {
+          returnFlag = true;
+        };
+        return returnFlag;
+      },
+    );
+  }
+
+  Widget buildItem({@required String id, @required String name, String backgroundImage, String symbol}) {
+    return Row(
+      children: [
+        CircleAvatar(
+          backgroundImage: NetworkImage(backgroundImage),
+        )
+      ],
     );
   }
 
