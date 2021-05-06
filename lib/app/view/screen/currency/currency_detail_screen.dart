@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:mymoneyorganizer/app/core/common/model/read/currency_model.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/command/validator/exception/create_command_exception.dart';
 import 'package:mymoneyorganizer/app/view/common/scroll_handled_appbar.dart';
 import 'package:mymoneyorganizer/app/viewmodel/common/currency_detail.dart';
 import 'package:mymoneyorganizer/generated/l10n.dart';
-import 'package:intl/intl.dart';
 
 class CurrencyDetailScreen extends StatefulWidget {
   final ScrollController _scrollController = ScrollController();
@@ -23,6 +23,8 @@ class _State extends State<CurrencyDetailScreen> {
   CurrencyDetailReadModel model;
   Map<String, String> _errorDetail = Map();
   bool _visibleSaveButton = false;
+  List<Color> options = Colors.primaries;
+  Color dropdownValue; // = Colors.red;
 
   @override
   void initState() {
@@ -53,11 +55,16 @@ class _State extends State<CurrencyDetailScreen> {
       body: Center(
         child: formBuild(),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.list_sharp),
+        onPressed: () => {},
+      ),
     );
   }
 
   Widget formBuild() {
     if (!viewModel.isNew && model == null) {
+      //wait data
       return Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           CircularProgressIndicator(),
@@ -68,6 +75,7 @@ class _State extends State<CurrencyDetailScreen> {
         ]),
       );
     } else {
+      //output data
       return Container(
         height: double.infinity,
         child: SingleChildScrollView(
@@ -78,7 +86,6 @@ class _State extends State<CurrencyDetailScreen> {
                 onChanged: setModified,
                 child: Column(
                   children: [
-                    Text(NumberFormat.currency(name: 'UAH').simpleCurrencySymbol('ATH')),//currency(name: 'UAH').currencySymbol),//simpleCurrencySymbol('GBP')),
                     TextFormField(
                       initialValue: model?.id,
                       readOnly: (!viewModel.isNew),
@@ -86,9 +93,17 @@ class _State extends State<CurrencyDetailScreen> {
                       onSaved: (value) => viewModel.updateData('id', value.toString()),
                       validator: (value) => _errorDetail['id'],
                       decoration: InputDecoration(
-                          labelText: S.of(context).code(S.of(context).currency),
-                          hintText: S.of(context).code(''),
-                          icon: CircleAvatar(child: Text(NumberFormat.currency().simpleCurrencySymbol('${widget.currencyId}')))),//Icon(Icons.monetization_on_outlined)),
+                        labelText: S.of(context).code(S.of(context).currency),
+                        hintText: S.of(context).code(''),
+                        counterText: '',
+                        icon: CircleAvatar(
+                          backgroundColor: dropdownValue,
+                          child: Text(
+                            NumberFormat.currency().simpleCurrencySymbol('${widget.currencyId}'),
+                          ),
+                        ),
+                      ),
+                      //Icon(Icons.monetization_on_outlined)),
                       maxLength: 3,
                       textCapitalization: TextCapitalization.characters,
                     ),
@@ -96,11 +111,19 @@ class _State extends State<CurrencyDetailScreen> {
                       initialValue: model?.name,
                       validator: (value) => _errorDetail['name'],
                       onSaved: (value) => viewModel.updateData('name', value.toString()),
+                      decoration: InputDecoration(
+                        labelText: '${S.of(context).currency} ${S.of(context).name}',
+                        hintText: S.of(context).name,
+                      ),
                     ),
                     TextFormField(
                       initialValue: model?.symbol,
                       validator: (value) => _errorDetail['symbol'],
                       onSaved: (value) => viewModel.updateData('symbol', value.toString()),
+                      decoration: InputDecoration(
+                        labelText: '${S.of(context).currency} ${S.of(context).symbol}',
+                        hintText: S.of(context).symbol,
+                      ),
                     ),
                     TextFormField(
                       initialValue: model == null ? '2' : model.fraction.toString(),
@@ -108,6 +131,19 @@ class _State extends State<CurrencyDetailScreen> {
                       onSaved: (value) => viewModel.updateData('fraction', int.parse(value)),
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: S.of(context).fraction,
+                        hintText: S.of(context).fraction,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text('Select color:'),
+                        Spacer(
+                          flex: 1,
+                        ),
+                        _buildDropdownButton(),
+                      ],
                     ),
                   ],
                 ),
@@ -115,6 +151,45 @@ class _State extends State<CurrencyDetailScreen> {
         ),
       );
     }
+  }
+
+  Widget _buildDropdownButton() {
+    return DropdownButton<Color>(
+      hint: (Text('Choice colour:')),
+      value: dropdownValue,
+      onChanged: (Color newValue) {
+        setState(() {
+          dropdownValue = newValue;
+          //_visibleSaveButton = true;
+          viewModel.setModified(true);
+          viewModel.updateData('color', dropdownValue.value);
+        });
+      },
+      style: const TextStyle(color: Colors.blue),
+      selectedItemBuilder: (BuildContext context) {
+        return options.map((Color value) {
+          return CircleAvatar(
+            maxRadius: 10,
+            backgroundColor: dropdownValue,
+          );
+        }).toList();
+      },
+      items: options.map<DropdownMenuItem<Color>>((Color value) {
+        return DropdownMenuItem<Color>(
+          value: value,
+          child: Row(
+            children: [
+              Container(
+                color: value,
+                width: 25,
+                height: 25,
+              ),
+              Text(value.toString()),
+            ],
+          ),
+        );
+      }).toList(),
+    );
   }
 
   void dispatch(CurrencyDetailNotification event) {

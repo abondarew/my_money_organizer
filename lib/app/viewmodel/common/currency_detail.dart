@@ -53,7 +53,7 @@ class CurrencyDetailViewModel {
   }
 
   Future<void> save() async {
-    newData['color'] = 0xFF2233FF;
+    //newData['color'] = 0xFF2233FF;
     try {
       await _commandDispatcher.dispatch(CurrencyCreateCommand(
           id: newData['id'],

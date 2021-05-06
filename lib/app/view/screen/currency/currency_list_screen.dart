@@ -53,10 +53,10 @@ class _State extends State<CurrencyListScreen> {
         ),
         body: ListView.builder(
           controller: this.widget._scrollController,
-          padding: EdgeInsets.all(2),
+          padding: EdgeInsets.all(8),
           itemBuilder: (context, index) {
-            CurrencyListReadModel currencyReadModel = currencyList[index];
-            return ListTile(
+            return buildItem(index: index);
+            /*ListTile(
               leading: CircleAvatar(
                 child: Text(currencyReadModel.symbol),
                 backgroundColor: Color(currencyReadModel.avatarColor),
@@ -106,7 +106,7 @@ class _State extends State<CurrencyListScreen> {
                   _selectMode = true;
                 });
               },
-            );
+            );*/
           },
           itemCount: currencyList.length,
         ),
@@ -119,7 +119,7 @@ class _State extends State<CurrencyListScreen> {
       ),
       onWillPop: () async {
         bool returnFlag = false;
-        if(_selectMode){
+        if (_selectMode) {
           setState(() {
             currencyList.forEach((element) {
               element.selected = false;
@@ -129,71 +129,113 @@ class _State extends State<CurrencyListScreen> {
           });
         } else {
           returnFlag = true;
-        };
+        }
         return returnFlag;
       },
     );
   }
 
-  Widget buildItem({@required String id, @required String name, String backgroundImage, String symbol}) {
-    return Row(
-      children: [
-        CircleAvatar(
-          backgroundImage: NetworkImage(backgroundImage),
-        )
-      ],
-    );
-  }
+  Widget buildItem({@required int index}) {
 
-  /*Widget buildItem(List<CurrencyListReadModel> currencyList, int index) {
-    return GestureDetector(
-      onTap: () => {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CurrencyDetailScreen(
-              currencyId: currencyList[index].id,
-            ),
-          ),
-        ),
-      },
-      onLongPress: () => {
-        setState(() {
-          currencyList[index].selected = !currencyList[index].selected;
-          _visibleDelButton = currencyList.any((element) => element.selected);
-        })
-      },
-      child: Container(
-        padding: EdgeInsets.all(8),
-        child: Card(
-          child: Row(
-            children: [
-              Visibility(
-                child: Checkbox(
-                  value: currencyList[index].selected,
-                  onChanged: (value) {
-                    setState(() {
-                      currencyList[index].selected = value;
-                    });
-                  },
-                ),
-                visible: _visibleDelButton,
-              ),
-              CircleAvatar(
-                child: Text(currencyList[index].symbol),
-              ),
-              Column(
+    return Material(
+      child: Padding(
+        padding: EdgeInsets.all(4),
+        child: Ink(
+          decoration: BoxDecoration(
+              //border: Border.all(color: Color.fromARGB(100, 200, 200, 200), width: 1.5),
+              gradient: LinearGradient(stops: [0.02, 0.001], colors: [Color(currencyList[index].avatarColor), Colors.white]),
+              borderRadius: BorderRadius.all(const Radius.circular(5.0))),
+          child: InkWell(
+            onTap: () => _itemOnTap(index),
+            onLongPress: () => _itemOnLongPress(index),
+            splashColor: Color.fromARGB(170, 150, 180, 220),
+            //highlightColor: Colors.grey,
+            child: Padding(
+              padding: EdgeInsets.only(left: (_selectMode ? 4 : 16)),
+              child: Column(
                 children: [
-                  Text(currencyList[index].id),
-                  Text(currencyList[index].name),
+                  Row(
+                    children: [
+                      Visibility(
+                        visible: _selectMode,
+                        child: Checkbox(
+                            value: currencyList[index].selected,
+                            onChanged: (value) {
+                              setState(() {
+                                currencyList[index].selected = value;
+                                _visibleDelButton = currencyList.any((element) => element.selected);
+                              });
+                            }),
+                      ),
+                      CircleAvatar(
+                        child: Text(currencyList[index].symbol),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(8),
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  currencyList[index].name,
+                                  style: TextStyle(fontSize: 18),
+                                  textAlign: TextAlign.left,
+                                ),
+                                Text(
+                                  currencyList[index].id,
+                                  style: TextStyle(fontSize: 14, color: Colors.blueGrey),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Spacer(
+                        flex: 1,
+                      ),
+                      IconButton(icon: Icon(Icons.more_vert_sharp), onPressed: () => {}),
+                    ],
+                  ),
+                  Divider(
+                    height: 0,
+                    thickness: .7,
+                    indent: _selectMode ? 100 : 50,
+                  ),
                 ],
-              )
-            ],
+              ),
+            ),
           ),
         ),
       ),
     );
-  }*/
+  }
+
+  void _itemOnTap(int index) {
+    if (_selectMode) {
+      setState(() {
+        currencyList[index].selected = !currencyList[index].selected;
+        _visibleDelButton = currencyList.any((element) => element.selected);
+      });
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CurrencyDetailScreen(
+            currencyId: currencyList[index].id,
+          ),
+        ),
+      );
+    }
+  }
+
+  void _itemOnLongPress(int index) {
+    setState(() {
+      _selectMode = true;
+      currencyList[index].selected = true;
+      _visibleDelButton = true;
+    });
+  }
 
   void dispatch(CurrencyListNotification event) {
     if (event is ResultCurrencyListNotification) {
@@ -209,6 +251,8 @@ class _State extends State<CurrencyListScreen> {
     viewModel.dispose();
     super.dispose();
   }
+
+  void onChanged(bool value) {}
 }
 
 class ListItem extends StatefulWidget {
