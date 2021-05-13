@@ -56,12 +56,14 @@ class CurrencyDetailViewModel {
     //newData['color'] = 0xFF2233FF;
     try {
       await _commandDispatcher.dispatch(CurrencyCreateCommand(
-          id: newData['id'],
-          isNew: _isNew,
-          name: newData['name'],
-          symbol: newData['symbol'],
-          fraction: newData['fraction'],
-          avatarColor: newData['color']));
+        id: newData['id'],
+        isNew: _isNew,
+        name: newData['name'],
+        symbol: newData['symbol'],
+        fraction: newData['fraction'],
+        avatarColor: newData['color'],
+        isDefault: newData['isDefault'],
+      ));
       EventBusCore.getInstance().addEvent(CurrencyChangedEvent());
       eventController.add(SuccessfulSaveCurrency());
     } catch (e) {

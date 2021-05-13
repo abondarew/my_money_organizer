@@ -3,9 +3,12 @@ import 'package:mymoneyorganizer/app/core/common/model/read/currency_model.dart'
 import 'package:mymoneyorganizer/app/eventbus/eventbus_core.dart';
 import 'package:mymoneyorganizer/app/eventbus/events/base/currency_changed.dart';
 import 'package:mymoneyorganizer/app/view/common/scroll_handled_appbar.dart';
+import 'package:mymoneyorganizer/app/view/common/util/generated_confirm_text_4_deleted.dart';
 import 'package:mymoneyorganizer/app/view/screen/currency/currency_detail_screen.dart';
 import 'package:mymoneyorganizer/app/viewmodel/common/currency_list.dart';
 import 'package:mymoneyorganizer/generated/l10n.dart';
+
+enum MenuItem { edit, delete, setAsDefault }
 
 class CurrencyListScreen extends StatefulWidget {
   final ScrollController _scrollController = ScrollController();
@@ -34,6 +37,23 @@ class _State extends State<CurrencyListScreen> {
     super.initState();
   }
 
+  void dispatch(CurrencyListNotification event) {
+    if (event is ResultCurrencyListNotification) {
+      return setState(() {
+        this.currencyList.clear();
+        this.currencyList.addAll(event.currencyList);
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    viewModel.dispose();
+    super.dispose();
+  }
+
+  void onChanged(bool value) {}
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -44,8 +64,16 @@ class _State extends State<CurrencyListScreen> {
           action: [
             Visibility(
               child: IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () => viewModel.delete(currencyList),
+                icon: Icon(Icons.delete_rounded),
+                onPressed: () {
+                  List<String> idLst = [];
+                  currencyList.forEach((element) {
+                    if (element.selected) {
+                      idLst.add(element.id);
+                    }
+                  });
+                  _deleteElements(idLst);
+                },
               ),
               visible: _visibleDelButton,
             )
@@ -54,63 +82,13 @@ class _State extends State<CurrencyListScreen> {
         body: ListView.builder(
           controller: this.widget._scrollController,
           padding: EdgeInsets.all(8),
-          itemBuilder: (context, index) {
-            return buildItem(index: index);
-            /*ListTile(
-              leading: CircleAvatar(
-                child: Text(currencyReadModel.symbol),
-                backgroundColor: Color(currencyReadModel.avatarColor),
-              ),
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(currencyReadModel.id),
-                  Divider(
-                    height: 2,
-                    color: Colors.orange,
-                  ),
-                  Text(currencyReadModel.name),
-                ],
-              ),
-              //subtitle: Text(currencyReadModel.name),
-              selectedTileColor: Colors.blueGrey,
-              selected: currencyReadModel.selected,
-              trailing: IconButton(
-                icon: Icon(Icons.more_vert_sharp),
-                onPressed: () => viewModel.delete(currencyList),
-                iconSize: 20,
-              ),
-              onTap: () => {
-                if (_selectMode)
-                  {
-                    setState(() {
-                      currencyList[index].selected = !currencyList[index].selected;
-                    })
-                  }
-                else
-                  {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CurrencyDetailScreen(
-                          currencyId: currencyReadModel.id,
-                        ),
-                      ),
-                    ),
-                  }
-              },
-              onLongPress: () {
-                setState(() {
-                  currencyList[index].selected = !currencyList[index].selected;
-                  _visibleDelButton = currencyList.any((element) => element.selected);
-                  _selectMode = true;
-                });
-              },
-            );*/
-          },
           itemCount: currencyList.length,
+          itemBuilder: (context, index) {
+            return _buildItem(index: index);
+          },
         ),
         floatingActionButton: FloatingActionButton(
+          //TODO add show/hide method
           child: Icon(Icons.add),
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) => CurrencyDetailScreen()));
@@ -135,8 +113,8 @@ class _State extends State<CurrencyListScreen> {
     );
   }
 
-  Widget buildItem({@required int index}) {
-
+  Widget _buildItem({@required int index}) {
+    bool isNotDefault = currencyList[index].isDefault == null ? true : !currencyList[index].isDefault;
     return Material(
       child: Padding(
         padding: EdgeInsets.all(4),
@@ -194,7 +172,32 @@ class _State extends State<CurrencyListScreen> {
                       Spacer(
                         flex: 1,
                       ),
-                      IconButton(icon: Icon(Icons.more_vert_sharp), onPressed: () => {}),
+                      PopupMenuButton(
+                        itemBuilder: (context) => <PopupMenuEntry<MenuItem>>[
+                          if (isNotDefault)
+                            PopupMenuItem<MenuItem>(
+                              value: MenuItem.setAsDefault,
+                              child: Text(S.of(context).setAsDefault),
+                              enabled: isNotDefault,
+                            ),
+                          if (isNotDefault)
+                            PopupMenuDivider(
+                              height: 2,
+                            ),
+                          PopupMenuItem<MenuItem>(
+                            value: MenuItem.edit,
+                            child: Text(S.current.edit),
+                          ),
+                          PopupMenuDivider(
+                            height: 2,
+                          ),
+                          PopupMenuItem<MenuItem>(
+                            value: MenuItem.delete,
+                            child: Text(S.current.delete),
+                          ),
+                        ],
+                        onSelected: (MenuItem result) => _contextMenuDispatch(result, index),
+                      ),
                     ],
                   ),
                   Divider(
@@ -211,6 +214,60 @@ class _State extends State<CurrencyListScreen> {
     );
   }
 
+  void _deleteElements(List<String> listId) {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        //title: Text(S.of(context).confirm),
+        content: Text(buildTextToConfirmDelete(confirmData: listId, what: S.of(context).currency)),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'cancel'),
+            child: Text(S.of(context).cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'ok'),
+            child: Text(S.of(context).ok),
+          ),
+        ],
+      ),
+    ).then((value) {
+      if (value != null) {
+        if (value == 'ok') {
+          viewModel.delete(listId);
+        }
+      }
+    });
+  }
+
+  void _contextMenuDispatch(MenuItem item, int index) {
+    if (item == MenuItem.edit) {
+      _openElement(index);
+    }
+    if (item == MenuItem.delete) {
+      //viewModel.delete([currencyList[index].id]);
+      _deleteElements([currencyList[index].id]);
+    }
+    if (item == MenuItem.setAsDefault) {
+      _setAsDefault(index);
+    }
+  }
+
+  void _setAsDefault(int index){
+    viewModel.setAsDefault(currencyList[index].id);
+  }
+
+  void _openElement(int index) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CurrencyDetailScreen(
+          currencyId: currencyList[index].id,
+        ),
+      ),
+    );
+  }
+
   void _itemOnTap(int index) {
     if (_selectMode) {
       setState(() {
@@ -218,14 +275,7 @@ class _State extends State<CurrencyListScreen> {
         _visibleDelButton = currencyList.any((element) => element.selected);
       });
     } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CurrencyDetailScreen(
-            currencyId: currencyList[index].id,
-          ),
-        ),
-      );
+      _openElement(index);
     }
   }
 
@@ -236,23 +286,6 @@ class _State extends State<CurrencyListScreen> {
       _visibleDelButton = true;
     });
   }
-
-  void dispatch(CurrencyListNotification event) {
-    if (event is ResultCurrencyListNotification) {
-      return setState(() {
-        this.currencyList.clear();
-        this.currencyList.addAll(event.currencyList);
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    viewModel.dispose();
-    super.dispose();
-  }
-
-  void onChanged(bool value) {}
 }
 
 class ListItem extends StatefulWidget {

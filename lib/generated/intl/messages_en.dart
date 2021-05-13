@@ -21,14 +21,24 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m0(name) => "${name} code";
 
+  static m1(what, records) => "You are sure you want to delete ${what} ${records}?";
+
+  static m2(what, records, quantity) => "You are sure you want to delete ${what} ${records} (and ${quantity} more) records?";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "cancel" : MessageLookupByLibrary.simpleMessage("Cancel"),
     "code" : m0,
     "command_not_identifier" : MessageLookupByLibrary.simpleMessage("command not identified"),
+    "confirm" : MessageLookupByLibrary.simpleMessage("Confirm"),
+    "confirm_text" : m1,
+    "confirm_text_more" : m2,
     "currency" : MessageLookupByLibrary.simpleMessage("Currency"),
     "currency_detail_title" : MessageLookupByLibrary.simpleMessage("Currency detail"),
     "currency_exist" : MessageLookupByLibrary.simpleMessage("currency with this code is already in the database"),
     "currency_list_title" : MessageLookupByLibrary.simpleMessage("Available currencies"),
+    "delete" : MessageLookupByLibrary.simpleMessage("Delete"),
+    "edit" : MessageLookupByLibrary.simpleMessage("Edit"),
     "fraction" : MessageLookupByLibrary.simpleMessage("fraction"),
     "invalid_color" : MessageLookupByLibrary.simpleMessage("Invalid color value"),
     "invalid_command_exception" : MessageLookupByLibrary.simpleMessage("InvalidCommandException"),
@@ -36,6 +46,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "loading" : MessageLookupByLibrary.simpleMessage("Loading, place wait"),
     "name" : MessageLookupByLibrary.simpleMessage("name"),
     "not_a_string" : MessageLookupByLibrary.simpleMessage("value is not string"),
+    "ok" : MessageLookupByLibrary.simpleMessage("OK"),
+    "setAsDefault" : MessageLookupByLibrary.simpleMessage("Set as default"),
     "string_empty" : MessageLookupByLibrary.simpleMessage("the string must not be empty"),
     "symbol" : MessageLookupByLibrary.simpleMessage("symbol"),
     "unknown_error" : MessageLookupByLibrary.simpleMessage("Unknown error: ")

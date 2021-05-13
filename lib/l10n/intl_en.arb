@@ -1,4 +1,14 @@
 {
+  "cancel": "Cancel",
+  "ok": "OK",
+
+  "edit" : "Edit",
+  "delete" : "Delete",
+
+  "confirm" : "Confirm",
+  "confirm_text" : "You are sure you want to delete {what} {records}?",
+  "confirm_text_more" : "You are sure you want to delete {what} {records} (and {quantity} more) records?",
+
   "currency" : "Currency",
   "currency_list_title" : "Available currencies",
   "currency_detail_title" : "Currency detail",
@@ -14,5 +24,6 @@
   "unknown_error" : "Unknown error: ",
   "invalid_command_exception" : "InvalidCommandException",
   "command_not_identifier" : "command not identified",
-  "invalid_color" : "Invalid color value"
+  "invalid_color" : "Invalid color value",
+  "setAsDefault": "Set as default"
 }

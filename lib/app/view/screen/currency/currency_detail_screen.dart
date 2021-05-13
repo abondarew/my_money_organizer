@@ -55,10 +55,10 @@ class _State extends State<CurrencyDetailScreen> {
       body: Center(
         child: formBuild(),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.list_sharp),
-        onPressed: () => {},
-      ),
+      floatingActionButton: viewModel.isNew ? FloatingActionButton(
+          child: Icon(Icons.list_sharp),
+          onPressed: () => {},
+        ) : Container(),
     );
   }
 

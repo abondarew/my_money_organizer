@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/command/validator/delete_command_validator.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/service/currency_not_exist.dart';
 
 import 'command/dispatcher/dispatcher.dart';
@@ -15,7 +16,7 @@ class CurrencyCoreBuilder {
     final CurrencyCreateCommandHandler createCommandHandler = CurrencyCreateCommandHandler(
         validator: CurrencyCreateCommandValidator(serviceCurrencyNotExist: ServiceCurrencyIsExist(repository: repository)),
         repository: repository);
-    final CurrencyDeleteCommandHandler deleteCommandHandler = CurrencyDeleteCommandHandler(repository: repository);
+    final CurrencyDeleteCommandHandler deleteCommandHandler = CurrencyDeleteCommandHandler(repository: repository, validator: CurrencyDeleteCommandValidator());
 
     return CurrencyCommandDispatcher(createCommandHandler: createCommandHandler, deleteCommandHandler: deleteCommandHandler);
   }

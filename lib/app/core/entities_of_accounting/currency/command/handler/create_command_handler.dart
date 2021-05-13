@@ -14,8 +14,15 @@ class CurrencyCreateCommandHandler extends BaseCommandHandler<CurrencyCreateComm
   @override
   Future<void> execute(CurrencyCreateCommand command) async {
     await this.validator.validate(command);
-    CurrencyDomainModel model =
-        CurrencyDomainModel(id: command.id, isNew: command.isNew, name: command.name, symbol: command.symbol, fraction: command.fraction, avatarColor: command.avatarColor);
+    CurrencyDomainModel model = CurrencyDomainModel(
+      id: command.id,
+      isNew: command.isNew,
+      name: command.name,
+      symbol: command.symbol,
+      fraction: command.fraction,
+      avatarColor: command.avatarColor,
+      isDefault: command.isDefault,
+    );
     await this.repository.save(model);
   }
 }

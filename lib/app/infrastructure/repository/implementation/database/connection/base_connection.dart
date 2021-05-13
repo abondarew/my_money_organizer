@@ -29,5 +29,5 @@ abstract class DataBaseTransaction {
     int offset,
   });
 
-  Future<void> delete(String table, Map<String, dynamic> data);
+  Future<void> delete(String table, String id);
 }

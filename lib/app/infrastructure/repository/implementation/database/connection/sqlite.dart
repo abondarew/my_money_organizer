@@ -24,7 +24,7 @@ class DatabaseConnectionSqlite extends DatabaseBaseConnection {
   }
 
   Future<void> _onCreateDB(SQFLite.Database db, int version) async {
-    await db.execute('CREATE TABLE uses_currency (id STRING PRIMARY KEY NOT NULL, name STRING, color INTEGER, symbol STRING, fraction INTEGER)');
+    await db.execute('CREATE TABLE uses_currency (id STRING PRIMARY KEY NOT NULL, name STRING, color INTEGER, symbol STRING, fraction INTEGER, isDefault BOOL)');
   }
 
   @override
@@ -75,7 +75,7 @@ class DataBaseTransactionSqlite implements DataBaseTransaction {
   }
 
   @override
-  Future<void> delete(String table, Map<String, dynamic> data) async {
-    await this._executor.delete(table, where: 'id = ?', whereArgs: data['id']);
+  Future<void> delete(String table, String id) async {
+    await this._executor.delete(table, where: 'id = ?', whereArgs: [id]);
   }
 }

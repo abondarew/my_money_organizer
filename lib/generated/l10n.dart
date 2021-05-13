@@ -35,6 +35,76 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `OK`
+  String get ok {
+    return Intl.message(
+      'OK',
+      name: 'ok',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit`
+  String get edit {
+    return Intl.message(
+      'Edit',
+      name: 'edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get delete {
+    return Intl.message(
+      'Delete',
+      name: 'delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm`
+  String get confirm {
+    return Intl.message(
+      'Confirm',
+      name: 'confirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You are sure you want to delete {what} {records}?`
+  String confirm_text(Object what, Object records) {
+    return Intl.message(
+      'You are sure you want to delete $what $records?',
+      name: 'confirm_text',
+      desc: '',
+      args: [what, records],
+    );
+  }
+
+  /// `You are sure you want to delete {what} {records} (and {quantity} more) records?`
+  String confirm_text_more(Object what, Object records, Object quantity) {
+    return Intl.message(
+      'You are sure you want to delete $what $records (and $quantity more) records?',
+      name: 'confirm_text_more',
+      desc: '',
+      args: [what, records, quantity],
+    );
+  }
+
   /// `Currency`
   String get currency {
     return Intl.message(
@@ -190,6 +260,16 @@ class S {
     return Intl.message(
       'Invalid color value',
       name: 'invalid_color',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set as default`
+  String get setAsDefault {
+    return Intl.message(
+      'Set as default',
+      name: 'setAsDefault',
       desc: '',
       args: [],
     );
