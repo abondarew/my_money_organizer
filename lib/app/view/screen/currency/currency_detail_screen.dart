@@ -1,6 +1,6 @@
+import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:mymoneyorganizer/app/core/common/model/read/currency_model.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/command/validator/exception/create_command_exception.dart';
 import 'package:mymoneyorganizer/app/view/common/scroll_handled_appbar.dart';
@@ -20,6 +20,12 @@ class CurrencyDetailScreen extends StatefulWidget {
 class _State extends State<CurrencyDetailScreen> {
   final CurrencyDetailViewModel viewModel = CurrencyDetailViewModelBuilder.build();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
+
+  final TextEditingController _idController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _symbolController = TextEditingController();
+  final TextEditingController _fractionController = TextEditingController();
+
   CurrencyDetailReadModel model;
   Map<String, String> _errorDetail = Map();
   bool _visibleSaveButton = false;
@@ -55,10 +61,27 @@ class _State extends State<CurrencyDetailScreen> {
       body: Center(
         child: formBuild(),
       ),
-      floatingActionButton: viewModel.isNew ? FloatingActionButton(
-          child: Icon(Icons.list_sharp),
-          onPressed: () => {},
-        ) : Container(),
+      floatingActionButton: viewModel.isNew
+          ? FloatingActionButton(
+              child: Icon(Icons.list_sharp),
+              onPressed: () => {
+                showCurrencyPicker(
+                  context: context,
+                  onSelect: (Currency currency) {
+                    setState(() {
+                      _idController.text = currency.code;
+                      _nameController.text = currency.name;
+                      _symbolController.text = currency.symbol;
+                      _fractionController.text = currency.decimalDigits.toString();
+                    });
+                  },
+                  showCurrencyCode: true,
+                  showCurrencyName: true,
+                  showFlag: true,
+                )
+              },
+            )
+          : Container(),
     );
   }
 
@@ -76,6 +99,13 @@ class _State extends State<CurrencyDetailScreen> {
       );
     } else {
       //output data
+      //print('id: ${model?.id}');
+      if (!viewModel.isNew) {
+        _idController.text = model?.id;
+        _nameController.text = model?.name;
+        _symbolController.text = model?.symbol;
+        _fractionController.text = model?.fraction.toString();
+      }
       return Container(
         height: double.infinity,
         child: SingleChildScrollView(
@@ -87,7 +117,8 @@ class _State extends State<CurrencyDetailScreen> {
                 child: Column(
                   children: [
                     TextFormField(
-                      initialValue: model?.id,
+                      controller: _idController,
+                      //initialValue: model?.id,
                       readOnly: (!viewModel.isNew),
                       enabled: (viewModel.isNew),
                       onSaved: (value) => viewModel.updateData('id', value.toString()),
@@ -98,9 +129,7 @@ class _State extends State<CurrencyDetailScreen> {
                         counterText: '',
                         icon: CircleAvatar(
                           backgroundColor: dropdownValue,
-                          child: Text(
-                            NumberFormat.currency().simpleCurrencySymbol('${widget.currencyId}'),
-                          ),
+                          child: Text('${_symbolController.text}'),
                         ),
                       ),
                       //Icon(Icons.monetization_on_outlined)),
@@ -108,7 +137,8 @@ class _State extends State<CurrencyDetailScreen> {
                       textCapitalization: TextCapitalization.characters,
                     ),
                     TextFormField(
-                      initialValue: model?.name,
+                      controller: _nameController,
+                      //initialValue: model?.name,
                       validator: (value) => _errorDetail['name'],
                       onSaved: (value) => viewModel.updateData('name', value.toString()),
                       decoration: InputDecoration(
@@ -117,7 +147,8 @@ class _State extends State<CurrencyDetailScreen> {
                       ),
                     ),
                     TextFormField(
-                      initialValue: model?.symbol,
+                      controller: _symbolController,
+                      //initialValue: model?.symbol,
                       validator: (value) => _errorDetail['symbol'],
                       onSaved: (value) => viewModel.updateData('symbol', value.toString()),
                       decoration: InputDecoration(
@@ -126,7 +157,8 @@ class _State extends State<CurrencyDetailScreen> {
                       ),
                     ),
                     TextFormField(
-                      initialValue: model == null ? '2' : model.fraction.toString(),
+                      controller: _fractionController,
+                      //initialValue: model == null ? '2' : model.fraction.toString(),
                       validator: (value) => _errorDetail['fraction'],
                       onSaved: (value) => viewModel.updateData('fraction', int.parse(value)),
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -233,6 +265,10 @@ class _State extends State<CurrencyDetailScreen> {
   @override
   void dispose() {
     viewModel.dispose();
+    _idController.dispose();
+    _nameController.dispose();
+    _symbolController.dispose();
+    _fractionController.dispose();
     super.dispose();
   }
 }

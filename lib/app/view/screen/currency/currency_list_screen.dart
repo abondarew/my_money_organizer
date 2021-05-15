@@ -163,8 +163,10 @@ class _State extends State<CurrencyListScreen> {
                                 Text(
                                   currencyList[index].id,
                                   style: TextStyle(fontSize: 14, color: Colors.blueGrey),
+                                  textAlign: TextAlign.left,
                                 )
                               ],
+                              crossAxisAlignment: CrossAxisAlignment.start,
                             ),
                           ),
                         ],
@@ -253,7 +255,7 @@ class _State extends State<CurrencyListScreen> {
     }
   }
 
-  void _setAsDefault(int index){
+  void _setAsDefault(int index) {
     viewModel.setAsDefault(currencyList[index].id);
   }
 
