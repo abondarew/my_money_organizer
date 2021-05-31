@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:currency_picker/currency_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,9 +30,10 @@ class _State extends State<CurrencyDetailScreen> {
 
   CurrencyDetailReadModel model;
   Map<String, String> _errorDetail = Map();
-  bool _visibleSaveButton = false;
-  List<Color> options = Colors.primaries;
+  bool _isModified = false;
+  List<Color> _colorList = [...Colors.primaries, ...Colors.accents];
   Color dropdownValue; // = Colors.red;
+  Color _currentColor;
 
   @override
   void initState() {
@@ -42,6 +45,7 @@ class _State extends State<CurrencyDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade300,
       appBar: ScrollHandledAppBar(
         scrollController: this.widget._scrollController,
         title: Text(S.of(context).currency_detail_title),
@@ -54,15 +58,46 @@ class _State extends State<CurrencyDetailScreen> {
         action: [
           Visibility(
             child: IconButton(icon: Icon(Icons.save_alt), onPressed: () => saveData()),
-            visible: _visibleSaveButton,
+            visible: _isModified,
           ),
         ],
       ),
-      body: Center(
-        child: formBuild(),
+      /*body: Center(
+        child: Column(
+          children: [
+            Container(child: _buildAvatar()),
+            formBuild(),
+          ],
+        ),
+      ),*/
+      body: Container(
+        height: double.infinity,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                Padding(
+                    padding: EdgeInsets.fromLTRB(4, 48, 4, 4),
+                    child: Card(
+                      child: formBuild(),
+                      elevation: 5,
+                    )),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Align(alignment: Alignment(-.95, 0), child: _buildAvatar()),
+                    )),
+              ],
+            ),
+          ),
+        ),
       ),
       floatingActionButton: viewModel.isNew
           ? FloatingActionButton(
+              heroTag: 'selectFromList',
               child: Icon(Icons.list_sharp),
               onPressed: () => {
                 showCurrencyPicker(
@@ -99,90 +134,140 @@ class _State extends State<CurrencyDetailScreen> {
       );
     } else {
       //output data
-      //print('id: ${model?.id}');
-      if (!viewModel.isNew) {
+      if (!viewModel.isNew && !_isModified) {
         _idController.text = model?.id;
         _nameController.text = model?.name;
         _symbolController.text = model?.symbol;
         _fractionController.text = model?.fraction.toString();
       }
-      return Container(
-        height: double.infinity,
-        child: SingleChildScrollView(
-          child: Padding(
-              padding: EdgeInsets.all(16),
-              child: Form(
-                key: _key,
-                onChanged: setModified,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      controller: _idController,
-                      //initialValue: model?.id,
-                      readOnly: (!viewModel.isNew),
-                      enabled: (viewModel.isNew),
-                      onSaved: (value) => viewModel.updateData('id', value.toString()),
-                      validator: (value) => _errorDetail['id'],
-                      decoration: InputDecoration(
-                        labelText: S.of(context).code(S.of(context).currency),
-                        hintText: S.of(context).code(''),
-                        counterText: '',
-                        icon: CircleAvatar(
-                          backgroundColor: dropdownValue,
-                          child: Text('${_symbolController.text}'),
-                        ),
-                      ),
-                      //Icon(Icons.monetization_on_outlined)),
-                      maxLength: 3,
-                      textCapitalization: TextCapitalization.characters,
-                    ),
-                    TextFormField(
-                      controller: _nameController,
-                      //initialValue: model?.name,
-                      validator: (value) => _errorDetail['name'],
-                      onSaved: (value) => viewModel.updateData('name', value.toString()),
-                      decoration: InputDecoration(
-                        labelText: '${S.of(context).currency} ${S.of(context).name}',
-                        hintText: S.of(context).name,
-                      ),
-                    ),
-                    TextFormField(
-                      controller: _symbolController,
-                      //initialValue: model?.symbol,
-                      validator: (value) => _errorDetail['symbol'],
-                      onSaved: (value) => viewModel.updateData('symbol', value.toString()),
-                      decoration: InputDecoration(
-                        labelText: '${S.of(context).currency} ${S.of(context).symbol}',
-                        hintText: S.of(context).symbol,
-                      ),
-                    ),
-                    TextFormField(
-                      controller: _fractionController,
-                      //initialValue: model == null ? '2' : model.fraction.toString(),
-                      validator: (value) => _errorDetail['fraction'],
-                      onSaved: (value) => viewModel.updateData('fraction', int.parse(value)),
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: S.of(context).fraction,
-                        hintText: S.of(context).fraction,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Text('Select color:'),
-                        Spacer(
-                          flex: 1,
-                        ),
-                        _buildDropdownButton(),
-                      ],
-                    ),
-                  ],
+      return Padding(
+          padding: EdgeInsets.fromLTRB(16, 48, 16, 16),
+          child: Form(
+            key: _key,
+            onChanged: setModified,
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: _idController,
+                  //initialValue: model?.id,
+                  readOnly: (!viewModel.isNew),
+                  enabled: (viewModel.isNew),
+                  onSaved: (value) => viewModel.updateData('id', value.toString()),
+                  validator: (value) => _errorDetail['id'],
+                  decoration: InputDecoration(
+                    labelText: S.of(context).code(S.of(context).currency),
+                    hintText: S.of(context).code(''),
+                    counterText: '',
+                    /*icon: CircleAvatar(
+                      backgroundColor: dropdownValue,
+                      child: Text('${_symbolController.text}'),
+                    ),*/
+                  ),
+                  //Icon(Icons.monetization_on_outlined)),
+                  maxLength: 3,
+                  textCapitalization: TextCapitalization.characters,
                 ),
-              )),
-        ),
-      );
+                TextFormField(
+                  controller: _nameController,
+                  //initialValue: model?.name,
+                  validator: (value) => _errorDetail['name'],
+                  onSaved: (value) => viewModel.updateData('name', value.toString()),
+                  decoration: InputDecoration(
+                    labelText: '${S.of(context).currency} ${S.of(context).name}',
+                    hintText: S.of(context).name,
+                  ),
+                ),
+                TextFormField(
+                  controller: _symbolController,
+                  //initialValue: model?.symbol,
+                  validator: (value) => _errorDetail['symbol'],
+                  onSaved: (value) => viewModel.updateData('symbol', value.toString()),
+                  onChanged: (value) => {setState(() {})},
+                  decoration: InputDecoration(
+                    labelText: '${S.of(context).currency} ${S.of(context).symbol}',
+                    hintText: S.of(context).symbol,
+                  ),
+                ),
+                TextFormField(
+                  controller: _fractionController,
+                  //initialValue: model == null ? '2' : model.fraction.toString(),
+                  validator: (value) => _errorDetail['fraction'],
+                  onSaved: (value) => viewModel.updateData('fraction', int.tryParse(value)),
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: S.of(context).fraction,
+                    hintText: S.of(context).fraction,
+                  ),
+                ),
+                SizedBox(height: 32)
+              ],
+            ),
+          ));
     }
+  }
+
+  Widget _buildAvatar() {
+    //int _color = model == null ? options[new Random().nextInt(options.length - 1)].value : dropdownValue.value;
+    return InkWell(
+      onTap: _pickColor,
+      child: SizedBox(
+        height: 80,
+        width: 80,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            CircleAvatar(
+              minRadius: 75,
+              backgroundColor: Colors.white,
+              child: Padding(
+                padding: EdgeInsets.all(4),
+                child: CircleAvatar(
+                  minRadius: 73,
+                  backgroundColor: _currentColor,
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        '${_symbolController.text == '' ? '?' : _symbolController.text}',
+                        style: TextStyle(fontSize: 400, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment(1.5, 1.5),
+              child: Container(
+                width: 42,
+                height: 42,
+                child: Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: FloatingActionButton(
+                    heroTag: 'pickColor',
+                    // backgroundColor: Color.fromARGB(162, 64, 64, 255),
+                    elevation: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: FittedBox(fit: BoxFit.fitWidth, child: Icon(Icons.color_lens_rounded)),
+                    ),
+                    onPressed: () => _pickColor(),
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _pickColor() {
+    setState(() {
+      _currentColor = Colors.red;
+    });
   }
 
   Widget _buildDropdownButton() {
@@ -199,14 +284,14 @@ class _State extends State<CurrencyDetailScreen> {
       },
       style: const TextStyle(color: Colors.blue),
       selectedItemBuilder: (BuildContext context) {
-        return options.map((Color value) {
+        return _colorList.map((Color value) {
           return CircleAvatar(
             maxRadius: 10,
             backgroundColor: dropdownValue,
           );
         }).toList();
       },
-      items: options.map<DropdownMenuItem<Color>>((Color value) {
+      items: _colorList.map<DropdownMenuItem<Color>>((Color value) {
         return DropdownMenuItem<Color>(
           value: value,
           child: Row(
@@ -228,11 +313,17 @@ class _State extends State<CurrencyDetailScreen> {
     if (event is ResultCurrencyDetailNotification) {
       setState(() {
         model = event.currencyReadModel;
+        if (!viewModel.isNew) {
+          _currentColor = Color(model?.avatarColor);
+        } else {
+          _currentColor = _colorList[Random().nextInt(_colorList.length - 1)];
+          viewModel.updateData('color', _currentColor.value);
+        }
       });
     }
     if (event is CurrencyDetailChangeVisibleSaveButtonNotification) {
       setState(() {
-        _visibleSaveButton = event.visibleSaveButton;
+        _isModified = event.visibleSaveButton;
       });
     }
     if (event is SuccessfulSaveCurrency) {
@@ -241,10 +332,10 @@ class _State extends State<CurrencyDetailScreen> {
     if (event is ErrorCurrencyDetailNotification) {
       if (event.error is CurrencyCreateCommandException) {
         CurrencyCreateCommandException error = event.error;
-        _errorDetail['id'] = error.id.length > 0 ? error.id.first : '';
-        _errorDetail['name'] = error.name.length > 0 ? error.name.first : '';
-        _errorDetail['symbol'] = error.symbol.length > 0 ? error.symbol.first : '';
-        _errorDetail['fraction'] = error.fraction.length > 0 ? error.fraction.first : '';
+        _errorDetail['id'] = error.id.length > 0 ? error.id.first : null;
+        _errorDetail['name'] = error.name.length > 0 ? error.name.first : null;
+        _errorDetail['symbol'] = error.symbol.length > 0 ? error.symbol.first : null;
+        _errorDetail['fraction'] = error.fraction.length > 0 ? error.fraction.first : null;
         _key.currentState.validate();
       } else {
         SnackBar snackBar = SnackBar(content: Text(S.of(context).unknown_error + event.error.toString()));

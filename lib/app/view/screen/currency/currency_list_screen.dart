@@ -237,6 +237,10 @@ class _State extends State<CurrencyListScreen> {
       if (value != null) {
         if (value == 'ok') {
           viewModel.delete(listId);
+          setState(() {
+            _selectMode = false;
+            _visibleDelButton = false;
+          });
         }
       }
     });
@@ -290,7 +294,7 @@ class _State extends State<CurrencyListScreen> {
   }
 }
 
-class ListItem extends StatefulWidget {
+/*class ListItem extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _ListItemState();
 }
@@ -301,4 +305,4 @@ class _ListItemState extends State<ListItem> {
     // TODO: implement build
     throw UnimplementedError();
   }
-}
+}*/
