@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mymoneyorganizer/app/core/common/model/read/currency_model.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/command/validator/exception/create_command_exception.dart';
+import 'package:mymoneyorganizer/app/view/common/card_with_avatar.dart';
 import 'package:mymoneyorganizer/app/view/common/scroll_handled_appbar.dart';
 import 'package:mymoneyorganizer/app/viewmodel/common/currency_detail.dart';
 import 'package:mymoneyorganizer/generated/l10n.dart';
@@ -22,6 +23,7 @@ class CurrencyDetailScreen extends StatefulWidget {
 class _State extends State<CurrencyDetailScreen> {
   final CurrencyDetailViewModel viewModel = CurrencyDetailViewModelBuilder.build();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  final GlobalKey<StateCard> _cardKey = GlobalKey<StateCard>();
 
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
@@ -70,14 +72,43 @@ class _State extends State<CurrencyDetailScreen> {
           ],
         ),
       ),*/
-      body: Container(
+      /*body: Container(
         height: double.infinity,
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(top: 8),
+            padding: const EdgeInsets.only(top: 2),
             child: Stack(
               alignment: Alignment.topCenter,
               children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: SizedBox(
+                      height: 90,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 2,
+                                color: Colors.grey.shade400,
+                                spreadRadius: 1,
+                              ),
+                            ],
+                          ),
+                          child: CircleAvatar(
+                            radius: 40,
+                            backgroundColor: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
                 Padding(
                     padding: EdgeInsets.fromLTRB(4, 48, 4, 4),
                     child: Card(
@@ -88,12 +119,22 @@ class _State extends State<CurrencyDetailScreen> {
                     alignment: Alignment.centerLeft,
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Align(alignment: Alignment(-.95, 0), child: _buildAvatar()),
+                      child: _buildAvatar(),
                     )),
               ],
             ),
           ),
         ),
+      ),*/
+      body: CardWitAvatar(
+        key: _cardKey,
+        child: formBuild(),
+        onTap: () => _pickColor(),
+        avatarChild: Text(
+          '${_symbolController.text == '' ? '?' : _symbolController.text}',
+          style: TextStyle(fontSize: 400, fontWeight: FontWeight.bold),
+        ),
+        avatarBackgroundColor: _currentColor,
       ),
       floatingActionButton: viewModel.isNew
           ? FloatingActionButton(
@@ -141,89 +182,79 @@ class _State extends State<CurrencyDetailScreen> {
         _fractionController.text = model?.fraction.toString();
       }
       return Padding(
-          padding: EdgeInsets.fromLTRB(16, 48, 16, 16),
-          child: Form(
-            key: _key,
-            onChanged: setModified,
-            child: Column(
-              children: [
-                TextFormField(
-                  controller: _idController,
-                  //initialValue: model?.id,
-                  readOnly: (!viewModel.isNew),
-                  enabled: (viewModel.isNew),
-                  onSaved: (value) => viewModel.updateData('id', value.toString()),
-                  validator: (value) => _errorDetail['id'],
-                  decoration: InputDecoration(
-                    labelText: S.of(context).code(S.of(context).currency),
-                    hintText: S.of(context).code(''),
-                    counterText: '',
-                    /*icon: CircleAvatar(
-                      backgroundColor: dropdownValue,
-                      child: Text('${_symbolController.text}'),
-                    ),*/
-                  ),
-                  //Icon(Icons.monetization_on_outlined)),
-                  maxLength: 3,
-                  textCapitalization: TextCapitalization.characters,
+        padding: EdgeInsets.fromLTRB(16, 56, 16, 16),
+        child: Form(
+          key: _key,
+          onChanged: setModified,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _idController,
+                readOnly: (!viewModel.isNew),
+                enabled: (viewModel.isNew),
+                onSaved: (value) => viewModel.updateData('id', value.toString()),
+                validator: (value) => _errorDetail['id'],
+                decoration: InputDecoration(
+                  labelText: S.of(context).code(S.of(context).currency),
+                  hintText: S.of(context).code(''),
+                  counterText: '',
                 ),
-                TextFormField(
-                  controller: _nameController,
-                  //initialValue: model?.name,
-                  validator: (value) => _errorDetail['name'],
-                  onSaved: (value) => viewModel.updateData('name', value.toString()),
-                  decoration: InputDecoration(
-                    labelText: '${S.of(context).currency} ${S.of(context).name}',
-                    hintText: S.of(context).name,
-                  ),
+                maxLength: 3,
+                textCapitalization: TextCapitalization.characters,
+              ),
+              TextFormField(
+                controller: _nameController,
+                validator: (value) => _errorDetail['name'],
+                onSaved: (value) => viewModel.updateData('name', value.toString()),
+                decoration: InputDecoration(
+                  labelText: '${S.of(context).currency} ${S.of(context).name}',
+                  hintText: S.of(context).name,
                 ),
-                TextFormField(
-                  controller: _symbolController,
-                  //initialValue: model?.symbol,
-                  validator: (value) => _errorDetail['symbol'],
-                  onSaved: (value) => viewModel.updateData('symbol', value.toString()),
-                  onChanged: (value) => {setState(() {})},
-                  decoration: InputDecoration(
-                    labelText: '${S.of(context).currency} ${S.of(context).symbol}',
-                    hintText: S.of(context).symbol,
-                  ),
+              ),
+              TextFormField(
+                controller: _symbolController,
+                validator: (value) => _errorDetail['symbol'],
+                onSaved: (value) => viewModel.updateData('symbol', value.toString()),
+                onChanged: (value) => {setState(() {})},
+                decoration: InputDecoration(
+                  labelText: '${S.of(context).currency} ${S.of(context).symbol}',
+                  hintText: S.of(context).symbol,
                 ),
-                TextFormField(
-                  controller: _fractionController,
-                  //initialValue: model == null ? '2' : model.fraction.toString(),
-                  validator: (value) => _errorDetail['fraction'],
-                  onSaved: (value) => viewModel.updateData('fraction', int.tryParse(value)),
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: S.of(context).fraction,
-                    hintText: S.of(context).fraction,
-                  ),
+              ),
+              TextFormField(
+                controller: _fractionController,
+                validator: (value) => _errorDetail['fraction'],
+                onSaved: (value) => viewModel.updateData('fraction', int.tryParse(value)),
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: S.of(context).fraction,
+                  hintText: S.of(context).fraction,
                 ),
-                SizedBox(height: 32)
-              ],
-            ),
-          ));
+              ),
+              SizedBox(height: 32)
+            ],
+          ),
+        ),
+      );
     }
   }
 
   Widget _buildAvatar() {
-    //int _color = model == null ? options[new Random().nextInt(options.length - 1)].value : dropdownValue.value;
     return InkWell(
       onTap: _pickColor,
       child: SizedBox(
-        height: 80,
-        width: 80,
+        height: 90,
+        width: 100,
         child: Stack(
-          alignment: Alignment.center,
+          alignment: Alignment.centerLeft,
           children: [
-            CircleAvatar(
-              minRadius: 75,
-              backgroundColor: Colors.white,
-              child: Padding(
-                padding: EdgeInsets.all(4),
+            Container(
+              child: CircleAvatar(
+                radius: 40,
+                backgroundColor: Colors.white,
                 child: CircleAvatar(
-                  minRadius: 73,
+                  radius: 35,
                   backgroundColor: _currentColor,
                   child: Padding(
                     padding: const EdgeInsets.all(14.0),
@@ -239,7 +270,7 @@ class _State extends State<CurrencyDetailScreen> {
               ),
             ),
             Align(
-              alignment: Alignment(1.5, 1.5),
+              alignment: Alignment(1, .7),
               child: Container(
                 width: 42,
                 height: 42,
@@ -247,7 +278,6 @@ class _State extends State<CurrencyDetailScreen> {
                   padding: const EdgeInsets.all(2.0),
                   child: FloatingActionButton(
                     heroTag: 'pickColor',
-                    // backgroundColor: Color.fromARGB(162, 64, 64, 255),
                     elevation: 0,
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -265,8 +295,13 @@ class _State extends State<CurrencyDetailScreen> {
   }
 
   void _pickColor() {
+    print('tap-tap');
     setState(() {
       _currentColor = Colors.red;
+
+      _cardKey.currentState.setState(() {
+        _cardKey.currentState.currentColor = _currentColor;
+      });
     });
   }
 
@@ -321,9 +356,9 @@ class _State extends State<CurrencyDetailScreen> {
         }
       });
     }
-    if (event is CurrencyDetailChangeVisibleSaveButtonNotification) {
+    if (event is CurrencyDetailModifiedNotification) {
       setState(() {
-        _isModified = event.visibleSaveButton;
+        _isModified = event.isModified;
       });
     }
     if (event is SuccessfulSaveCurrency) {

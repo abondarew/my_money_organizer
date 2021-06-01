@@ -44,7 +44,7 @@ class CurrencyDetailViewModel {
   void setModified(bool isModification) {
     if (isModification != this._isModification) {
       this._isModification = isModification;
-      eventController.add(CurrencyDetailChangeVisibleSaveButtonNotification(visibleSaveButton: _isModification));
+      eventController.add(CurrencyDetailModifiedNotification(isModified: _isModification));
     }
   }
 
@@ -87,10 +87,10 @@ class ResultCurrencyDetailNotification implements CurrencyDetailNotification {
   ResultCurrencyDetailNotification({this.currencyReadModel});
 }
 
-class CurrencyDetailChangeVisibleSaveButtonNotification implements CurrencyDetailNotification {
-  final bool visibleSaveButton;
+class CurrencyDetailModifiedNotification implements CurrencyDetailNotification {
+  final bool isModified;
 
-  CurrencyDetailChangeVisibleSaveButtonNotification({this.visibleSaveButton});
+  CurrencyDetailModifiedNotification({this.isModified});
 }
 
 class ErrorCurrencyDetailNotification implements CurrencyDetailNotification {
