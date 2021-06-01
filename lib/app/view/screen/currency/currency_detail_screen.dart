@@ -23,7 +23,7 @@ class CurrencyDetailScreen extends StatefulWidget {
 class _State extends State<CurrencyDetailScreen> {
   final CurrencyDetailViewModel viewModel = CurrencyDetailViewModelBuilder.build();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
-  final GlobalKey<StateCard> _cardKey = GlobalKey<StateCard>();
+  //final GlobalKey<StateCard> _cardKey = GlobalKey<StateCard>();
 
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
@@ -126,9 +126,9 @@ class _State extends State<CurrencyDetailScreen> {
           ),
         ),
       ),*/
-      body: CardWitAvatar(
-        key: _cardKey,
-        child: formBuild(),
+      body: CardWithAvatar(
+        //key: _cardKey,
+        cardBody: formBuild(),
         onTap: () => _pickColor(),
         avatarChild: Text(
           '${_symbolController.text == '' ? '?' : _symbolController.text}',
@@ -296,12 +296,10 @@ class _State extends State<CurrencyDetailScreen> {
 
   void _pickColor() {
     print('tap-tap');
+    _currentColor = Colors.red;
+    //_cardKey.currentState.setBackgroundColor(_currentColor);
     setState(() {
-      _currentColor = Colors.red;
-
-      _cardKey.currentState.setState(() {
-        _cardKey.currentState.currentColor = _currentColor;
-      });
+      //_cardKey.currentState.setState(() {});
     });
   }
 
@@ -350,8 +348,10 @@ class _State extends State<CurrencyDetailScreen> {
         model = event.currencyReadModel;
         if (!viewModel.isNew) {
           _currentColor = Color(model?.avatarColor);
+          //_cardKey.currentState.setBackgroundColor(_currentColor);
         } else {
           _currentColor = _colorList[Random().nextInt(_colorList.length - 1)];
+          //_cardKey.currentState.setBackgroundColor(_currentColor);
           viewModel.updateData('color', _currentColor.value);
         }
       });

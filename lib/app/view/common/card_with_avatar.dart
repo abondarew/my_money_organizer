@@ -1,32 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CardWitAvatar extends StatefulWidget {
-  final Widget child;
+class CardWithAvatar extends StatelessWidget {
   final Widget avatarChild;
-  final Function onTap;
   final Color avatarBackgroundColor;
-  CardWitAvatar({Key key, this.child, this.avatarChild, this.avatarBackgroundColor, this.onTap}) : super(key: key);
-  @override
-  State<StatefulWidget> createState() => StateCard();
-}
+  final Widget cardBody;
+  final Function onTap;
 
-class StateCard extends State<CardWitAvatar> {
-  Color currentColor;
-
-  StateCard();
-
-  @override
-  void setState(VoidCallback fn) {
-    currentColor = widget.avatarBackgroundColor;
-    super.setState(() {});
-  }
-
-  @override
-  void initState() {
-    currentColor = widget.avatarBackgroundColor;
-    super.initState();
-  }
+  CardWithAvatar({Key key, @required this.avatarChild, @required this.avatarBackgroundColor, @required this.cardBody, this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +51,7 @@ class StateCard extends State<CardWitAvatar> {
               Padding(
                   padding: EdgeInsets.fromLTRB(4, 48, 4, 4),
                   child: Card(
-                    child: widget.child,
+                    child: cardBody,
                     elevation: 5,
                   )),
               Align(
@@ -85,12 +66,12 @@ class StateCard extends State<CardWitAvatar> {
       ),
     );
     // TODO: implement build
-    //throw UnimplementedError();
+    throw UnimplementedError();
   }
 
   Widget _buildAvatar() {
     return InkWell(
-      onTap: widget.onTap,
+      onTap: onTap,
       child: SizedBox(
         height: 90,
         width: 100,
@@ -103,12 +84,12 @@ class StateCard extends State<CardWitAvatar> {
                 backgroundColor: Colors.white,
                 child: CircleAvatar(
                   radius: 35,
-                  backgroundColor: currentColor,
+                  backgroundColor: avatarBackgroundColor,
                   child: Padding(
                     padding: const EdgeInsets.all(14.0),
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
-                      child: widget.avatarChild,
+                      child: avatarChild,
                     ),
                   ),
                 ),
@@ -140,7 +121,6 @@ class StateCard extends State<CardWitAvatar> {
   }
 
   void _onTap() {
-    print('tap');
-    widget.onTap();
+    onTap();
   }
 }
