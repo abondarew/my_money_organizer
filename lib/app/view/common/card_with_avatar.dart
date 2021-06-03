@@ -5,8 +5,17 @@ class CardWithAvatar extends StatelessWidget {
   final Color avatarBackgroundColor;
   final Widget cardBody;
   final Function onTap;
+  final Widget buttonChild;
+  final Color buttonColor;
 
-  CardWithAvatar({Key key, @required this.avatarChild, @required this.avatarBackgroundColor, @required this.cardBody, this.onTap})
+  CardWithAvatar(
+      {Key key,
+      @required this.avatarChild,
+      @required this.avatarBackgroundColor,
+      @required this.cardBody,
+      this.onTap,
+      this.buttonChild,
+      this.buttonColor})
       : super(key: key);
 
   @override
@@ -65,8 +74,6 @@ class CardWithAvatar extends StatelessWidget {
         ),
       ),
     );
-    // TODO: implement build
-    throw UnimplementedError();
   }
 
   Widget _buildAvatar() {
@@ -103,13 +110,14 @@ class CardWithAvatar extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(2.0),
                   child: FloatingActionButton(
+                    backgroundColor: buttonColor,
                     heroTag: 'pickColor',
                     elevation: 0,
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: FittedBox(fit: BoxFit.fitWidth, child: Icon(Icons.color_lens_rounded)),
+                      child: FittedBox(fit: BoxFit.fitWidth, child: buttonChild),
                     ),
-                    onPressed: () => _onTap(),
+                    onPressed: onTap,
                   ),
                 ),
               ),
@@ -118,9 +126,5 @@ class CardWithAvatar extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void _onTap() {
-    onTap();
   }
 }
