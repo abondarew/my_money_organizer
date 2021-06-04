@@ -41,7 +41,7 @@ class _State extends State<CurrencyListScreen> {
     if (event is ResultCurrencyListNotification) {
       return setState(() {
         this.currencyList.clear();
-        this.currencyList.addAll(event.currencyList);
+        this.currencyList.addAll(event.currencyList!);
       });
     }
   }
@@ -68,7 +68,7 @@ class _State extends State<CurrencyListScreen> {
                 onPressed: () {
                   List<String> idLst = [];
                   currencyList.forEach((element) {
-                    if (element.selected) {
+                    if (element.selected!) {
                       idLst.add(element.id);
                     }
                   });
@@ -113,15 +113,15 @@ class _State extends State<CurrencyListScreen> {
     );
   }
 
-  Widget _buildItem({@required int index}) {
-    bool isNotDefault = currencyList[index].isDefault == null ? true : !currencyList[index].isDefault;
+  Widget _buildItem({required int index}) {
+    bool isNotDefault = currencyList[index].isDefault == null ? true : !currencyList[index].isDefault!;
     return Material(
       child: Padding(
         padding: EdgeInsets.all(4),
         child: Ink(
           decoration: BoxDecoration(
               //border: Border.all(color: Color.fromARGB(100, 200, 200, 200), width: 1.5),
-              gradient: LinearGradient(stops: [0.02, 0.001], colors: [Color(currencyList[index].avatarColor), Colors.white]),
+              gradient: LinearGradient(stops: [0.02, 0.001], colors: [Color(currencyList[index].avatarColor!), Colors.white]),
               borderRadius: BorderRadius.all(const Radius.circular(5.0))),
           child: InkWell(
             onTap: () => _itemOnTap(index),
@@ -141,7 +141,7 @@ class _State extends State<CurrencyListScreen> {
                             onChanged: (value) {
                               setState(() {
                                 currencyList[index].selected = value;
-                                _visibleDelButton = currencyList.any((element) => element.selected);
+                                _visibleDelButton = currencyList.any((element) => element.selected!);
                               });
                             }),
                       ),
@@ -277,8 +277,8 @@ class _State extends State<CurrencyListScreen> {
   void _itemOnTap(int index) {
     if (_selectMode) {
       setState(() {
-        currencyList[index].selected = !currencyList[index].selected;
-        _visibleDelButton = currencyList.any((element) => element.selected);
+        currencyList[index].selected = !currencyList[index].selected!;
+        _visibleDelButton = currencyList.any((element) => element.selected!);
       });
     } else {
       _openElement(index);

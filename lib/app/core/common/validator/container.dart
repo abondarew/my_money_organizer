@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/validator/base_validator.dart';
 
 class ValidatorContainer {
@@ -26,5 +24,5 @@ class _ContainerValidatorItem {
 
   final dynamic value;
 
-  const _ContainerValidatorItem({@required this.validator, @required this.value});
+  const _ContainerValidatorItem({required this.validator, required this.value});
 }

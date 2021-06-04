@@ -12,7 +12,7 @@ import 'package:mymoneyorganizer/generated/l10n.dart';
 
 class CurrencyDetailScreen extends StatefulWidget {
   final ScrollController _scrollController = ScrollController();
-  final String currencyId;
+  final String? currencyId;
 
   CurrencyDetailScreen({this.currencyId});
 
@@ -29,12 +29,12 @@ class _State extends State<CurrencyDetailScreen> {
   final TextEditingController _symbolController = TextEditingController();
   final TextEditingController _fractionController = TextEditingController();
 
-  CurrencyDetailReadModel model;
-  Map<String, String> _errorDetail = Map();
-  bool _isModified = false;
+  CurrencyDetailReadModel? model;
+  Map<String, String?> _errorDetail = Map();
+  bool? _isModified = false;
   List<Color> _colorList = [...Colors.primaries, ...Colors.accents];
-  Color dropdownValue; // = Colors.red;
-  Color _currentColor;
+  Color? dropdownValue; // = Colors.red;
+  Color? _currentColor;
 
   @override
   void initState() {
@@ -53,7 +53,7 @@ class _State extends State<CurrencyDetailScreen> {
         action: [
           Visibility(
             child: IconButton(icon: Icon(Icons.save_alt), onPressed: () => saveData()),
-            visible: _isModified,
+            visible: _isModified!,
           ),
         ],
       ),
@@ -106,11 +106,11 @@ class _State extends State<CurrencyDetailScreen> {
       );
     } else {
       //output data
-      if (!viewModel.isNew && !_isModified) {
-        _idController.text = model?.id;
-        _nameController.text = model?.name;
-        _symbolController.text = model?.symbol;
-        _fractionController.text = model?.fraction.toString();
+      if (!viewModel.isNew && !_isModified! && model != null) {
+        _idController.text = model!.id;
+        _nameController.text = model!.name;
+        _symbolController.text = model!.symbol;
+        _fractionController.text = model!.fraction.toString();
       }
       return Form(
         key: _formKey,
@@ -163,7 +163,7 @@ class _State extends State<CurrencyDetailScreen> {
             TextFormField(
               controller: _fractionController,
               validator: (value) => _errorDetail['fraction'],
-              onSaved: (value) => viewModel.updateData('fraction', int.tryParse(value)),
+              onSaved: (value) => viewModel.updateData('fraction', int.tryParse(value!)),
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
@@ -179,7 +179,7 @@ class _State extends State<CurrencyDetailScreen> {
   }
 
   void _pickColor() {
-    print('tap-tap');
+    //print('tap-tap');
     _currentColor = Colors.red;
     //_cardKey.currentState.setBackgroundColor(_currentColor);
     setState(() {
@@ -187,19 +187,17 @@ class _State extends State<CurrencyDetailScreen> {
     });
   }
 
-  void _test({@required String tes}) {}
-
   void dispatch(CurrencyDetailNotification event) {
     if (event is ResultCurrencyDetailNotification) {
       setState(() {
         model = event.currencyReadModel;
-        if (!viewModel.isNew) {
-          _currentColor = Color(model?.avatarColor);
+        if (!viewModel.isNew && model != null) {
+          _currentColor = Color(model!.avatarColor!);
           //_cardKey.currentState.setBackgroundColor(_currentColor);
         } else {
           _currentColor = _colorList[Random().nextInt(_colorList.length - 1)];
           //_cardKey.currentState.setBackgroundColor(_currentColor);
-          viewModel.updateData('color', _currentColor.value);
+          viewModel.updateData('color', _currentColor!.value);
         }
       });
     }
@@ -213,12 +211,12 @@ class _State extends State<CurrencyDetailScreen> {
     }
     if (event is ErrorCurrencyDetailNotification) {
       if (event.error is CurrencyCreateCommandException) {
-        CurrencyCreateCommandException error = event.error;
+        CurrencyCreateCommandException error = event.error as CurrencyCreateCommandException;
         _errorDetail['id'] = error.id.length > 0 ? error.id.first : null;
         _errorDetail['name'] = error.name.length > 0 ? error.name.first : null;
         _errorDetail['symbol'] = error.symbol.length > 0 ? error.symbol.first : null;
         _errorDetail['fraction'] = error.fraction.length > 0 ? error.fraction.first : null;
-        _formKey.currentState.validate();
+        _formKey.currentState!.validate();
       } else {
         SnackBar snackBar = SnackBar(content: Text(S.of(context).unknown_error + event.error.toString()));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -227,7 +225,7 @@ class _State extends State<CurrencyDetailScreen> {
   }
 
   saveData() {
-    _formKey.currentState.save();
+    _formKey.currentState!.save();
     viewModel.save();
   }
 

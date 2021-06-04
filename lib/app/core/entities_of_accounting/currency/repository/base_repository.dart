@@ -8,7 +8,7 @@ abstract class CurrencyBaseRepository{
 
   Future<List<CurrencyListReadModel>> fetchCurrencyList();
 
-  Future<CurrencyDetailReadModel> getCurrencyFromId(String id);
+  Future<CurrencyDetailReadModel?> getCurrencyFromId(String id);
 
-  Future<bool> currencyIsExist(String id);
+  Future<bool> currencyIsExist(String? id);
 }

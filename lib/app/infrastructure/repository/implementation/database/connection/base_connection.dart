@@ -11,22 +11,22 @@ abstract class DataBaseTransaction {
   ///
   /// Update query
   ///
-  Future<void> update(String table, Map<String, dynamic> data, {String where, List<dynamic> whereArgs});
+  Future<void> update(String table, Map<String, dynamic> data, {String? where, List<dynamic>? whereArgs});
 
   ///
   /// Select query
   ///
   Future<List<Map<String, dynamic>>> select(
     String table, {
-    bool distinct,
-    List<String> columns,
-    String where,
-    List<dynamic> whereArgs,
-    String groupBy,
-    String having,
-    String orderBy,
-    int limit,
-    int offset,
+    bool? distinct,
+    List<String>? columns,
+    String? where,
+    List<dynamic>? whereArgs,
+    String? groupBy,
+    String? having,
+    String? orderBy,
+    int? limit,
+    int? offset,
   });
 
   Future<void> delete(String table, String id);

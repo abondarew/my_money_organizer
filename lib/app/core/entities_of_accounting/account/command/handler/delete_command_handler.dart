@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_handler.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/command/validator/delete_command_validator.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/repository/base_repository.dart';
@@ -9,7 +8,7 @@ class AccountDeleteCommandHandler extends BaseCommandHandler<AccountDeleteComman
   final AccountBaseRepository repository;
   final DeleteAccountCommandValidator validator;
 
-  AccountDeleteCommandHandler({@required this.repository, @required this.validator});
+  AccountDeleteCommandHandler({required this.repository, required this.validator});
 
   @override
   Future<void> execute(AccountDeleteCommand deleteCommand) async {

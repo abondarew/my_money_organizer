@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/command/validator/delete_command_validator.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/service/currency_not_exist.dart';
 
@@ -12,16 +11,17 @@ import 'query/handler/get_currency_from_id.dart';
 import 'repository/base_repository.dart';
 
 class CurrencyCoreBuilder {
-  static CurrencyCommandDispatcher buildCommandDispatcher({@required CurrencyBaseRepository repository}) {
+  static CurrencyCommandDispatcher buildCommandDispatcher({required CurrencyBaseRepository repository}) {
     final CurrencyCreateCommandHandler createCommandHandler = CurrencyCreateCommandHandler(
         validator: CurrencyCreateCommandValidator(serviceCurrencyNotExist: ServiceCurrencyIsExist(repository: repository)),
         repository: repository);
-    final CurrencyDeleteCommandHandler deleteCommandHandler = CurrencyDeleteCommandHandler(repository: repository, validator: CurrencyDeleteCommandValidator());
+    final CurrencyDeleteCommandHandler deleteCommandHandler =
+        CurrencyDeleteCommandHandler(repository: repository, validator: CurrencyDeleteCommandValidator());
 
     return CurrencyCommandDispatcher(createCommandHandler: createCommandHandler, deleteCommandHandler: deleteCommandHandler);
   }
 
-  static CurrencyQueryDispatcher buildQueryDispatcher({@required CurrencyBaseRepository repository}) {
+  static CurrencyQueryDispatcher buildQueryDispatcher({required CurrencyBaseRepository repository}) {
     final CurrencyQueryHandlerFetchList handlerFetchList = CurrencyQueryHandlerFetchList(repository: repository);
     final CurrencyQueryHandlerGetFromId handlerGetFromId = CurrencyQueryHandlerGetFromId(repository: repository);
 

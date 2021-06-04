@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 
 class CardWithAvatar extends StatelessWidget {
   final Widget avatarChild;
-  final Color avatarBackgroundColor;
+  final Color? avatarBackgroundColor;
   final Widget cardBody;
-  final VoidCallback onTap;
-  final Widget buttonChild;
-  final Color buttonColor;
+  final VoidCallback? onTap;
+  final Widget? buttonChild;
+  final Color? buttonColor;
 
   CardWithAvatar(
-      {Key key,
-      @required this.avatarChild,
-      @required this.avatarBackgroundColor,
-      @required this.cardBody,
+      {Key? key,
+      required this.avatarChild,
+      required this.avatarBackgroundColor,
+      required this.cardBody,
       this.onTap,
       this.buttonChild,
       this.buttonColor})
@@ -81,7 +81,7 @@ class CardWithAvatar extends StatelessWidget {
   }
 
   Widget _buildAvatar() {
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
       child: SizedBox(
         height: 90,

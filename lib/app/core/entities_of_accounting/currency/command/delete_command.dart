@@ -1,8 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_command.dart';
 
-class CurrencyDeleteCommand extends BaseCommand{
+class CurrencyDeleteCommand extends BaseCommand {
   final List<String> listId;
 
-  CurrencyDeleteCommand ({@required this.listId});
+  CurrencyDeleteCommand({required this.listId});
 }

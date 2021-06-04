@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/model/domain/category_model.dart';
 import 'package:mymoneyorganizer/app/core/common/model/domain/project_model.dart';
 import 'package:uuid/uuid.dart';
@@ -7,43 +6,43 @@ class BudgetDomainModel {
   final String id;
   String budgetName;
   DateTime startDate;
-  DateTime endDate;
+  DateTime? endDate;
   bool isClosed;
   bool isPeriodic;
-  String periodRules;
+  String? periodRules;
   double requiredAmount;
   String currency;
-  List<ProjectDomainModel> includingProjects;
-  List<ProjectDomainModel> excludingProjects;
-  List<CategoryDomainModel> includingCategories;
+  List<ProjectDomainModel>? includingProjects;
+  List<ProjectDomainModel>? excludingProjects;
+  List<CategoryDomainModel>? includingCategories;
 
   BudgetDomainModel._(
-      {@required this.id,
-      @required this.budgetName,
-      @required this.startDate,
+      {required this.id,
+      required this.budgetName,
+      required this.startDate,
       this.endDate,
-      @required this.isClosed,
-      @required this.isPeriodic,
+      required this.isClosed,
+      required this.isPeriodic,
       this.periodRules,
-      @required this.requiredAmount,
-      @required this.currency,
+      required this.requiredAmount,
+      required this.currency,
       this.includingProjects,
       this.excludingProjects,
       this.includingCategories});
 
   factory BudgetDomainModel(
-      {String id,
-      @required String budgetName,
-      @required DateTime startDate,
-      DateTime endDate,
-      @required bool isClosed,
-      @required bool isPeriodic,
-      String periodRules,
-      @required double requiredAmount,
-      @required String currency,
-      List<ProjectDomainModel> includingProjects,
-      List<ProjectDomainModel> excludingProjects,
-      List<CategoryDomainModel> includingCategories}) {
+      {String? id,
+      required String budgetName,
+      required DateTime startDate,
+      DateTime? endDate,
+      required bool isClosed,
+      required bool isPeriodic,
+      String? periodRules,
+      required double requiredAmount,
+      required String currency,
+      List<ProjectDomainModel>? includingProjects,
+      List<ProjectDomainModel>? excludingProjects,
+      List<CategoryDomainModel>? includingCategories}) {
     if (id == null) {
       id = Uuid().v4();
     }

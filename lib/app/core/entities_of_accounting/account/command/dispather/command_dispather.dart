@@ -1,7 +1,6 @@
 /*Диспетчер команд для счетов. Держит хендлеры на создание, обновление, изменение и удаление счета,
  / инициирует вызов execute хендлера
  */
-import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_command.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_dispatcher.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_handler.dart';
@@ -21,7 +20,7 @@ class AccountCommandDispatcher extends BaseCommandDispatcher {
   /   Конструктор принимает все доступные хендлеры
   */
   const AccountCommandDispatcher(
-      {@required this.createCommandHandler, @required this.deleteCommandHandler, @required this.updateCommandHandler});
+      {required this.createCommandHandler, required this.deleteCommandHandler, required this.updateCommandHandler});
 
   /*Метод диспетчера: в зависимости от переданной команды отправляет ее (команду) в нужный хендлер
     если команда не найдена - бросает исключение

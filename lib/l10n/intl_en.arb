@@ -25,5 +25,6 @@
   "invalid_command_exception" : "InvalidCommandException",
   "command_not_identifier" : "command not identified",
   "invalid_color" : "Invalid color value",
-  "setAsDefault": "Set as default"
+  "setAsDefault" : "Set as default",
+  "aaa" : "aaa"
 }

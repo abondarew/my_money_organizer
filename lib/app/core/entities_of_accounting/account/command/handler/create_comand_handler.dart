@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_handler.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_validator.dart';
 import 'package:mymoneyorganizer/app/core/common/model/domain/account_model.dart';
@@ -9,7 +8,7 @@ class AccountCreateCommandHandler extends BaseCommandHandler<AccountCreateComman
   final AccountBaseRepository repository;
   final BaseCommandValidator<AccountCreateCommand> validator;
 
-  AccountCreateCommandHandler({@required this.repository, @required this.validator});
+  AccountCreateCommandHandler({required this.repository, required this.validator});
 
   @override
   Future<void> execute(AccountCreateCommand command) async {

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_handler.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/command/delete_command.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/command/validator/delete_command_validator.dart';
@@ -6,11 +5,11 @@ import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/reposi
 import 'package:mymoneyorganizer/app/eventbus/eventbus_core.dart';
 import 'package:mymoneyorganizer/app/eventbus/events/base/currency_changed.dart';
 
-class CurrencyDeleteCommandHandler extends BaseCommandHandler<CurrencyDeleteCommand>{
+class CurrencyDeleteCommandHandler extends BaseCommandHandler<CurrencyDeleteCommand> {
   final CurrencyBaseRepository repository;
   final CurrencyDeleteCommandValidator validator;
 
-  CurrencyDeleteCommandHandler({@required this.repository, @required this.validator});
+  CurrencyDeleteCommandHandler({required this.repository, required this.validator});
 
   @override
   Future<void> execute(CurrencyDeleteCommand command) async {
@@ -22,5 +21,4 @@ class CurrencyDeleteCommandHandler extends BaseCommandHandler<CurrencyDeleteComm
     Future.wait(executeLst);
     EventBusCore.getInstance().addEvent(CurrencyChangedEvent());
   }
-
 }

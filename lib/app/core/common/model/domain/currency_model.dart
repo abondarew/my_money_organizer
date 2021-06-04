@@ -1,31 +1,30 @@
-import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/model/domain/base_domain_model.dart';
 
 class CurrencyDomainModel implements BaseDomainModel {
-  final String id;
+  final String? id;
   final bool isNew;
-  String name;
-  String symbol;
-  int fraction;
-  int avatarColor;
-  bool isDefault;
+  String? name;
+  String? symbol;
+  int? fraction;
+  int? avatarColor;
+  bool? isDefault;
 
   CurrencyDomainModel._(
-      {@required this.id,
-      @required this.name,
-      @required this.symbol,
-      @required this.fraction,
-      @required this.isNew,
-      @required this.avatarColor,
-      @required this.isDefault});
+      {required this.id,
+      required this.name,
+      required this.symbol,
+      required this.fraction,
+      required this.isNew,
+      required this.avatarColor,
+      required this.isDefault});
 
   factory CurrencyDomainModel(
-      {@required String id,
-      @required String name,
-      @required String symbol,
-      @required int fraction,
-      @required int avatarColor,
-      @required bool isDefault,
+      {required String? id,
+      required String? name,
+      required String? symbol,
+      required int? fraction,
+      required int? avatarColor,
+      required bool? isDefault,
       bool isNew = false}) {
     return CurrencyDomainModel._(
       id: id,

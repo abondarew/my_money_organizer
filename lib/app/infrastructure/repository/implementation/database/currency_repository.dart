@@ -45,8 +45,8 @@ class CurrencyDatabaseRepository implements CurrencyBaseRepository {
   }
 
   @override
-  Future<CurrencyDetailReadModel> getCurrencyFromId(String id) async {
-    CurrencyDetailReadModel result;
+  Future<CurrencyDetailReadModel?> getCurrencyFromId(String id) async {
+    CurrencyDetailReadModel? result;
     await this._databaseBaseConnection.transaction((txn) async {
       List<Map<String, dynamic>> queryResult = await txn.select(_tableName, where: 'id = ?', whereArgs: [id]);
       if (queryResult.isNotEmpty) result = CurrencyDetailReadModel.fromMap(queryResult.first);
@@ -60,7 +60,7 @@ class CurrencyDatabaseRepository implements CurrencyBaseRepository {
   }*/
 
   @override
-  Future<bool> currencyIsExist(String id) async {
+  Future<bool> currencyIsExist(String? id) async {
     bool exists = false;
     await this._databaseBaseConnection.transaction((txn) async {
       List<Map<String, dynamic>> list = await txn.select(_tableName, where: 'id = ?', whereArgs: [id], limit: 1);

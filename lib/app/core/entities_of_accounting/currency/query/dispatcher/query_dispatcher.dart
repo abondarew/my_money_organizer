@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/base/query/base_dispatcher.dart';
 import 'package:mymoneyorganizer/app/core/common/base/query/base_query.dart';
 import 'package:mymoneyorganizer/app/core/common/base/query/exceptions.dart';
@@ -11,7 +10,7 @@ class CurrencyQueryDispatcher extends BaseQueryDispatcher {
   final CurrencyQueryHandlerGetFromId handlerGetFromId;
   final CurrencyQueryHandlerFetchList handlerFetchList;
 
-  const CurrencyQueryDispatcher({@required this.handlerFetchList, @required this.handlerGetFromId});
+  const CurrencyQueryDispatcher({required this.handlerFetchList, required this.handlerGetFromId});
 
   @override
   Future<dynamic> dispatch(BaseQuery query) async {

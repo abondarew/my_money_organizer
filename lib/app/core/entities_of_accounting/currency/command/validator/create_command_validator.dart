@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_validator.dart';
 import 'package:mymoneyorganizer/app/core/common/validator/color.dart';
 import 'package:mymoneyorganizer/app/core/common/validator/container.dart';
@@ -15,7 +14,7 @@ class CurrencyCreateCommandValidator extends BaseCommandValidator<CurrencyCreate
   //final CurrencyBaseRepository repository;
   final ServiceCurrencyIsExist serviceCurrencyNotExist;
 
-  CurrencyCreateCommandValidator({@required this.serviceCurrencyNotExist});
+  CurrencyCreateCommandValidator({required this.serviceCurrencyNotExist});
 
   @override
   Future<void> validate(CurrencyCreateCommand command) async {

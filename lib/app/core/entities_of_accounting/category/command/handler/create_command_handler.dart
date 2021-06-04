@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_handler.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_validator.dart';
 import 'package:mymoneyorganizer/app/core/common/model/domain/category_model.dart';
@@ -6,12 +5,11 @@ import 'package:mymoneyorganizer/app/core/entities_of_accounting/category/reposi
 
 import '../create_command.dart';
 
-class CategoryCreateCommandHandler extends BaseCommandHandler<CategoryCreateCommand>{
+class CategoryCreateCommandHandler extends BaseCommandHandler<CategoryCreateCommand> {
   final CategoryBaseRepository repository;
   final BaseCommandValidator<CategoryCreateCommand> validator;
 
-
-  CategoryCreateCommandHandler({@required this.repository, @required this.validator});
+  CategoryCreateCommandHandler({required this.repository, required this.validator});
 
   @override
   Future<void> execute(CategoryCreateCommand command) async {
@@ -20,5 +18,4 @@ class CategoryCreateCommandHandler extends BaseCommandHandler<CategoryCreateComm
     CategoryDomainModel categoryDomainModel = CategoryDomainModel(categoryName: null, idParentPath: null);
     await this.repository.save(categoryDomainModel);
   }
-
 }

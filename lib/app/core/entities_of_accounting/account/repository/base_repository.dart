@@ -12,9 +12,9 @@ abstract class AccountBaseRepository {
   Future<void> delete(AccountDeleteCommand command);
 
   // fetch list
-  Future<List<AccountReadModel>> fetchAccountList({FetchAccountListQuery query});
+  Future<List<AccountReadModel>> fetchAccountList({FetchAccountListQuery? query});
 
-  Future<AccountReadModel> fetchAccount({FetchAccount query});
+  Future<AccountReadModel> fetchAccount({FetchAccount? query});
 
   Future<bool> accountIsUse(String accountId);
 }

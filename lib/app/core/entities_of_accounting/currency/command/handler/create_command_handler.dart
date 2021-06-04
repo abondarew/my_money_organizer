@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_handler.dart';
 import 'package:mymoneyorganizer/app/core/common/base/command/base_validator.dart';
 import 'package:mymoneyorganizer/app/core/common/model/domain/currency_model.dart';
@@ -9,7 +8,7 @@ class CurrencyCreateCommandHandler extends BaseCommandHandler<CurrencyCreateComm
   final BaseCommandValidator<CurrencyCreateCommand> validator;
   final CurrencyBaseRepository repository;
 
-  CurrencyCreateCommandHandler({@required this.validator, @required this.repository});
+  CurrencyCreateCommandHandler({required this.validator, required this.repository});
 
   @override
   Future<void> execute(CurrencyCreateCommand command) async {

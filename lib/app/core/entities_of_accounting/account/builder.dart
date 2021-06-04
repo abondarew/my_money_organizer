@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/query/dispatcher/query_dispatcher.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/query/handler/account_query_handler.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/query/handler/list_query_handler.dart';
@@ -13,20 +12,19 @@ import 'command/validator/delete_command_validator.dart';
 import 'command/validator/update_command_validator.dart';
 
 class AccountCoreBuilder {
-  static AccountCommandDispatcher buildCommandDispatcher({@required AccountBaseRepository repository}) {
+  static AccountCommandDispatcher buildCommandDispatcher({required AccountBaseRepository repository}) {
     final AccountCreateCommandHandler createCommandHandler =
         AccountCreateCommandHandler(repository: repository, validator: CreateAccountCommandValidator());
     final AccountDeleteCommandHandler deleteCommandHandler =
         AccountDeleteCommandHandler(repository: repository, validator: DeleteAccountCommandValidator(repository));
-    final AccountUpdateCommandHandler updateCommandHandler = AccountUpdateCommandHandler(repository: repository, validator: UpdateAccountCommandValidator());
+    final AccountUpdateCommandHandler updateCommandHandler =
+        AccountUpdateCommandHandler(repository: repository, validator: UpdateAccountCommandValidator());
 
     return AccountCommandDispatcher(
-        createCommandHandler: createCommandHandler,
-        deleteCommandHandler: deleteCommandHandler,
-        updateCommandHandler: updateCommandHandler);
+        createCommandHandler: createCommandHandler, deleteCommandHandler: deleteCommandHandler, updateCommandHandler: updateCommandHandler);
   }
 
-  static AccountQueryDispatcher buildQueryDispatcher({@required AccountBaseRepository repository}) {
+  static AccountQueryDispatcher buildQueryDispatcher({required AccountBaseRepository repository}) {
     final FetchAccountQueryHandler accountQueryHandler = FetchAccountQueryHandler(repository: repository);
     final FetchAccountListQueryHandler listQueryHandler = FetchAccountListQueryHandler(repository: repository);
 

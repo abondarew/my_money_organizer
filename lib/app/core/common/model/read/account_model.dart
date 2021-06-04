@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/model/read/currency_model.dart';
 
 class AccountReadModel {
@@ -10,10 +9,10 @@ class AccountReadModel {
   final double accountBalance;
 
   AccountReadModel(
-      {@required this.id,
-      @required this.accountType,
-      @required this.accountName,
-      @required this.icoURI,
-      @required this.currency,
-      @required this.accountBalance});
+      {required this.id,
+      required this.accountType,
+      required this.accountName,
+      required this.icoURI,
+      required this.currency,
+      required this.accountBalance});
 }

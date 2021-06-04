@@ -14,7 +14,7 @@ class CurrencyDetailViewModel {
   final CurrencyCommandDispatcher _commandDispatcher;
   final StreamController<CurrencyDetailNotification> eventController = StreamController<CurrencyDetailNotification>.broadcast();
   final Map<String, dynamic> newData = Map<String, dynamic>();
-  CurrencyDetailReadModel model;
+  CurrencyDetailReadModel? model;
   bool _isNew = true;
   bool _isModification = false;
 
@@ -24,11 +24,11 @@ class CurrencyDetailViewModel {
     eventController.close();
   }
 
-  Future<void> load({String id}) async {
+  Future<void> load({String? id}) async {
     if (id != null) {
       _isNew = false;
       model = await _queryDispatcher.dispatch(CurrencyQueryGetFromId(id: id));
-      newData.addAll(model.toMap());
+      newData.addAll(model!.toMap());
     } else {
       _isNew = true;
     }
@@ -67,7 +67,7 @@ class CurrencyDetailViewModel {
       EventBusCore.getInstance().addEvent(CurrencyChangedEvent());
       eventController.add(SuccessfulSaveCurrency());
     } catch (e) {
-      eventController.add(ErrorCurrencyDetailNotification(error: e));
+      eventController.add(ErrorCurrencyDetailNotification(error: e as Exception?));
     } finally {}
   }
 }
@@ -82,19 +82,19 @@ class CurrencyDetailViewModelBuilder {
 class CurrencyDetailNotification {}
 
 class ResultCurrencyDetailNotification implements CurrencyDetailNotification {
-  final CurrencyDetailReadModel currencyReadModel;
+  final CurrencyDetailReadModel? currencyReadModel;
 
   ResultCurrencyDetailNotification({this.currencyReadModel});
 }
 
 class CurrencyDetailModifiedNotification implements CurrencyDetailNotification {
-  final bool isModified;
+  final bool? isModified;
 
   CurrencyDetailModifiedNotification({this.isModified});
 }
 
 class ErrorCurrencyDetailNotification implements CurrencyDetailNotification {
-  final Exception error;
+  final Exception? error;
 
   ErrorCurrencyDetailNotification({this.error});
 }

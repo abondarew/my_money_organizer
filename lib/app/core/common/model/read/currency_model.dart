@@ -1,19 +1,17 @@
-import 'package:flutter/foundation.dart';
-
 class CurrencyListReadModel {
   final String id;
   final String symbol;
   final String name;
-  final int avatarColor;
-  final bool isDefault;
-  bool selected = false;
+  final int? avatarColor;
+  final bool? isDefault;
+  bool? selected = false;
 
   CurrencyListReadModel({
-    @required this.id,
-    @required this.symbol,
-    @required this.name,
-    @required this.avatarColor,
-    @required this.isDefault,
+    required this.id,
+    required this.symbol,
+    required this.name,
+    required this.avatarColor,
+    required this.isDefault,
   });
 }
 
@@ -21,17 +19,17 @@ class CurrencyDetailReadModel {
   final String id;
   final String name;
   final String symbol;
-  final int fraction;
-  final int avatarColor;
-  final bool isDefault;
+  final int? fraction;
+  final int? avatarColor;
+  final bool? isDefault;
 
   CurrencyDetailReadModel({
-    @required this.id,
-    @required this.name,
-    @required this.symbol,
-    @required this.fraction,
-    @required this.avatarColor,
-    @required this.isDefault,
+    required this.id,
+    required this.name,
+    required this.symbol,
+    required this.fraction,
+    required this.avatarColor,
+    required this.isDefault,
   });
 
   factory CurrencyDetailReadModel.fromMap(Map<String, dynamic> map) {

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
 class AccountDomainModel {
@@ -7,31 +6,31 @@ class AccountDomainModel {
   String accountName;
   bool isActive;
   bool isSavingAccount;
-  UriData icoUri;
+  UriData? icoUri;
   String accountCurrencyId;
   final double accountBalance;
   final bool isNew;
 
   AccountDomainModel._(
-      {@required this.id,
-      @required this.isNew,
-      @required this.accountTypeId,
-      @required this.accountName,
-      @required this.isActive,
-      @required this.isSavingAccount,
+      {required this.id,
+      required this.isNew,
+      required this.accountTypeId,
+      required this.accountName,
+      required this.isActive,
+      required this.isSavingAccount,
       this.icoUri,
-      @required this.accountCurrencyId,
-      @required this.accountBalance});
+      required this.accountCurrencyId,
+      required this.accountBalance});
 
   factory AccountDomainModel(
-      {String id,
-      @required String accountTypeId,
-      @required String accountName,
-      @required bool isActive,
-      @required bool isSavingAccount,
-      UriData icoUri,
-      @required String accountCurrencyId,
-      @required double accountBalance}) {
+      {String? id,
+      required String accountTypeId,
+      required String accountName,
+      required bool isActive,
+      required bool isSavingAccount,
+      UriData? icoUri,
+      required String accountCurrencyId,
+      required double accountBalance}) {
     bool isNew = false;
     if (id == null) {
       isNew = true;

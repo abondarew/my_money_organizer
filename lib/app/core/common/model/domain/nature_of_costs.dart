@@ -4,9 +4,9 @@
 желательные покупки, необходимые, обязательные" и пр.
  */
 class NatureOfCostsDomainModel{
-  String id;
-  String name;
-  UriData ico;
+  String? id;
+  String? name;
+  UriData? ico;
 
   NatureOfCostsDomainModel({
     this.id,

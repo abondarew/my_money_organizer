@@ -23,7 +23,7 @@ abstract class BaseValidator {
     this.mapErrors[key] = value;
   }
 
-  String getError() {
+  String? getError() {
     if (this.errors.isNotEmpty) {
       return this.errors.first;
     }

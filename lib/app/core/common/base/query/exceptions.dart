@@ -1,7 +1,7 @@
 class BaseQueryExceptions implements Exception {}
 
 class InvalidQueryException implements BaseQueryExceptions {
-  final String message;
+  final String? message;
 
   InvalidQueryException([this.message]);
 
@@ -9,6 +9,6 @@ class InvalidQueryException implements BaseQueryExceptions {
   String toString() {
     return message == null
         ? "InvalidQueryException"
-        : "InvalidQueryException: " + this.message;
+        : "InvalidQueryException: " + this.message!;
   }
 }

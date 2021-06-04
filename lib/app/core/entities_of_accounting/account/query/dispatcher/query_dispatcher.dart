@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:mymoneyorganizer/app/core/common/base/query/base_dispatcher.dart';
 import 'package:mymoneyorganizer/app/core/common/base/query/base_query.dart';
 import 'package:mymoneyorganizer/app/core/common/base/query/exceptions.dart';
@@ -12,7 +11,7 @@ class AccountQueryDispatcher extends BaseQueryDispatcher {
   final FetchAccountListQueryHandler listQueryHandler;
   final FetchAccountQueryHandler accountQueryHandler;
 
-  const AccountQueryDispatcher({@required this.accountQueryHandler, @required this.listQueryHandler});
+  const AccountQueryDispatcher({required this.accountQueryHandler, required this.listQueryHandler});
 
   @override
   Future<dynamic> dispatch(BaseQuery query) async {
@@ -26,7 +25,7 @@ class AccountQueryDispatcher extends BaseQueryDispatcher {
       return accountQueryHandler.execute(query);
     }
     if (!queryIsExecuting) {
-      throw InvalidQueryException('query not identified!');
+      throw InvalidQueryException('query not identified!'); //TODO translate this!
     }
   }
 }

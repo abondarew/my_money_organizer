@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class DocumentReadModel {
   final String id;
   final DateTime dateDocument;
@@ -10,11 +8,11 @@ class DocumentReadModel {
   final double currencyAmount;
 
   DocumentReadModel(
-      {@required this.id,
-      @required this.dateDocument,
-      @required this.category,
-      @required this.description,
-      @required this.amount,
-      @required this.currency,
-      @required this.currencyAmount});
+      {required this.id,
+      required this.dateDocument,
+      required this.category,
+      required this.description,
+      required this.amount,
+      required this.currency,
+      required this.currencyAmount});
 }
