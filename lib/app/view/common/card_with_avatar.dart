@@ -4,7 +4,7 @@ class CardWithAvatar extends StatelessWidget {
   final Widget avatarChild;
   final Color avatarBackgroundColor;
   final Widget cardBody;
-  final Function onTap;
+  final VoidCallback onTap;
   final Widget buttonChild;
   final Color buttonColor;
 
@@ -60,15 +60,19 @@ class CardWithAvatar extends StatelessWidget {
               Padding(
                   padding: EdgeInsets.fromLTRB(4, 48, 4, 4),
                   child: Card(
-                    child: cardBody,
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(16, 56, 16, 16),
+                      child: cardBody,
+                    ),
                     elevation: 5,
                   )),
               Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: _buildAvatar(),
-                  )),
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: _buildAvatar(),
+                ),
+              ),
             ],
           ),
         ),
@@ -112,16 +116,19 @@ class CardWithAvatar extends StatelessWidget {
                   child: FloatingActionButton(
                     backgroundColor: buttonColor,
                     heroTag: 'pickColor',
-                    elevation: 0,
+                    elevation: 3,
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: FittedBox(fit: BoxFit.fitWidth, child: buttonChild),
+                      child: FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: buttonChild,
+                      ),
                     ),
                     onPressed: onTap,
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

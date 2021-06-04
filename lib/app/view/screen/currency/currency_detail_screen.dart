@@ -112,70 +112,67 @@ class _State extends State<CurrencyDetailScreen> {
         _symbolController.text = model?.symbol;
         _fractionController.text = model?.fraction.toString();
       }
-      return Padding(
-        padding: EdgeInsets.fromLTRB(16, 56, 16, 16),
-        child: Form(
-          key: _formKey,
-          onChanged: setModified,
-          child: Column(
-            children: [
-              TextField(
-                controller: _idController,
-                decoration: InputDecoration(
-                    helperText: 'helper text',
-                    hintText: 'hint text',
-                    suffixText: 'suffix',
-                    prefixText: 'prefix',
-                    labelText: 'label',
-                    errorText: _errorDetail['id']),
+      return Form(
+        key: _formKey,
+        onChanged: setModified,
+        child: Column(
+          children: [
+            TextField(
+              controller: _idController,
+              decoration: InputDecoration(
+                  helperText: 'helper text',
+                  hintText: 'hint text',
+                  suffixText: 'suffix',
+                  prefixText: 'prefix',
+                  labelText: 'label',
+                  errorText: _errorDetail['id']),
+            ),
+            TextFormField(
+              controller: _idController,
+              readOnly: (!viewModel.isNew),
+              enabled: (viewModel.isNew),
+              onSaved: (value) => viewModel.updateData('id', value.toString()),
+              validator: (value) => _errorDetail['id'],
+              decoration: InputDecoration(
+                labelText: S.of(context).code(S.of(context).currency),
+                hintText: S.of(context).code(''),
+                counterText: '',
               ),
-              TextFormField(
-                controller: _idController,
-                readOnly: (!viewModel.isNew),
-                enabled: (viewModel.isNew),
-                onSaved: (value) => viewModel.updateData('id', value.toString()),
-                validator: (value) => _errorDetail['id'],
-                decoration: InputDecoration(
-                  labelText: S.of(context).code(S.of(context).currency),
-                  hintText: S.of(context).code(''),
-                  counterText: '',
-                ),
-                maxLength: 3,
-                textCapitalization: TextCapitalization.characters,
+              maxLength: 3,
+              textCapitalization: TextCapitalization.characters,
+            ),
+            TextFormField(
+              controller: _nameController,
+              validator: (value) => _errorDetail['name'],
+              onSaved: (value) => viewModel.updateData('name', value.toString()),
+              decoration: InputDecoration(
+                labelText: '${S.of(context).currency} ${S.of(context).name}',
+                hintText: S.of(context).name,
               ),
-              TextFormField(
-                controller: _nameController,
-                validator: (value) => _errorDetail['name'],
-                onSaved: (value) => viewModel.updateData('name', value.toString()),
-                decoration: InputDecoration(
-                  labelText: '${S.of(context).currency} ${S.of(context).name}',
-                  hintText: S.of(context).name,
-                ),
+            ),
+            TextFormField(
+              controller: _symbolController,
+              validator: (value) => _errorDetail['symbol'],
+              onSaved: (value) => viewModel.updateData('symbol', value.toString()),
+              onChanged: (value) => {setState(() {})},
+              decoration: InputDecoration(
+                labelText: '${S.of(context).currency} ${S.of(context).symbol}',
+                hintText: S.of(context).symbol,
               ),
-              TextFormField(
-                controller: _symbolController,
-                validator: (value) => _errorDetail['symbol'],
-                onSaved: (value) => viewModel.updateData('symbol', value.toString()),
-                onChanged: (value) => {setState(() {})},
-                decoration: InputDecoration(
-                  labelText: '${S.of(context).currency} ${S.of(context).symbol}',
-                  hintText: S.of(context).symbol,
-                ),
+            ),
+            TextFormField(
+              controller: _fractionController,
+              validator: (value) => _errorDetail['fraction'],
+              onSaved: (value) => viewModel.updateData('fraction', int.tryParse(value)),
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                labelText: S.of(context).fraction,
+                hintText: S.of(context).fraction,
               ),
-              TextFormField(
-                controller: _fractionController,
-                validator: (value) => _errorDetail['fraction'],
-                onSaved: (value) => viewModel.updateData('fraction', int.tryParse(value)),
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: S.of(context).fraction,
-                  hintText: S.of(context).fraction,
-                ),
-              ),
-              SizedBox(height: 32)
-            ],
-          ),
+            ),
+            SizedBox(height: 32)
+          ],
         ),
       );
     }
