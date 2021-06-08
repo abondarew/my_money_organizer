@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:mymoneyorganizer/app/core/common/model/read/currency_model.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/command/validator/exception/create_command_exception.dart';
 import 'package:mymoneyorganizer/app/view/common/card_with_avatar.dart';
+import 'package:mymoneyorganizer/app/view/common/color_picker.dart';
 import 'package:mymoneyorganizer/app/view/common/scroll_handled_appbar.dart';
 import 'package:mymoneyorganizer/app/viewmodel/common/currency_detail.dart';
 import 'package:mymoneyorganizer/generated/l10n.dart';
@@ -180,11 +181,22 @@ class _State extends State<CurrencyDetailScreen> {
 
   void _pickColor() {
     //print('tap-tap');
-    _currentColor = Colors.red;
+    ColorPicker().showColorPicker(
+        context: context,
+        colors: _colorList,
+        onSelect: (val) => {
+              setState(() {
+                _currentColor = val;
+                setModified();
+                viewModel.updateData('color', _currentColor!.value);
+              })
+            },
+        currentColor: _currentColor);
+    /*_currentColor = Colors.red;
     //_cardKey.currentState.setBackgroundColor(_currentColor);
     setState(() {
       //_cardKey.currentState.setState(() {});
-    });
+    });*/
   }
 
   void dispatch(CurrencyDetailNotification event) {
@@ -212,10 +224,12 @@ class _State extends State<CurrencyDetailScreen> {
     if (event is ErrorCurrencyDetailNotification) {
       if (event.error is CurrencyCreateCommandException) {
         CurrencyCreateCommandException error = event.error as CurrencyCreateCommandException;
-        _errorDetail['id'] = error.id.length > 0 ? error.id.first : null;
-        _errorDetail['name'] = error.name.length > 0 ? error.name.first : null;
-        _errorDetail['symbol'] = error.symbol.length > 0 ? error.symbol.first : null;
-        _errorDetail['fraction'] = error.fraction.length > 0 ? error.fraction.first : null;
+        setState(() {
+          _errorDetail['id'] = error.id.length > 0 ? error.id.first : null;
+          _errorDetail['name'] = error.name.length > 0 ? error.name.first : null;
+          _errorDetail['symbol'] = error.symbol.length > 0 ? error.symbol.first : null;
+          _errorDetail['fraction'] = error.fraction.length > 0 ? error.fraction.first : null;
+        });
         _formKey.currentState!.validate();
       } else {
         SnackBar snackBar = SnackBar(content: Text(S.of(context).unknown_error + event.error.toString()));

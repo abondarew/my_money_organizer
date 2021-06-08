@@ -67,7 +67,7 @@ class CurrencyDetailViewModel {
       EventBusCore.getInstance().addEvent(CurrencyChangedEvent());
       eventController.add(SuccessfulSaveCurrency());
     } catch (e) {
-      eventController.add(ErrorCurrencyDetailNotification(error: e as Exception?));
+      eventController.add(ErrorCurrencyDetailNotification(error: e));
     } finally {}
   }
 }
@@ -94,7 +94,7 @@ class CurrencyDetailModifiedNotification implements CurrencyDetailNotification {
 }
 
 class ErrorCurrencyDetailNotification implements CurrencyDetailNotification {
-  final Exception? error;
+  final Object? error;
 
   ErrorCurrencyDetailNotification({this.error});
 }
