@@ -7,7 +7,7 @@ class CurrencyDomainModel implements BaseDomainModel {
   String? symbol;
   int? fraction;
   int? avatarColor;
-  bool? isDefault;
+  bool isDefault;
 
   CurrencyDomainModel._(
       {required this.id,
@@ -24,7 +24,7 @@ class CurrencyDomainModel implements BaseDomainModel {
       required String? symbol,
       required int? fraction,
       required int? avatarColor,
-      required bool? isDefault,
+      required bool isDefault,
       bool isNew = false}) {
     return CurrencyDomainModel._(
       id: id,
@@ -37,6 +37,16 @@ class CurrencyDomainModel implements BaseDomainModel {
     );
   }
 
+  factory CurrencyDomainModel.fromMap(Map<String, dynamic> data) {
+    return CurrencyDomainModel(
+        id: data['id'],
+        name: data['name'],
+        symbol: data['symbol'],
+        fraction: data['fraction'],
+        avatarColor: data['color'],
+        isDefault: data['isDefault'] == 1 ? true : false);
+  }
+
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
       'id': this.id,
@@ -44,12 +54,12 @@ class CurrencyDomainModel implements BaseDomainModel {
       'color': this.avatarColor,
       'symbol': this.symbol,
       'fraction': this.fraction,
-      'isDefault ': this.isDefault,
+      'isDefault ': this.isDefault ? 1 : 0,
     };
     return map;
   }
 
-  @override
+  /*@override
   CurrencyDomainModel fromMap(Map<String, dynamic> map) {
     return (CurrencyDomainModel(
       id: map['id'],
@@ -57,7 +67,7 @@ class CurrencyDomainModel implements BaseDomainModel {
       avatarColor: map['color'],
       symbol: map['symbol'],
       fraction: map['fraction'],
-      isDefault: map['isDefault'],
+      isDefault: map['isDefault'] == 1 ? true : false,
     ));
-  }
+  }*/
 }

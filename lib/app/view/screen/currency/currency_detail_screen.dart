@@ -261,6 +261,7 @@ class _State extends State<CurrencyDetailScreen> {
     viewModel.updateData('symbol', _symbolController.text);
     viewModel.updateData('fraction', int.tryParse(_fractionController.text));
     viewModel.updateData('color', _currentColor.value);
+    viewModel.updateData('isDefault', false);
     viewModel.save();
   }
 

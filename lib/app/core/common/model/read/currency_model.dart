@@ -13,6 +13,15 @@ class CurrencyListReadModel {
     required this.avatarColor,
     required this.isDefault,
   });
+
+  factory CurrencyListReadModel.fromMap(Map<String, dynamic> data) {
+    return CurrencyListReadModel(
+        id: data['id'].toString(),
+        symbol: data['symbol'].toString(),
+        name: data['name'].toString(),
+        avatarColor: data['color'],
+        isDefault: data['isDefault'] == 1 ? true : false);
+  }
 }
 
 class CurrencyDetailReadModel {
@@ -39,7 +48,7 @@ class CurrencyDetailReadModel {
       symbol: map['symbol'].toString(),
       fraction: map['fraction'],
       avatarColor: map['color'],
-      isDefault: map['isDefault'],
+      isDefault: map['isDefault'] == 1 ? true : false,
     );
   }
 

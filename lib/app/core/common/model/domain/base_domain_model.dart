@@ -1,4 +1,4 @@
-abstract class BaseDomainModel{
+abstract class BaseDomainModel {
   Map<String, dynamic> toMap();
-  BaseDomainModel fromMap(Map<String, dynamic> map);
+  BaseDomainModel.fromMap(Map<String, dynamic> map);
 }

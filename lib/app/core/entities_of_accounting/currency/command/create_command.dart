@@ -7,7 +7,7 @@ class CurrencyCreateCommand extends BaseCommand {
   final String? symbol;
   final int? fraction;
   final int? avatarColor;
-  final bool? isDefault;
+  final bool isDefault;
 
   CurrencyCreateCommand({
     required this.id,
@@ -18,4 +18,11 @@ class CurrencyCreateCommand extends BaseCommand {
     required this.avatarColor,
     this.isDefault = false,
   });
+
+  /*Map<String, dynamic> toMap(){
+    return{
+      'id' : this.id,
+
+    };
+  }*/
 }
