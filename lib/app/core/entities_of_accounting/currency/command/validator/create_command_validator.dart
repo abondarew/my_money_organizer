@@ -26,7 +26,7 @@ class CurrencyCreateCommandValidator extends BaseCommandValidator<CurrencyCreate
     }
     ValidatorList name = ValidatorList([StringNotEmptyValidator()]);
     ValidatorList symbol = ValidatorList([StringNotEmptyValidator()]);
-    ValidatorList fraction = ValidatorList([ValueIsIntValidator()]);
+    ValidatorList fraction = ValidatorList([ValueIsNotIntValidator()]);
     ValidatorList color = ValidatorList([ColorValidator()]);
     container
       ..add(code, command.id)

@@ -1,16 +1,23 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:mymoneyorganizer/app/view/common/util/color_utils.dart';
+import 'package:mymoneyorganizer/app/view/common/util/crossfade_animation.dart';
 
 class CardWithAvatar extends StatelessWidget {
-  final Widget avatarChild;
+  final String avatarText;
   final Color? avatarBackgroundColor;
   final Widget cardBody;
   final VoidCallback? onTap;
   final Widget? buttonChild;
   final Color? buttonColor;
 
+  final Size avatarSize = const Size(90, 90);
+
   CardWithAvatar(
       {Key? key,
-      required this.avatarChild,
+      required this.avatarText,
       required this.avatarBackgroundColor,
       required this.cardBody,
       this.onTap,
@@ -21,115 +28,108 @@ class CardWithAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: double.infinity,
+      margin: EdgeInsets.all(8),
+      //padding: EdgeInsets.all(8),
+      width: double.infinity,
       child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 2),
-          child: Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
+        child: Stack(
+          children: [
+            _buildAvatar(withShadow: true),
+            Padding(
+              padding: const EdgeInsets.only(top: 24),
+              child: Card(
+                elevation: 4,
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: SizedBox(
-                    height: 90,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 2,
-                              color: Colors.grey.shade400,
-                              spreadRadius: 1,
+                  padding: EdgeInsets.fromLTRB(8, 60, 8, 8),
+                  child: cardBody,
+                ),
+              ),
+            ),
+            _buildAvatar(
+              withShadow: false,
+              child: AnimatedContainer(
+                decoration: BoxDecoration(color: avatarBackgroundColor, borderRadius: BorderRadius.circular(80), boxShadow: [
+                  BoxShadow(
+                    color: avatarBackgroundColor!,
+                    spreadRadius: 1,
+                    blurRadius: 4,
+                  ),
+                ]),
+                duration: Duration(milliseconds: 250),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(80),
+                    onTap: onTap,
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: CrossFade<String>(
+                          builder: (val) => Text(
+                            val!,
+                            style: TextStyle(
+                              fontSize: 400,
+                              fontWeight: FontWeight.bold,
+                              color: ColorUtils.contrastText(avatarBackgroundColor!, Colors.grey.shade200, Colors.grey.shade800),
                             ),
-                          ],
-                        ),
-                        child: CircleAvatar(
-                          radius: 40,
-                          backgroundColor: Colors.white,
+                          ),
+                          initialData: avatarText,
+                          data: avatarText,
+                          duration: Duration(milliseconds: 250),
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
-              Padding(
-                  padding: EdgeInsets.fromLTRB(4, 48, 4, 4),
-                  child: Card(
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(16, 56, 16, 16),
-                      child: cardBody,
+            ),
+            /*Padding(
+              padding: EdgeInsets.only(left: 16),
+              child: SizedBox.fromSize(
+                size: avatarSize,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: MaterialButton(
+                    onPressed: onTap,
+                    shape: StadiumBorder(),
+                    child: Icon(
+                      Icons.color_lens_outlined,
                     ),
-                    elevation: 5,
-                  )),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: _buildAvatar(),
+                    //color: Colors.blue,
+                  ),
                 ),
               ),
-            ],
-          ),
+            )*/
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildAvatar() {
-    return GestureDetector(
-      onTap: onTap,
-      child: SizedBox(
-        height: 90,
-        width: 100,
-        child: Stack(
-          alignment: Alignment.centerLeft,
-          children: [
-            Container(
-              child: CircleAvatar(
-                radius: 40,
-                backgroundColor: Colors.white,
-                child: CircleAvatar(
-                  radius: 35,
-                  backgroundColor: avatarBackgroundColor,
-                  child: Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: avatarChild,
+  Widget _buildAvatar({bool withShadow = false, Widget? child}) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16),
+      child: SizedBox.fromSize(
+        size: avatarSize,
+        child: Container(
+          //color: Colors.blue,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(80),
+            boxShadow: withShadow
+                ? [
+                    BoxShadow(
+                      blurRadius: 2,
+                      spreadRadius: 1,
+                      color: Colors.grey.shade400,
+                      offset: Offset.fromDirection(pi / 2, 1),
                     ),
-                  ),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment(1, .7),
-              child: Container(
-                width: 42,
-                height: 42,
-                child: Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: FloatingActionButton(
-                    backgroundColor: buttonColor,
-                    heroTag: 'pickColor',
-                    elevation: 3,
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: FittedBox(
-                        fit: BoxFit.fitWidth,
-                        child: buttonChild,
-                      ),
-                    ),
-                    onPressed: onTap,
-                  ),
-                ),
-              ),
-            ),
-          ],
+                  ]
+                : null,
+            color: Colors.white,
+          ),
+          padding: EdgeInsets.all(4),
+          child: child,
         ),
       ),
     );

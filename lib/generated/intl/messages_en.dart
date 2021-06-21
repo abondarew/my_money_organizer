@@ -29,8 +29,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "aaa": MessageLookupByLibrary.simpleMessage("aaa"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "choice_color": MessageLookupByLibrary.simpleMessage("choice color"),
         "code": m0,
         "command_not_identifier":
             MessageLookupByLibrary.simpleMessage("command not identified"),

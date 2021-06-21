@@ -26,5 +26,5 @@
   "command_not_identifier" : "command not identified",
   "invalid_color" : "Invalid color value",
   "setAsDefault" : "Set as default",
-  "aaa" : "aaa"
+  "choice_color" : "choice color"
 }

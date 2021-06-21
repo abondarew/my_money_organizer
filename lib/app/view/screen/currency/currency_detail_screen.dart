@@ -23,7 +23,6 @@ class CurrencyDetailScreen extends StatefulWidget {
 
 class _State extends State<CurrencyDetailScreen> {
   final CurrencyDetailViewModel viewModel = CurrencyDetailViewModelBuilder.build();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
@@ -32,15 +31,16 @@ class _State extends State<CurrencyDetailScreen> {
 
   CurrencyDetailReadModel? model;
   Map<String, String?> _errorDetail = Map();
-  bool? _isModified = false;
-  List<Color> _colorList = [...Colors.primaries, ...Colors.accents];
-  Color? dropdownValue; // = Colors.red;
-  Color? _currentColor;
+  bool _isModified = false;
+  //List<Color> _colorList = [...Colors.primaries, ...Colors.accents];
+  Color? dropdownValue;
+  late Color _currentColor;
 
   @override
   void initState() {
     viewModel.event.listen((event) => dispatch(event));
     viewModel.load(id: widget.currencyId);
+    _currentColor = Colors.white;
     super.initState();
   }
 
@@ -54,21 +54,25 @@ class _State extends State<CurrencyDetailScreen> {
         action: [
           Visibility(
             child: IconButton(icon: Icon(Icons.save_alt), onPressed: () => saveData()),
-            visible: _isModified!,
+            visible: _isModified,
           ),
         ],
       ),
       body: CardWithAvatar(
         cardBody: formBuild(),
         onTap: () => _pickColor(),
-        avatarChild: Text(
+        avatarText: '${_symbolController.text == '' ? ' ' : _symbolController.text}',
+        /*Text(
           '${_symbolController.text == '' ? '?' : _symbolController.text}',
-          style: TextStyle(fontSize: 400, fontWeight: FontWeight.bold),
-        ),
+          style: TextStyle(
+              fontSize: 400,
+              fontWeight: FontWeight.bold,
+              color: ColorUtils.contrastText(_currentColor, Colors.grey.shade100, Colors.grey.shade900)),
+        ),*/
         avatarBackgroundColor: _currentColor,
         buttonChild: Icon(Icons.color_lens_rounded),
       ),
-      floatingActionButton: viewModel.isNew
+      floatingActionButton: (viewModel.isNew)
           ? FloatingActionButton(
               heroTag: 'selectFromList',
               child: Icon(Icons.list_sharp),
@@ -86,7 +90,7 @@ class _State extends State<CurrencyDetailScreen> {
                   showCurrencyCode: true,
                   showCurrencyName: true,
                   showFlag: true,
-                )
+                ),
               },
             )
           : Container(),
@@ -97,121 +101,135 @@ class _State extends State<CurrencyDetailScreen> {
     if (!viewModel.isNew && model == null) {
       //wait data
       return Center(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          CircularProgressIndicator(),
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: Text(S.of(context).loading),
-          )
-        ]),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: Text(S.of(context).loading),
+            ),
+          ],
+        ),
       );
     } else {
       //output data
-      if (!viewModel.isNew && !_isModified! && model != null) {
+      if (!viewModel.isNew && !_isModified && model != null) {
         _idController.text = model!.id;
         _nameController.text = model!.name;
         _symbolController.text = model!.symbol;
         _fractionController.text = model!.fraction.toString();
       }
-      return Form(
-        key: _formKey,
-        onChanged: setModified,
-        child: Column(
-          children: [
-            TextField(
-              controller: _idController,
-              decoration: InputDecoration(
-                  helperText: 'helper text',
-                  hintText: 'hint text',
-                  suffixText: 'suffix',
-                  prefixText: 'prefix',
-                  labelText: 'label',
-                  errorText: _errorDetail['id']),
+      return Column(
+        children: [
+          TextField(
+            controller: _idController,
+            readOnly: (!viewModel.isNew),
+            enabled: (viewModel.isNew),
+            maxLength: 3,
+            textCapitalization: TextCapitalization.characters,
+            onChanged: (val) => setModified(),
+            decoration: InputDecoration(
+              labelText: S.of(context).code(S.of(context).currency),
+              hintText: S.of(context).code(''),
+              errorBorder: _getErrorBorder(),
+              counterText: '',
+              errorText: _errorDetail['id'],
             ),
-            TextFormField(
-              controller: _idController,
-              readOnly: (!viewModel.isNew),
-              enabled: (viewModel.isNew),
-              onSaved: (value) => viewModel.updateData('id', value.toString()),
-              validator: (value) => _errorDetail['id'],
-              decoration: InputDecoration(
-                labelText: S.of(context).code(S.of(context).currency),
-                hintText: S.of(context).code(''),
-                counterText: '',
-              ),
-              maxLength: 3,
-              textCapitalization: TextCapitalization.characters,
+          ),
+          TextField(
+            controller: _nameController,
+            onChanged: (val) => setModified(),
+            decoration: InputDecoration(
+              labelText: '${S.of(context).currency} ${S.of(context).name}',
+              hintText: S.of(context).name,
+              errorBorder: _getErrorBorder(),
+              errorText: _errorDetail['name'],
             ),
-            TextFormField(
-              controller: _nameController,
-              validator: (value) => _errorDetail['name'],
-              onSaved: (value) => viewModel.updateData('name', value.toString()),
-              decoration: InputDecoration(
-                labelText: '${S.of(context).currency} ${S.of(context).name}',
-                hintText: S.of(context).name,
-              ),
-            ),
-            TextFormField(
-              controller: _symbolController,
-              validator: (value) => _errorDetail['symbol'],
-              onSaved: (value) => viewModel.updateData('symbol', value.toString()),
-              onChanged: (value) => {setState(() {})},
-              decoration: InputDecoration(
+          ),
+          TextField(
+            controller: _symbolController,
+            onChanged: (value) => {
+              setState(() {
+                setModified();
+              }),
+            },
+            decoration: InputDecoration(
                 labelText: '${S.of(context).currency} ${S.of(context).symbol}',
                 hintText: S.of(context).symbol,
-              ),
+                errorBorder: _getErrorBorder(),
+                errorText: _errorDetail['symbol']),
+          ),
+          TextField(
+            controller: _fractionController,
+            onChanged: (val) => setModified(),
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              labelText: S.of(context).fraction,
+              hintText: S.of(context).fraction,
+              errorBorder: _getErrorBorder(),
+              errorText: _errorDetail['fraction'],
             ),
-            TextFormField(
-              controller: _fractionController,
-              validator: (value) => _errorDetail['fraction'],
-              onSaved: (value) => viewModel.updateData('fraction', int.tryParse(value!)),
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: S.of(context).fraction,
-                hintText: S.of(context).fraction,
-              ),
-            ),
-            SizedBox(height: 32)
-          ],
-        ),
+          ),
+          SizedBox(height: 32)
+        ],
       );
     }
   }
 
+  OutlineInputBorder _getErrorBorder() {
+    return OutlineInputBorder(
+      borderSide: BorderSide(
+        color: Colors.redAccent,
+      ),
+    );
+  }
+
   void _pickColor() {
-    //print('tap-tap');
-    ColorPicker().showColorPicker(
-        context: context,
-        colors: _colorList,
-        onSelect: (val) => {
-              setState(() {
-                _currentColor = val;
-                setModified();
-                viewModel.updateData('color', _currentColor!.value);
-              })
-            },
-        currentColor: _currentColor);
-    /*_currentColor = Colors.red;
-    //_cardKey.currentState.setBackgroundColor(_currentColor);
+    Color _oldColor = _currentColor;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            children: [
+              Icon(Icons.color_lens),
+              Text('${S.of(context).choice_color}'),
+            ],
+          ),
+          content: Container(
+            child: ColorPicker(
+              pickerColor: _currentColor,
+              onChanged: (color) => _setNewColor(color),
+            ),
+          ),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(context, 'cancel'), child: Text(S.of(context).cancel)),
+            TextButton(onPressed: () => Navigator.pop(context, 'ok'), child: Text(S.of(context).ok)),
+          ],
+        );
+      },
+    ).then((value) => {if (value != 'ok') _setNewColor(_oldColor)});
+  }
+
+  void _setNewColor(Color color) {
     setState(() {
-      //_cardKey.currentState.setState(() {});
-    });*/
+      _currentColor = color;
+      setModified();
+    });
   }
 
   void dispatch(CurrencyDetailNotification event) {
     if (event is ResultCurrencyDetailNotification) {
-      setState(() {
-        model = event.currencyReadModel;
-        if (!viewModel.isNew && model != null) {
+      model = event.currencyReadModel;
+      if (!viewModel.isNew && model != null) {
+        setState(() {
           _currentColor = Color(model!.avatarColor!);
-          //_cardKey.currentState.setBackgroundColor(_currentColor);
-        } else {
-          _currentColor = _colorList[Random().nextInt(_colorList.length - 1)];
-          //_cardKey.currentState.setBackgroundColor(_currentColor);
-          viewModel.updateData('color', _currentColor!.value);
-        }
-      });
+        });
+      } else {
+        _setNewColor(defaultAvailableColors[Random().nextInt(defaultAvailableColors.length - 1)]);
+      }
     }
     if (event is CurrencyDetailModifiedNotification) {
       setState(() {
@@ -230,7 +248,6 @@ class _State extends State<CurrencyDetailScreen> {
           _errorDetail['symbol'] = error.symbol.length > 0 ? error.symbol.first : null;
           _errorDetail['fraction'] = error.fraction.length > 0 ? error.fraction.first : null;
         });
-        _formKey.currentState!.validate();
       } else {
         SnackBar snackBar = SnackBar(content: Text(S.of(context).unknown_error + event.error.toString()));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -239,7 +256,11 @@ class _State extends State<CurrencyDetailScreen> {
   }
 
   saveData() {
-    _formKey.currentState!.save();
+    viewModel.updateData('id', _idController.text);
+    viewModel.updateData('name', _nameController.text);
+    viewModel.updateData('symbol', _symbolController.text);
+    viewModel.updateData('fraction', int.tryParse(_fractionController.text));
+    viewModel.updateData('color', _currentColor.value);
     viewModel.save();
   }
 

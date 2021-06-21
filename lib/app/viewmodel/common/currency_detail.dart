@@ -88,9 +88,9 @@ class ResultCurrencyDetailNotification implements CurrencyDetailNotification {
 }
 
 class CurrencyDetailModifiedNotification implements CurrencyDetailNotification {
-  final bool? isModified;
+  final bool isModified;
 
-  CurrencyDetailModifiedNotification({this.isModified});
+  CurrencyDetailModifiedNotification({required this.isModified});
 }
 
 class ErrorCurrencyDetailNotification implements CurrencyDetailNotification {

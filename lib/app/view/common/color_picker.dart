@@ -1,92 +1,119 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/rendering.dart';
+import 'package:mymoneyorganizer/app/view/common/util/color_utils.dart';
 
-class ColorPicker {
-  void showColorPicker(
-      {required BuildContext context, required List<Color> colors, required ValueChanged<Color> onSelect, Color? currentColor}) {
-    /*showModalBottomSheet(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-        ),
-        context: context,
-        builder: (_) => _builder(context: context, colors: colors, onSelect: onSelect, currentColor: currentColor));*/
+const List<Color> defaultAvailableColors = [
+  Colors.red,
+  Colors.pink,
+  Colors.purple,
+  Colors.deepPurple,
+  Colors.indigo,
+  Colors.blue,
+  Colors.lightBlue,
+  Colors.cyan,
+  Colors.teal,
+  Colors.green,
+  Colors.lightGreen,
+  Colors.lime,
+  Colors.yellow,
+  Colors.amber,
+  Colors.orange,
+  Colors.deepOrange,
+  Colors.brown,
+  Colors.grey,
+  Colors.blueGrey,
+  Colors.black,
+];
 
-    showDialog<CircleAvatar>(
-        context: context,
-        builder: (BuildContext context) => SimpleDialog(
-              title: Text('head'),
-              children: <Widget>[
-                /*ListTile(
-            leading: const Icon(Icons.account_circle),
-            title: Text('user@example.com'),
-            onTap: () => Navigator.pop(context, 'user@example.com'),
-          ),
-          ListTile(
-            leading: const Icon(Icons.account_circle),
-            title: Text('user2@gmail.com'),
-            onTap: () => Navigator.pop(context, 'user2@gmail.com'),
-          ),
-          ListTile(
-            leading: const Icon(Icons.add_circle),
-            title: Text('Add account'),
-            onTap: () => Navigator.pop(context, 'Add account'),
-          ),*/
-                GridView.count(
-                    crossAxisCount: 5, //(MediaQuery.of(context).size.width / 80).round(),
-                    children: List.generate(colors.length, (int index) {
-                      return _item(index, colors[index], (colors[index].value == currentColor!.value), onSelect);
-                    })),
-              ],
-            )).then(
-      (returnVal) {
-        if (returnVal != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('You clicked: $returnVal'),
-              action: SnackBarAction(label: 'OK', onPressed: () {}),
-            ),
-          );
-        }
-      },
+typedef LayoutBuilder = Widget Function(BuildContext context, List<Color> colors, ItemPicker child);
+typedef ItemBuilder = Widget Function(Color color, bool isCurrent, void Function() changeColor);
+typedef ItemPicker = Widget Function(Color color);
+
+class ColorPicker extends StatefulWidget {
+  final Color pickerColor;
+  final ValueChanged<Color> onChanged;
+  final List<Color> availableColors;
+  final LayoutBuilder layoutBuilder;
+  final ItemBuilder itemBuilder;
+
+  ColorPicker(
+      {required this.pickerColor,
+      required this.onChanged,
+      this.availableColors = defaultAvailableColors,
+      this.layoutBuilder = defaultLayoutBuilder,
+      this.itemBuilder = defaultItemBuilder});
+
+  @override
+  State<ColorPicker> createState() => _State(pickerColor);
+
+  static Widget defaultLayoutBuilder(BuildContext context, List<Color> colors, ItemPicker child) {
+    return Container(
+      width: 300,
+      height: 300,
+      child: GridView.count(
+        crossAxisCount: 4,
+        /*crossAxisSpacing: 10,
+        mainAxisSpacing: 10,*/
+        children: colors.map((Color color) => child(color)).toList(),
+      ),
     );
   }
 
-  Widget _builder(
-      {required BuildContext context, required ValueChanged<Color> onSelect, required List<Color> colors, Color? currentColor}) {
-    int _count = (MediaQuery.of(context).size.width / 80).round();
-    return DraggableScrollableSheet(
-        expand: false,
-        //maxChildSize: 1,
-        builder: (BuildContext context, ScrollController scrollController) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              child: GridView.count(
-                crossAxisCount: _count,
-                controller: scrollController,
-                children: List.generate(colors.length, (int index) {
-                  return _item(index, colors[index], (colors[index].value == currentColor!.value), onSelect);
-                }),
-              ),
-            ),
-          );
-        });
-  }
-
-  Widget _item(int index, Color color, bool isCurrent, ValueChanged<Color> onTap) {
+  static Widget defaultItemBuilder(Color color, bool isChecked, void Function() onChanged) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
-      child: Ink(
-        child: InkWell(
-          onTap: () => {onTap(color)},
-          child: CircleAvatar(
-            child: isCurrent ? Icon(Icons.check) : Container(),
-            backgroundColor: color,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          color: color,
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(50),
+            onTap: () => onChanged(),
+            child: AnimatedOpacity(
+              duration: const Duration(milliseconds: 300),
+              opacity: isChecked ? 1.0 : 0.0,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Icon(
+                  Icons.check_outlined,
+                  color: ColorUtils.contrastText(color, Colors.white70, Colors.black87),
+                  size: 135,
+                ),
+              ),
+            ),
           ),
         ),
       ),
     );
+  }
+}
+
+class _State extends State<ColorPicker> {
+  late Color _currentColor;
+
+  _State(this._currentColor);
+
+  @override
+  void initState() {
+    _currentColor = widget.pickerColor;
+    super.initState();
+  }
+
+  void _selectColor(Color color) {
+    setState(() {
+      _currentColor = color;
+    });
+    //print('select');
+    widget.onChanged(color);
+    //valueChanged(color);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.layoutBuilder(context, widget.availableColors,
+        (Color color) => widget.itemBuilder(color, color.value == _currentColor.value, () => _selectColor(color)));
   }
 }

@@ -290,11 +290,11 @@ class S {
     );
   }
 
-  /// `aaa`
-  String get aaa {
+  /// `choice color`
+  String get choice_color {
     return Intl.message(
-      'aaa',
-      name: 'aaa',
+      'choice color',
+      name: 'choice_color',
       desc: '',
       args: [],
     );
