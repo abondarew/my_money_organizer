@@ -3,6 +3,8 @@ import 'package:mymoneyorganizer/app/core/common/base/command/base_validator.dar
 import 'package:mymoneyorganizer/app/core/common/model/domain/currency_model.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/command/create_command.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/repository/base_repository.dart';
+import 'package:mymoneyorganizer/app/eventbus/eventbus_core.dart';
+import 'package:mymoneyorganizer/app/eventbus/events/base/currency_changed.dart';
 
 class CurrencyCreateCommandHandler extends BaseCommandHandler<CurrencyCreateCommand> {
   final BaseCommandValidator<CurrencyCreateCommand> validator;
@@ -23,5 +25,6 @@ class CurrencyCreateCommandHandler extends BaseCommandHandler<CurrencyCreateComm
       isDefault: command.isDefault,
     );
     await this.repository.save(model);
+    EventBusCore.getInstance().addEvent(CurrencyChangedEvent());
   }
 }

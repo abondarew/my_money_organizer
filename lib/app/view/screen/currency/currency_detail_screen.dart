@@ -8,7 +8,7 @@ import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/comman
 import 'package:mymoneyorganizer/app/view/common/card_with_avatar.dart';
 import 'package:mymoneyorganizer/app/view/common/color_picker.dart';
 import 'package:mymoneyorganizer/app/view/common/scroll_handled_appbar.dart';
-import 'package:mymoneyorganizer/app/viewmodel/common/currency_detail.dart';
+import 'package:mymoneyorganizer/app/viewmodel/currency/currency_detail.dart';
 import 'package:mymoneyorganizer/generated/l10n.dart';
 
 class CurrencyDetailScreen extends StatefulWidget {
@@ -32,6 +32,7 @@ class _State extends State<CurrencyDetailScreen> {
   CurrencyDetailReadModel? model;
   Map<String, String?> _errorDetail = Map();
   bool _isModified = false;
+
   //List<Color> _colorList = [...Colors.primaries, ...Colors.accents];
   Color? dropdownValue;
   late Color _currentColor;
@@ -47,7 +48,7 @@ class _State extends State<CurrencyDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade300,
+      //backgroundColor: Colors.grey.shade300,
       appBar: ScrollHandledAppBar(
         scrollController: this.widget._scrollController,
         title: Text(S.of(context).currency_detail_title),
@@ -225,10 +226,11 @@ class _State extends State<CurrencyDetailScreen> {
       model = event.currencyReadModel;
       if (!viewModel.isNew && model != null) {
         setState(() {
-          _currentColor = Color(model!.avatarColor!);
+          _currentColor = Color(model!.avatarColor);
         });
       } else {
         _setNewColor(defaultAvailableColors[Random().nextInt(defaultAvailableColors.length - 1)]);
+        _fractionController.text = '0';
       }
     }
     if (event is CurrencyDetailModifiedNotification) {

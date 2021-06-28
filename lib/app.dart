@@ -5,7 +5,7 @@ import 'package:mymoneyorganizer/app/view/screen/currency/currency_list_screen.d
 import 'package:mymoneyorganizer/app/view/theme/app_theme_data_builder.dart';
 import 'package:mymoneyorganizer/generated/l10n.dart';
 
-class MainApp extends StatelessWidget{
+class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,7 +18,7 @@ class MainApp extends StatelessWidget{
       supportedLocales: S.delegate.supportedLocales,
       theme: AppThemeBuilder.buildThemeData(context),
       home: CurrencyListScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
-
 }

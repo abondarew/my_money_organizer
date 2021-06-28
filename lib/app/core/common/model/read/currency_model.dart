@@ -2,9 +2,9 @@ class CurrencyListReadModel {
   final String id;
   final String symbol;
   final String name;
-  final int? avatarColor;
-  final bool? isDefault;
-  bool? selected = false;
+  final int avatarColor;
+  final bool isDefault;
+  bool selected = false;
 
   CurrencyListReadModel({
     required this.id,
@@ -28,9 +28,9 @@ class CurrencyDetailReadModel {
   final String id;
   final String name;
   final String symbol;
-  final int? fraction;
-  final int? avatarColor;
-  final bool? isDefault;
+  final int fraction;
+  final int avatarColor;
+  final bool isDefault;
 
   CurrencyDetailReadModel({
     required this.id,

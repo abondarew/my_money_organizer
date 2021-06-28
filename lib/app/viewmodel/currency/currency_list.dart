@@ -11,7 +11,6 @@ class CurrencyListViewModel {
   final CurrencyQueryDispatcher _queryDispatcher;
   final CurrencyCommandDispatcher _commandDispatcher;
 
-  //EventBusCore eventBus = EventBusCore.getInstance();
   final StreamController<CurrencyListNotification> _eventController = StreamController.broadcast();
 
   Stream<CurrencyListNotification> get event {
@@ -39,7 +38,9 @@ class CurrencyListViewModel {
 class CurrencyListViewModelBuilder {
   static CurrencyListViewModel build() {
     return CurrencyListViewModel(
-        CurrencyCoreContainer.getInstance().queryDispatcher, CurrencyCoreContainer.getInstance().commandDispatcher);
+      CurrencyCoreContainer.getInstance().queryDispatcher,
+      CurrencyCoreContainer.getInstance().commandDispatcher,
+    );
   }
 }
 
