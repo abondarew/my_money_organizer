@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:mymoneyorganizer/app/view/common/util/color_utils.dart';
 
 const List<Color> defaultAvailableColors = [
+  //Colors.transparent,
   Colors.red,
   Colors.pink,
   Colors.purple,

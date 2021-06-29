@@ -163,15 +163,16 @@ class _State extends State<CurrencyListScreen> with TickerProviderStateMixin {
   Widget _buildItemContent({required int index}) {
     bool isNotDefault = !currencyList[index].isDefault;
     return Padding(
-      padding: const EdgeInsets.all(3),
+      padding: EdgeInsets.all(3), //currencyList[index].selected ? .5 : 4),
       child: AnimatedContainer(
+        //padding: EdgeInsets.all(currencyList[index].selected ? 3 : 1),
         decoration: BoxDecoration(
           color: currencyList[index].selected ? Colors.blue.shade100 : Colors.white,
           borderRadius: BorderRadius.circular(5),
           boxShadow: [
             currencyList[index].selected
-                ? BoxShadow(color: Colors.grey.shade500, blurRadius: 4, spreadRadius: 3, offset: Offset(2, 4))
-                : BoxShadow(color: Colors.grey.shade400, blurRadius: 1, spreadRadius: 1, offset: Offset(.5, 1))
+                ? BoxShadow(color: Colors.grey.shade400, blurRadius: 3, spreadRadius: 3, offset: Offset(3, 3))
+                : BoxShadow(color: Colors.grey.shade400, blurRadius: 1, spreadRadius: 1, offset: Offset(1, 1))
           ],
         ),
         duration: Duration(milliseconds: 350),
@@ -183,50 +184,67 @@ class _State extends State<CurrencyListScreen> with TickerProviderStateMixin {
               onLongPress: () => _itemOnLongPress(index),
               child: Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: CircleAvatar(
-                      child: Text(currencyList[index].symbol),
-                      backgroundColor: Color(currencyList[index].avatarColor),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 8, 16, 8),
-                    child: Container(
-                      color: Colors.grey.shade300,
-                      width: 1,
-                      height: 45,
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        children: <Widget>[
-                          Text(
-                            currencyList[index].name,
-                            style: TextStyle(fontSize: 18),
-                            textAlign: TextAlign.left,
-                          ),
-                          Text(
-                            currencyList[index].id,
-                            style: TextStyle(fontSize: 14, color: Colors.blueGrey),
-                            textAlign: TextAlign.left,
-                          )
-                        ],
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                      ),
-                    ],
-                  ),
-                  Spacer(
-                    flex: 1,
-                  ),
+                  _buildAvatar(index: index),
+                  _buildVerticalDivider(),
+                  _buildNameSection(index: index),
+                  Spacer(flex: 1),
                   _buildPopUpButton(isNotDefault, index),
                 ],
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildAvatar({required int index}) {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: CircleAvatar(
+        child: Padding(
+          padding: const EdgeInsets.all(3.0),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              currencyList[index].symbol,
+              style: TextStyle(fontSize: 48),
+            ),
+          ),
+        ),
+        backgroundColor: Color(currencyList[index].avatarColor),
+      ),
+    );
+  }
+
+  Widget _buildVerticalDivider() {
+    return Padding(
+      padding: const EdgeInsets.all(0),
+      child: Container(
+        color: Colors.grey.shade300,
+        width: 1,
+        height: 45,
+      ),
+    );
+  }
+
+  Widget _buildNameSection({required int index}) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            currencyList[index].name,
+            style: TextStyle(fontSize: 18),
+            textAlign: TextAlign.left,
+          ),
+          Text(
+            currencyList[index].id,
+            style: TextStyle(fontSize: 14, color: Colors.blueGrey),
+            textAlign: TextAlign.left,
+          ),
+        ],
       ),
     );
   }
