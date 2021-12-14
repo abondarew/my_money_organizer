@@ -23,16 +23,16 @@ class _State extends State<ScrollHandledAppBar> {
 
   @override
   void initState() {
-    if (this.widget.scrollController != null) {
-      this.widget.scrollController!.addListener(this.scrollListener);
+    if (widget.scrollController != null) {
+      this.widget.scrollController!.addListener(scrollListener);
     }
     super.initState();
   }
 
   @override
   void dispose() {
-    if (this.widget.scrollController != null) {
-      this.widget.scrollController!.removeListener(this.scrollListener);
+    if (widget.scrollController != null) {
+      widget.scrollController!.removeListener(scrollListener);
     }
     super.dispose();
   }
@@ -41,10 +41,10 @@ class _State extends State<ScrollHandledAppBar> {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: displayElevation ? null : 0,
-      leading: this.widget.leading,
-      title: this.widget.title,
-      actions: this.widget.action,
-      bottom: this.widget.bottom,
+      leading: widget.leading,
+      title: widget.title,
+      actions: widget.action,
+      bottom: widget.bottom,
     );
   }
 

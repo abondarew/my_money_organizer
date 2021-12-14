@@ -13,9 +13,7 @@ class DatabaseConnectionSqlite extends DatabaseBaseConnection {
   DatabaseConnectionSqlite._();
 
   factory DatabaseConnectionSqlite.getInstance() {
-    if (_instance == null) {
-      _instance = DatabaseConnectionSqlite._();
-    }
+    _instance ??= DatabaseConnectionSqlite._();
     return _instance!;
   }
 
@@ -39,21 +37,21 @@ class DatabaseConnectionSqlite extends DatabaseBaseConnection {
 
   @override
   Future<void> transaction(Future<void> Function(DataBaseTransaction txn) action) async {
-    SQFLite.Database? _db = await this._getDB();
+    SQFLite.Database? _db = await _getDB();
     await _db!.transaction((txn) async {
-      await action(new DataBaseTransactionSqlite(txn));
+      await action(DataBaseTransactionSqlite(txn)); //await action(new DataBaseTransactionSqlite(txn));
     });
   }
 }
 
 class DataBaseTransactionSqlite implements DataBaseTransaction {
-  SQFLite.DatabaseExecutor _executor;
+  final SQFLite.DatabaseExecutor executor;
 
-  DataBaseTransactionSqlite(this._executor);
+  DataBaseTransactionSqlite(this.executor);
 
   @override
   Future<void> insert(String table, Map<String, dynamic> data) async {
-    this._executor.insert(table, data);
+    executor.insert(table, data);
   }
 
   @override
@@ -67,7 +65,7 @@ class DataBaseTransactionSqlite implements DataBaseTransaction {
       String? orderBy,
       int? limit,
       int? offset}) async {
-    return await this._executor.query(table,
+    return await executor.query(table,
         distinct: distinct,
         columns: columns,
         where: where,
@@ -81,11 +79,11 @@ class DataBaseTransactionSqlite implements DataBaseTransaction {
 
   @override
   Future<void> update(String table, Map<String, dynamic> data, {String? where, List? whereArgs}) async {
-    await this._executor.update(table, data, where: where, whereArgs: whereArgs);
+    await executor.update(table, data, where: where, whereArgs: whereArgs);
   }
 
   @override
   Future<void> delete(String table, String id) async {
-    await this._executor.delete(table, where: 'id = ?', whereArgs: [id]);
+    await executor.delete(table, where: 'id = ?', whereArgs: [id]);
   }
 }

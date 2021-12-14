@@ -14,7 +14,7 @@ class CurrencyCreateCommandHandler extends BaseCommandHandler<CurrencyCreateComm
 
   @override
   Future<void> execute(CurrencyCreateCommand command) async {
-    await this.validator.validate(command);
+    await validator.validate(command);
     CurrencyDomainModel model = CurrencyDomainModel(
       id: command.id,
       isNew: command.isNew,
@@ -24,7 +24,7 @@ class CurrencyCreateCommandHandler extends BaseCommandHandler<CurrencyCreateComm
       avatarColor: command.avatarColor,
       isDefault: command.isDefault,
     );
-    await this.repository.save(model);
+    await repository.save(model);
     EventBusCore.getInstance().addEvent(CurrencyChangedEvent());
   }
 }

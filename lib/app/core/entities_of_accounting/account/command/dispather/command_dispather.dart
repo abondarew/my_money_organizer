@@ -9,7 +9,7 @@ import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/command
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/command/delete_command.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/command/open_close_account_command.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/account/command/update_command.dart';
-import 'package:mymoneyorganizer/generated/l10n.dart';
+import 'package:mymoneyorganizer/app/lib/localization/utils.dart';
 
 class AccountCommandDispatcher extends BaseCommandDispatcher {
   final BaseCommandHandler<AccountCreateCommand> createCommandHandler;
@@ -40,7 +40,7 @@ class AccountCommandDispatcher extends BaseCommandDispatcher {
       updateCommandHandler.execute(command);
     }
     if (!commandIsExecuting) {
-      throw InvalidCommandException(S.current.command_not_identifier);
+      throw InvalidCommandException(t('errors.command.not_identifier'));
     }
   }
 }

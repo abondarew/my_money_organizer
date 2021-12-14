@@ -5,17 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mymoneyorganizer/app/core/common/model/read/currency_model.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/command/validator/exception/create_command_exception.dart';
+import 'package:mymoneyorganizer/app/lib/localization/utils.dart';
 import 'package:mymoneyorganizer/app/view/common/card_with_avatar.dart';
 import 'package:mymoneyorganizer/app/view/common/color_picker.dart';
 import 'package:mymoneyorganizer/app/view/common/scroll_handled_appbar.dart';
 import 'package:mymoneyorganizer/app/viewmodel/currency/currency_detail.dart';
-import 'package:mymoneyorganizer/generated/l10n.dart';
 
 class CurrencyDetailScreen extends StatefulWidget {
   final ScrollController _scrollController = ScrollController();
   final String? currencyId;
 
-  CurrencyDetailScreen({this.currencyId});
+  CurrencyDetailScreen({Key? key, this.currencyId}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _State();
@@ -30,7 +30,7 @@ class _State extends State<CurrencyDetailScreen> {
   final TextEditingController _fractionController = TextEditingController();
 
   CurrencyDetailReadModel? model;
-  Map<String, String?> _errorDetail = Map();
+  final Map<String, String?> _errorDetail = {};
   bool _isModified = false;
 
   //List<Color> _colorList = [...Colors.primaries, ...Colors.accents];
@@ -50,11 +50,11 @@ class _State extends State<CurrencyDetailScreen> {
     return Scaffold(
       //backgroundColor: Colors.grey.shade300,
       appBar: ScrollHandledAppBar(
-        scrollController: this.widget._scrollController,
-        title: Text(S.of(context).currency_detail_title),
+        scrollController: widget._scrollController,
+        title: Text(t('currency.form.title.detail')),
         action: [
           Visibility(
-            child: IconButton(icon: Icon(Icons.save_alt), onPressed: () => saveData()),
+            child: IconButton(icon: const Icon(Icons.save_alt), onPressed: () => saveData()),
             visible: _isModified,
           ),
         ],
@@ -62,7 +62,7 @@ class _State extends State<CurrencyDetailScreen> {
       body: CardWithAvatar(
         cardBody: formBuild(),
         onTap: () => _pickColor(),
-        avatarText: '${_symbolController.text == '' ? ' ' : _symbolController.text}',
+        avatarText: _symbolController.text == '' ? ' ' : _symbolController.text,
         /*Text(
           '${_symbolController.text == '' ? '?' : _symbolController.text}',
           style: TextStyle(
@@ -71,12 +71,12 @@ class _State extends State<CurrencyDetailScreen> {
               color: ColorUtils.contrastText(_currentColor, Colors.grey.shade100, Colors.grey.shade900)),
         ),*/
         avatarBackgroundColor: _currentColor,
-        buttonChild: Icon(Icons.color_lens_rounded),
+        buttonChild: const Icon(Icons.color_lens_rounded),
       ),
       floatingActionButton: (viewModel.isNew)
           ? FloatingActionButton(
               heroTag: 'selectFromList',
-              child: Icon(Icons.list_sharp),
+              child: const Icon(Icons.list_sharp),
               onPressed: () => {
                 showCurrencyPicker(
                   context: context,
@@ -105,10 +105,10 @@ class _State extends State<CurrencyDetailScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(),
+            const CircularProgressIndicator(),
             Padding(
-              padding: EdgeInsets.all(16),
-              child: Text(S.of(context).loading),
+              padding: const EdgeInsets.all(16),
+              child: Text(t('common.wait')),
             ),
           ],
         ),
@@ -131,8 +131,8 @@ class _State extends State<CurrencyDetailScreen> {
             textCapitalization: TextCapitalization.characters,
             onChanged: (val) => setModified(),
             decoration: InputDecoration(
-              labelText: S.of(context).code(S.of(context).currency),
-              hintText: S.of(context).code(''),
+              labelText: t('currency.form.code'), //S.of(context).code(S.of(context).currency),
+              hintText: t('currency.form.code.hint'), //S.of(context).code(''),
               errorBorder: _getErrorBorder(),
               counterText: '',
               errorText: _errorDetail['id'],
@@ -142,8 +142,8 @@ class _State extends State<CurrencyDetailScreen> {
             controller: _nameController,
             onChanged: (val) => setModified(),
             decoration: InputDecoration(
-              labelText: '${S.of(context).currency} ${S.of(context).name}',
-              hintText: S.of(context).name,
+              labelText: t('currency.form.name'),
+              hintText: t('currency.form.name.hint'),
               errorBorder: _getErrorBorder(),
               errorText: _errorDetail['name'],
             ),
@@ -156,8 +156,8 @@ class _State extends State<CurrencyDetailScreen> {
               }),
             },
             decoration: InputDecoration(
-                labelText: '${S.of(context).currency} ${S.of(context).symbol}',
-                hintText: S.of(context).symbol,
+                labelText: t('currency.form.symbol'),
+                hintText: t('currency.form.symbol.hint'),
                 errorBorder: _getErrorBorder(),
                 errorText: _errorDetail['symbol']),
           ),
@@ -167,20 +167,20 @@ class _State extends State<CurrencyDetailScreen> {
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
-              labelText: S.of(context).fraction,
-              hintText: S.of(context).fraction,
+              labelText: t('currency.form.fraction'),
+              hintText: t('currency.form.fraction.hint'),
               errorBorder: _getErrorBorder(),
               errorText: _errorDetail['fraction'],
             ),
           ),
-          SizedBox(height: 32)
+          const SizedBox(height: 32)
         ],
       );
     }
   }
 
   OutlineInputBorder _getErrorBorder() {
-    return OutlineInputBorder(
+    return const OutlineInputBorder(
       borderSide: BorderSide(
         color: Colors.redAccent,
       ),
@@ -195,19 +195,17 @@ class _State extends State<CurrencyDetailScreen> {
         return AlertDialog(
           title: Row(
             children: [
-              Icon(Icons.color_lens),
-              Text('${S.of(context).choice_color}'),
+              const Icon(Icons.color_lens),
+              Text(t('currency.form.dialog.choice_color')),
             ],
           ),
-          content: Container(
-            child: ColorPicker(
-              pickerColor: _currentColor,
-              onChanged: (color) => _setNewColor(color),
-            ),
+          content: ColorPicker(
+            pickerColor: _currentColor,
+            onChanged: (color) => _setNewColor(color),
           ),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(context, 'cancel'), child: Text(S.of(context).cancel)),
-            TextButton(onPressed: () => Navigator.pop(context, 'ok'), child: Text(S.of(context).ok)),
+            TextButton(onPressed: () => Navigator.pop(context, 'cancel'), child: Text(t('common.button.cancel'))),
+            TextButton(onPressed: () => Navigator.pop(context, 'ok'), child: Text(t('common.button.ok'))),
           ],
         );
       },
@@ -245,13 +243,13 @@ class _State extends State<CurrencyDetailScreen> {
       if (event.error is CurrencyCreateCommandException) {
         CurrencyCreateCommandException error = event.error as CurrencyCreateCommandException;
         setState(() {
-          _errorDetail['id'] = error.id.length > 0 ? error.id.first : null;
-          _errorDetail['name'] = error.name.length > 0 ? error.name.first : null;
-          _errorDetail['symbol'] = error.symbol.length > 0 ? error.symbol.first : null;
-          _errorDetail['fraction'] = error.fraction.length > 0 ? error.fraction.first : null;
+          _errorDetail['id'] = error.id.isNotEmpty ? error.id.first : null;
+          _errorDetail['name'] = error.name.isNotEmpty ? error.name.first : null;
+          _errorDetail['symbol'] = error.symbol.isNotEmpty ? error.symbol.first : null;
+          _errorDetail['fraction'] = error.fraction.isNotEmpty ? error.fraction.first : null;
         });
       } else {
-        SnackBar snackBar = SnackBar(content: Text(S.of(context).unknown_error + event.error.toString()));
+        SnackBar snackBar = SnackBar(content: Text(t('errors.common.unknown_error') + event.error.toString()));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     }

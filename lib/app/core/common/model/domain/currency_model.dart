@@ -47,14 +47,15 @@ class CurrencyDomainModel implements BaseDomainModel {
         isDefault: data['isDefault'] == 1 ? true : false);
   }
 
+  @override
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
-      'id': this.id,
-      'name': this.name,
-      'color': this.avatarColor,
-      'symbol': this.symbol,
-      'fraction': this.fraction,
-      'isDefault ': this.isDefault ? 1 : 0,
+      'id': id,
+      'name': name,
+      'color': avatarColor,
+      'symbol': symbol,
+      'fraction': fraction,
+      'isDefault ': isDefault ? 1 : 0,
     };
     return map;
   }

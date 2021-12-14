@@ -5,7 +5,7 @@ import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/comman
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/command/delete_command.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/command/handler/create_command_handler.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/command/handler/delete_command_handler.dart';
-import 'package:mymoneyorganizer/generated/l10n.dart';
+import 'package:mymoneyorganizer/app/lib/localization/utils.dart';
 
 class CurrencyCommandDispatcher extends BaseCommandDispatcher {
   final CurrencyCreateCommandHandler createCommandHandler;
@@ -27,7 +27,7 @@ class CurrencyCommandDispatcher extends BaseCommandDispatcher {
     }
 
     if (!commandIsExecuting) {
-      throw InvalidCommandException('$this: ${S.current.command_not_identifier} ($c)');
+      throw InvalidCommandException('$this: ${t('errors.command.not_identifier')} ($c)');
     }
   }
 }

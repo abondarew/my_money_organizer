@@ -4,23 +4,23 @@ class ValidatorList extends BaseValidator {
   final List<BaseValidator> _validators = [];
 
   ValidatorList(List<BaseValidator> validators) {
-    this._validators.addAll(validators);
+    _validators.addAll(validators);
   }
 
   void addValidator(BaseValidator validator) {
-    this._validators.add(validator);
+    _validators.add(validator);
   }
 
   @override
   Future<bool> validate(value) async {
     List<Future<bool>> lst = [];
-    this._validators.forEach((element) async {
+    for (var element in _validators) {
       lst.add(element.validate(value));
-    });
+    }
     List<bool> resList = await Future.wait(lst);
-    this._validators.forEach((element) {
-      this.addErrors(element.getErrors());
-    });
+    for (var element in _validators) {
+      addErrors(element.getErrors());
+    }
     return !resList.any((element) => !element);
   }
 }

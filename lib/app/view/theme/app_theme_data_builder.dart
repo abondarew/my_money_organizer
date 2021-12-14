@@ -4,13 +4,13 @@ class AppThemeBuilder {
   static buildThemeData(BuildContext context) {
     return ThemeData(
       primarySwatch: Colors.indigo,
-      primaryTextTheme: TextTheme(
+      primaryTextTheme: const TextTheme(
         headline6: TextStyle(color: Colors.black, fontSize: 22, fontWeight: FontWeight.normal),
       ),
       canvasColor: Colors.white,
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         color: Colors.white,
-        brightness: Brightness.light,
+        //brightness: Brightness.light,
         iconTheme: IconThemeData(
           color: Colors.black,
         ),

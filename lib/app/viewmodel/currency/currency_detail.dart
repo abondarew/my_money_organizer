@@ -11,7 +11,7 @@ class CurrencyDetailViewModel {
   final CurrencyQueryDispatcher _queryDispatcher;
   final CurrencyCommandDispatcher _commandDispatcher;
   final StreamController<CurrencyDetailNotification> eventController = StreamController<CurrencyDetailNotification>.broadcast();
-  final Map<String, dynamic> newData = Map<String, dynamic>();
+  final Map<String, dynamic> newData = <String, dynamic>{};
   CurrencyDetailReadModel? model;
   bool _isNew = true;
   bool _isModification = false;
@@ -40,8 +40,8 @@ class CurrencyDetailViewModel {
   bool get isNew => _isNew;
 
   void setModified(bool isModification) {
-    if (isModification != this._isModification) {
-      this._isModification = isModification;
+    if (isModification != _isModification) {
+      _isModification = isModification;
       eventController.add(CurrencyDetailModifiedNotification(isModified: _isModification));
     }
   }

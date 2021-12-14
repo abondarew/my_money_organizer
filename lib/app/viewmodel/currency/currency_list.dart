@@ -21,7 +21,7 @@ class CurrencyListViewModel {
 
   Future<void> load() async {
     List<CurrencyListReadModel>? result = await _queryDispatcher.dispatch(CurrencyQueryFetchList());
-    this._eventController.add(ResultCurrencyListNotification(result));
+    _eventController.add(ResultCurrencyListNotification(result));
   }
 
   void delete(List<String> currencyIdList) async {
@@ -31,7 +31,7 @@ class CurrencyListViewModel {
   void setAsDefault(String id) async {}
 
   void dispose() {
-    this._eventController.close();
+    _eventController.close();
   }
 }
 

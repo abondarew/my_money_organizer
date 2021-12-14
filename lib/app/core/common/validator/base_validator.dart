@@ -6,13 +6,13 @@ abstract class BaseValidator {
   final Map<String, dynamic> mapErrors = Map();
 
   Future<bool> isValid(var value) async {
-    return await this.validate(value);
+    return await validate(value);
   }
 
   Future<bool> validate(var value);
 
   void addError(String error) {
-    this.errors.add(error);
+    errors.add(error);
   }
 
   void addErrors(List<String> errors) {
@@ -20,18 +20,18 @@ abstract class BaseValidator {
   }
 
   void addDataValue(String key, var value) {
-    this.mapErrors[key] = value;
+    mapErrors[key] = value;
   }
 
   String? getError() {
-    if (this.errors.isNotEmpty) {
-      return this.errors.first;
+    if (errors.isNotEmpty) {
+      return errors.first;
     }
     return null;
   }
 
   List<String> getErrors() {
-    return this.errors;
+    return errors;
   }
 
   Map<String, dynamic> getValidatorData() {

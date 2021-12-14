@@ -5,9 +5,9 @@ class ValidatorContainer {
 
   Future<bool> isValid() async {
     List<Future<bool>> lst = [];
-    _validators.forEach((element) async {
+    for (var element in _validators) {
       lst.add(element.validator.isValid(element.value));
-    });
+    }
     bool res = false;
     List l = await Future.wait(lst);
     res = !l.any((element) => !element);
@@ -15,7 +15,7 @@ class ValidatorContainer {
   }
 
   void add(BaseValidator validator, dynamic value) {
-    this._validators.add(_ContainerValidatorItem(validator: validator, value: value));
+    _validators.add(_ContainerValidatorItem(validator: validator, value: value));
   }
 }
 

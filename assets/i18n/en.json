@@ -1,0 +1,77 @@
+{
+  "app": {
+    "title": "MyMoney organizer"
+  },
+  "common": {
+    "button": {
+      "cancel": "Cancel",
+      "ok": "Ok",
+      "edit": "Edit",
+      "delete": "Delete",
+      "save": "Save"
+    },
+    "wait": "Loading. Place wait.",
+    "confirm": {
+      "title": "Confirm",
+      "text": "You are sure you want to delete {what} {records}?",
+      "text.more": "You are sure you want to delete {what} {records} (and {quantity} more) records?"
+    }
+  },
+  "currency": {
+    "name": "currency",
+    "list": {
+      "title": "Available currencies",
+      "menu": {
+        "set_default": "set as default",
+        "edit": "edit",
+        "delete": "delete"
+      }
+    },
+    "form": {
+      "code": "currency code",
+      "code.hint": "currency code",
+      "name": "Currency name",
+      "name.hint": "currency name",
+      "symbol": "currency symbol",
+      "symbol.hint": "currency symbol",
+      "fraction": "fraction",
+      "fraction.hint": "fraction",
+      "title": {
+        "create": "Create currency",
+        "detail": "Currency detail"
+      },
+      "dialog": {
+        "choice_color": "choice color"
+      },
+      "errors": {
+        "currency_exist": "currency with this code is already in the database"
+      }
+    },
+    "message": {
+      "saved": "Currency successfully saved"
+    }
+  },
+  "errors": {
+    "value": {
+      "is_empty": "Value must not be empty"
+    },
+    "num": {
+      "no_num": "Provided value is not a numeric",
+      "is_empty": "Value must not be empty"
+    },
+    "color": {
+      "invalid": "Invalid color value"
+    },
+    "string": {
+      "no_string": "Provided value is not a string",
+      "is_empty": "Value must not be empty"
+    },
+    "command": {
+      "invalid": "Invalid command exception",
+      "not_identifier": "Command not identified"
+    },
+    "common": {
+      "unknown_error": "Something went wrong"
+    }
+  }
+}

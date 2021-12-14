@@ -15,9 +15,9 @@ class CurrencyDeleteCommandHandler extends BaseCommandHandler<CurrencyDeleteComm
   Future<void> execute(CurrencyDeleteCommand command) async {
     await validator.validate(command);
     List<Future<void>> executeLst = [];
-    command.listId.forEach((element) {
+    for (var element in command.listId) {
       executeLst.add(repository.delete(element));
-    });
+    }
     Future.wait(executeLst);
     EventBusCore.getInstance().addEvent(CurrencyChangedEvent());
   }

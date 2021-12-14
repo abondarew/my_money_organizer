@@ -1,19 +1,8 @@
-enum ReportingPeriodType {
-  day,            //текущий день
-  week,           //текущая неделя
-  last_week,      //прошлая неделя
-  seven_days,     //последние 7 дней
-  month,          //текущий месяц
-  last_month,     //прошлый месяц
-  quarter,        //3 месяца (квартал)
-  year,           //текущий год
-  specified,      //явно указанный
-  all             //весь период
-}
+import 'package:mymoneyorganizer/app/core/common/const/period.dart';
 
 Map<String, DateTime> getTypicalPeriod(ReportingPeriodType periodType) {
-  Map<String, DateTime> result = new Map();
-  DateTime currentDate = new DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  Map<String, DateTime> result = {};
+  DateTime currentDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   switch (periodType) {
     case ReportingPeriodType.day:
       {
@@ -23,27 +12,26 @@ Map<String, DateTime> getTypicalPeriod(ReportingPeriodType periodType) {
       }
     case ReportingPeriodType.week:
       {
-        result["startDate"] = new DateTime(currentDate.year, currentDate.month, currentDate.day)
-            .subtract(Duration(days: currentDate.weekday - 1));
+        result["startDate"] =
+            DateTime(currentDate.year, currentDate.month, currentDate.day).subtract(Duration(days: currentDate.weekday - 1));
         result["endDate"] = currentDate;
         return result;
       }
     case ReportingPeriodType.month:
       {
-        result["startDate"] = new DateTime(currentDate.year, currentDate.month, 1);
+        result["startDate"] = DateTime(currentDate.year, currentDate.month, 1);
         result["endDate"] = currentDate;
         return result;
       }
     case ReportingPeriodType.year:
       {
-        result["startDate"] = new DateTime(currentDate.year, 1, 1);
+        result["startDate"] = DateTime(currentDate.year, 1, 1);
         result["endDate"] = currentDate;
         return result;
       }
     case ReportingPeriodType.seven_days:
       {
-        result["startDate"] =
-            new DateTime(currentDate.year, currentDate.month, currentDate.day).subtract(Duration(days: 7));
+        result["startDate"] = DateTime(currentDate.year, currentDate.month, currentDate.day).subtract(Duration(days: 7));
         result["endDate"] = currentDate;
         return result;
       }

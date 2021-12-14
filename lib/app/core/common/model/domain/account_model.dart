@@ -34,7 +34,7 @@ class AccountDomainModel {
     bool isNew = false;
     if (id == null) {
       isNew = true;
-      id = Uuid().v4();
+      id = const Uuid().v4();
     }
     return AccountDomainModel._(
         id: id,

@@ -54,12 +54,12 @@ class CurrencyDetailReadModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': this.id,
-      'name': this.name,
-      'symbol': this.symbol,
-      'fraction': this.fraction,
-      'color': this.avatarColor,
-      'isDefault': this.isDefault,
+      'id': id,
+      'name': name,
+      'symbol': symbol,
+      'fraction': fraction,
+      'color': avatarColor,
+      'isDefault': isDefault,
     };
   }
 }

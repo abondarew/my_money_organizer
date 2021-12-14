@@ -9,9 +9,7 @@ class EventBusCore {
   EventBusCore._();
 
   factory EventBusCore.getInstance() {
-    if (_instance == null) {
-      _instance = EventBusCore._();
-    }
+    _instance ??= EventBusCore._();
     return _instance!;
   }
 
@@ -19,7 +17,7 @@ class EventBusCore {
     return _streamController.stream;
   }
 
-  void addEvent(BaseEvent event){
+  void addEvent(BaseEvent event) {
     _streamController.add(event);
   }
 

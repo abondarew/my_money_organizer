@@ -7,8 +7,6 @@ class InvalidQueryException implements BaseQueryExceptions {
 
   @override
   String toString() {
-    return message == null
-        ? "InvalidQueryException"
-        : "InvalidQueryException: " + this.message!;
+    return message == null ? "InvalidQueryException" : "InvalidQueryException: " + message!;
   }
 }

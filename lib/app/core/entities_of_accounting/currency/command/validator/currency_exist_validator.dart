@@ -1,6 +1,6 @@
 import 'package:mymoneyorganizer/app/core/common/validator/base_validator.dart';
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/service/currency_not_exist.dart';
-import 'package:mymoneyorganizer/generated/l10n.dart';
+import 'package:mymoneyorganizer/app/lib/localization/utils.dart';
 
 class CurrencyNotExistValidator extends BaseValidator {
   final ServiceCurrencyIsExist serviceCurrencyIsExist;
@@ -11,7 +11,7 @@ class CurrencyNotExistValidator extends BaseValidator {
   Future<bool> validate(value) async {
     bool res = await serviceCurrencyIsExist.currencyIsExist(value);
     if (res) {
-      this.addError(S.current.currency_exist);
+      addError(t('currency.form.errors.currency_exist'));
     }
     return (!res);
   }
