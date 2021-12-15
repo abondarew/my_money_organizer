@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:mymoneyorganizer/app/view/common/util/color_utils.dart';
 
 const List<Color> defaultAvailableColors = [
   //Colors.transparent,
@@ -37,24 +36,24 @@ class ColorPicker extends StatefulWidget {
   final LayoutBuilder layoutBuilder;
   final ItemBuilder itemBuilder;
 
-  ColorPicker(
-      {required this.pickerColor,
+  const ColorPicker(
+      {Key? key,
+      required this.pickerColor,
       required this.onChanged,
       this.availableColors = defaultAvailableColors,
       this.layoutBuilder = defaultLayoutBuilder,
-      this.itemBuilder = defaultItemBuilder});
+      this.itemBuilder = defaultItemBuilder})
+      : super(key: key);
 
   @override
-  State<ColorPicker> createState() => _State(pickerColor);
+  State<ColorPicker> createState() => _State();
 
   static Widget defaultLayoutBuilder(BuildContext context, List<Color> colors, ItemPicker child) {
-    return Container(
+    return SizedBox(
       width: 300,
       height: 300,
       child: GridView.count(
         crossAxisCount: 4,
-        /*crossAxisSpacing: 10,
-        mainAxisSpacing: 10,*/
         children: colors.map((Color color) => child(color)).toList(),
       ),
     );
@@ -62,26 +61,33 @@ class ColorPicker extends StatefulWidget {
 
   static Widget defaultItemBuilder(Color color, bool isChecked, void Function() onChanged) {
     return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: Container(
+      padding: const EdgeInsets.all(2.0),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 500),
         decoration: BoxDecoration(
+          color: isChecked ? const Color.fromARGB(255, 60, 196, 252) : Colors.transparent,
           borderRadius: BorderRadius.circular(50),
-          color: color,
         ),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            borderRadius: BorderRadius.circular(50),
-            onTap: () => onChanged(),
-            child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 300),
-              opacity: isChecked ? 1.0 : 0.0,
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Icon(
-                  Icons.check_outlined,
-                  color: ColorUtils.contrastText(color, Colors.white70, Colors.black87),
-                  size: 135,
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(215, 255, 255, 255),
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(1.5),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  color: color,
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(50),
+                    onTap: () => onChanged(),
+                  ),
                 ),
               ),
             ),
@@ -95,8 +101,6 @@ class ColorPicker extends StatefulWidget {
 class _State extends State<ColorPicker> {
   late Color _currentColor;
 
-  _State(this._currentColor);
-
   @override
   void initState() {
     _currentColor = widget.pickerColor;
@@ -107,14 +111,19 @@ class _State extends State<ColorPicker> {
     setState(() {
       _currentColor = color;
     });
-    //print('select');
     widget.onChanged(color);
-    //valueChanged(color);
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.layoutBuilder(context, widget.availableColors,
-        (Color color) => widget.itemBuilder(color, color.value == _currentColor.value, () => _selectColor(color)));
+    return widget.layoutBuilder(
+      context,
+      widget.availableColors,
+      (Color color) => widget.itemBuilder(
+        color,
+        color.value == _currentColor.value,
+        () => _selectColor(color),
+      ),
+    );
   }
 }
