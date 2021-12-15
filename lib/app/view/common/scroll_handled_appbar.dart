@@ -24,7 +24,7 @@ class _State extends State<ScrollHandledAppBar> {
   @override
   void initState() {
     if (widget.scrollController != null) {
-      this.widget.scrollController!.addListener(scrollListener);
+      widget.scrollController!.addListener(scrollListener);
     }
     super.initState();
   }
@@ -50,7 +50,7 @@ class _State extends State<ScrollHandledAppBar> {
 
   void scrollListener() {
     bool displayE = false;
-    if (this.widget.scrollController!.offset > 1) {
+    if (widget.scrollController!.offset > 1) {
       displayE = true;
     }
     if (displayE != displayElevation) {

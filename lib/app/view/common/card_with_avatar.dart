@@ -15,7 +15,7 @@ class CardWithAvatar extends StatelessWidget {
 
   final Size avatarSize = const Size(90, 90);
 
-  CardWithAvatar(
+  const CardWithAvatar(
       {Key? key,
       required this.avatarText,
       required this.avatarBackgroundColor,
@@ -28,7 +28,7 @@ class CardWithAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8),
       //padding: EdgeInsets.all(8),
       width: double.infinity,
       child: SingleChildScrollView(
@@ -42,7 +42,7 @@ class CardWithAvatar extends StatelessWidget {
                 child: Card(
                   elevation: 4,
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(8, 60, 8, 8),
+                    padding: const EdgeInsets.fromLTRB(8, 60, 8, 8),
                     child: cardBody,
                   ),
                 ),
@@ -62,14 +62,14 @@ class CardWithAvatar extends StatelessWidget {
                       ),
                     ],
                   ),
-                  duration: Duration(milliseconds: 250),
+                  duration: const Duration(milliseconds: 250),
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(80),
                       onTap: onTap,
                       child: Padding(
-                        padding: EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(16),
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
                           child: CrossFade<String>(
@@ -83,7 +83,7 @@ class CardWithAvatar extends StatelessWidget {
                             ),
                             initialData: avatarText,
                             data: avatarText,
-                            duration: Duration(milliseconds: 250),
+                            duration: const Duration(milliseconds: 250),
                           ),
                         ),
                       ),
@@ -136,7 +136,7 @@ class CardWithAvatar extends StatelessWidget {
                 : null,
             color: Colors.white,
           ),
-          padding: EdgeInsets.all(4),
+          padding: const EdgeInsets.all(4),
           child: child,
         ),
       ),

@@ -11,10 +11,13 @@
       "save": "Save"
     },
     "wait": "Loading. Place wait.",
-    "confirm": {
-      "title": "Confirm",
-      "text": "You are sure you want to delete {what} {records}?",
-      "text.more": "You are sure you want to delete {what} {records} (and {quantity} more) records?"
+    "message": {
+      "oops": "Oops!... nothing to do...",
+      "confirm": {
+        "title": "Confirm",
+        "text": "You are sure you want to delete {what} {records}?",
+        "text.more": "You are sure you want to delete {what} {records} (and {quantity} more) records?"
+      }
     }
   },
   "currency": {

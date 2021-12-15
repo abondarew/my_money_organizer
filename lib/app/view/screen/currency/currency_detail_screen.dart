@@ -7,7 +7,7 @@ import 'package:mymoneyorganizer/app/core/common/model/read/currency_model.dart'
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/command/validator/exception/create_command_exception.dart';
 import 'package:mymoneyorganizer/app/lib/localization/utils.dart';
 import 'package:mymoneyorganizer/app/view/common/card_with_avatar.dart';
-import 'package:mymoneyorganizer/app/view/common/color_picker.dart';
+import 'package:mymoneyorganizer/app/view/common/dialog/color_picker.dart';
 import 'package:mymoneyorganizer/app/view/common/scroll_handled_appbar.dart';
 import 'package:mymoneyorganizer/app/viewmodel/currency/currency_detail.dart';
 
