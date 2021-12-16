@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:mymoneyorganizer/app/core/common/model/read/currency_model.dart';
 import 'package:mymoneyorganizer/app/eventbus/eventbus_core.dart';
 import 'package:mymoneyorganizer/app/eventbus/events/base/currency_changed.dart';
@@ -28,6 +29,10 @@ class _State extends State<CurrencyListScreen> with TickerProviderStateMixin {
   bool _visibleDelButton = false;
   bool _selectMode = false;
 
+  //bool _fabView = true;
+  //late ScrollController _controller;
+  late AnimationController _animationController;
+
   @override
   void initState() {
     viewModel.event.listen((CurrencyListNotification event) {
@@ -39,7 +44,31 @@ class _State extends State<CurrencyListScreen> with TickerProviderStateMixin {
       }
     });
     viewModel.load();
+    _animationController = AnimationController(vsync: this, duration: kThemeAnimationDuration);
     super.initState();
+    _animationController.forward();
+    /*widget._scrollController.addListener(() {
+      if (widget._scrollController.position.userScrollDirection == ScrollDirection.reverse) {
+        setState(() {
+          _fabView = true;
+        });
+      } else {
+        if (widget._scrollController.position.userScrollDirection == ScrollDirection.forward) {
+          setState(() {
+            _fabView = false;
+          });
+        }
+      }
+    });*/
+    /*_controller = widget._scrollController;
+    _controller.addListener(() {
+      bool _currentFABVisible = _controller.position.userScrollDirection == ScrollDirection.forward;
+      if (_fabView != _currentFABVisible) {
+        setState(() {
+          _fabView = _currentFABVisible;
+        });
+      }
+    });*/
   }
 
   @override
@@ -47,18 +76,33 @@ class _State extends State<CurrencyListScreen> with TickerProviderStateMixin {
     return WillPopScope(
       child: Scaffold(
         appBar: _buildAppBar(),
-        body: ListView.builder(
-          controller: widget._scrollController,
-          padding: const EdgeInsets.all(8),
-          itemCount: currencyList.length,
-          itemBuilder: (context, index) => _buildItem(index: index),
+        body: NotificationListener<ScrollNotification>(
+          onNotification: _handleScrollNotify,
+          child: ListView.builder(
+            controller: widget._scrollController,
+            padding: const EdgeInsets.all(8),
+            itemCount: currencyList.length,
+            itemBuilder: (context, index) => _buildItem(index: index),
+          ),
         ),
-        floatingActionButton: FloatingActionButton(
-          //TODO add show/hide method
-          child: const Icon(Icons.add),
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => CurrencyDetailScreen()));
-          },
+        /*floatingActionButton: AnimatedOpacity(
+          duration: const Duration(milliseconds: 500),
+          opacity: _fabView ? 1.0 : 0.0,
+          child: FloatingActionButton(
+            child: const Icon(Icons.add),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CurrencyDetailScreen()));
+            },
+          ),
+        ),*/
+        floatingActionButton: ScaleTransition(
+          scale: _animationController,
+          child: FloatingActionButton(
+            child: const Icon(Icons.add),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CurrencyDetailScreen()));
+            },
+          ),
         ),
       ),
       onWillPop: () async {
@@ -77,6 +121,29 @@ class _State extends State<CurrencyListScreen> with TickerProviderStateMixin {
         return returnFlag;
       },
     );
+  }
+
+  bool _handleScrollNotify(ScrollNotification notification) {
+    if (notification.depth == 0) {
+      if (notification is UserScrollNotification) {
+        final UserScrollNotification userScroll = notification;
+        switch (userScroll.direction) {
+          case ScrollDirection.forward:
+            if (userScroll.metrics.maxScrollExtent != userScroll.metrics.minScrollExtent) {
+              _animationController.forward();
+            }
+            break;
+          case ScrollDirection.reverse:
+            if (userScroll.metrics.maxScrollExtent != userScroll.metrics.minScrollExtent) {
+              _animationController.reverse();
+            }
+            break;
+          case ScrollDirection.idle:
+            break;
+        }
+      }
+    }
+    return false;
   }
 
   PreferredSizeWidget _buildAppBar() {
@@ -313,6 +380,7 @@ class _State extends State<CurrencyListScreen> with TickerProviderStateMixin {
   @override
   void dispose() {
     viewModel.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
