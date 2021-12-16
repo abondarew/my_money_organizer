@@ -30,6 +30,7 @@ typedef ItemBuilder = Widget Function(Color color, bool isCurrent, void Function
 typedef ItemPicker = Widget Function(Color color);
 
 class ColorPicker extends StatefulWidget {
+  //TODO edit size dialog for desktop
   final Color pickerColor;
   final ValueChanged<Color> onChanged;
   final List<Color> availableColors;
@@ -61,15 +62,22 @@ class ColorPicker extends StatefulWidget {
 
   static Widget defaultItemBuilder(Color color, bool isChecked, void Function() onChanged) {
     return Padding(
-      padding: const EdgeInsets.all(2.0),
+      padding: const EdgeInsets.all(4.0),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 500),
         decoration: BoxDecoration(
-          color: isChecked ? const Color.fromARGB(255, 60, 196, 252) : Colors.transparent,
+          //color: isChecked ? const Color.fromARGB(255, 60, 196, 252) : const Color.fromARGB(0, 60, 196, 252), //TODO what?
           borderRadius: BorderRadius.circular(50),
+          boxShadow: [
+            BoxShadow(
+              color: isChecked ? const Color.fromARGB(255, 60, 196, 252) : const Color.fromARGB(0, 60, 196, 252),
+              spreadRadius: 1.5,
+              blurRadius: 3,
+            )
+          ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(4.0),
+          padding: const EdgeInsets.all(3.0),
           child: Container(
             decoration: BoxDecoration(
               color: const Color.fromARGB(215, 255, 255, 255),
