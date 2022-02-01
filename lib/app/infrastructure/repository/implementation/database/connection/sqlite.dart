@@ -55,16 +55,18 @@ class DataBaseTransactionSqlite implements DataBaseTransaction {
   }
 
   @override
-  Future<List<Map<String, dynamic>>> select(String table,
-      {bool? distinct,
-      List<String>? columns,
-      String? where,
-      List? whereArgs,
-      String? groupBy,
-      String? having,
-      String? orderBy,
-      int? limit,
-      int? offset}) async {
+  Future<List<Map<String, dynamic>>> select(
+    String table, {
+    bool? distinct,
+    List<String>? columns,
+    String? where,
+    List? whereArgs,
+    String? groupBy,
+    String? having,
+    String? orderBy,
+    int? limit,
+    int? offset,
+  }) async {
     return await executor.query(table,
         distinct: distinct,
         columns: columns,

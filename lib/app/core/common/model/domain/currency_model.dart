@@ -3,29 +3,31 @@ import 'package:mymoneyorganizer/app/core/common/model/domain/base_domain_model.
 class CurrencyDomainModel implements BaseDomainModel {
   final String id;
   final bool isNew;
-  String name;
-  String symbol;
-  int fraction;
-  int avatarColor;
-  bool isDefault;
+  final String name;
+  final String symbol;
+  final int fraction;
+  final int avatarColor;
+  final bool isDefault;
 
-  CurrencyDomainModel._(
-      {required this.id,
-      required this.name,
-      required this.symbol,
-      required this.fraction,
-      required this.isNew,
-      required this.avatarColor,
-      required this.isDefault});
+  CurrencyDomainModel._({
+    required this.id,
+    required this.name,
+    required this.symbol,
+    required this.fraction,
+    required this.isNew,
+    required this.avatarColor,
+    required this.isDefault,
+  });
 
-  factory CurrencyDomainModel(
-      {required String id,
-      required String name,
-      required String symbol,
-      required int fraction,
-      required int avatarColor,
-      required bool isDefault,
-      bool isNew = false}) {
+  factory CurrencyDomainModel({
+    required String id,
+    required String name,
+    required String symbol,
+    required int fraction,
+    required int avatarColor,
+    required bool isDefault,
+    bool isNew = false,
+  }) {
     return CurrencyDomainModel._(
       id: id,
       name: name,

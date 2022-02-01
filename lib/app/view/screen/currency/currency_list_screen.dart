@@ -4,7 +4,8 @@ import 'package:mymoneyorganizer/app/core/common/model/read/currency_model.dart'
 import 'package:mymoneyorganizer/app/eventbus/eventbus_core.dart';
 import 'package:mymoneyorganizer/app/eventbus/events/base/currency_changed.dart';
 import 'package:mymoneyorganizer/app/lib/localization/utils.dart';
-import 'package:mymoneyorganizer/app/view/common/scroll_handled_appbar.dart';
+import 'package:mymoneyorganizer/app/view/common/app_bar/app_bar_builder.dart';
+import 'package:mymoneyorganizer/app/view/common/drawer/app_drawer_builder.dart';
 import 'package:mymoneyorganizer/app/view/common/util/generated_confirm_text_4_deleted.dart';
 import 'package:mymoneyorganizer/app/view/screen/currency/currency_detail_screen.dart';
 import 'package:mymoneyorganizer/app/viewmodel/currency/currency_list.dart';
@@ -13,6 +14,8 @@ enum MenuItem { edit, delete, setAsDefault }
 
 //TODO make Stateless and split into screen and list (see account)
 class CurrencyListScreen extends StatefulWidget {
+  static const String routeName = '/currencyList';
+
   final ScrollController _scrollController = ScrollController();
 
   CurrencyListScreen({Key? key}) : super(key: key);
@@ -26,11 +29,10 @@ class CurrencyListScreen extends StatefulWidget {
 class _State extends State<CurrencyListScreen> with TickerProviderStateMixin {
   final List<CurrencyListReadModel> currencyList = [];
   final CurrencyListViewModel viewModel = CurrencyListViewModelBuilder.build();
+  final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
   bool _visibleDelButton = false;
   bool _selectMode = false;
 
-  //bool _fabView = true;
-  //late ScrollController _controller;
   late AnimationController _animationController;
 
   @override
@@ -47,35 +49,24 @@ class _State extends State<CurrencyListScreen> with TickerProviderStateMixin {
     _animationController = AnimationController(vsync: this, duration: kThemeAnimationDuration);
     super.initState();
     _animationController.forward();
-    /*widget._scrollController.addListener(() {
-      if (widget._scrollController.position.userScrollDirection == ScrollDirection.reverse) {
-        setState(() {
-          _fabView = true;
-        });
-      } else {
-        if (widget._scrollController.position.userScrollDirection == ScrollDirection.forward) {
-          setState(() {
-            _fabView = false;
-          });
-        }
-      }
-    });*/
-    /*_controller = widget._scrollController;
-    _controller.addListener(() {
-      bool _currentFABVisible = _controller.position.userScrollDirection == ScrollDirection.forward;
-      if (_fabView != _currentFABVisible) {
-        setState(() {
-          _fabView = _currentFABVisible;
-        });
-      }
-    });*/
   }
+
+  @override
+  void dispose() {
+    viewModel.dispose();
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  // =====================================================
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       child: Scaffold(
-        appBar: _buildAppBar(),
+        key: _scaffoldState,
+        drawer: AppDrawerBuilder.buildAppDrawer(),
+        appBar: _buildAppBar(context),
         body: NotificationListener<ScrollNotification>(
           onNotification: _handleScrollNotify,
           child: ListView.builder(
@@ -85,16 +76,6 @@ class _State extends State<CurrencyListScreen> with TickerProviderStateMixin {
             itemBuilder: (context, index) => _buildItem(index: index),
           ),
         ),
-        /*floatingActionButton: AnimatedOpacity(
-          duration: const Duration(milliseconds: 500),
-          opacity: _fabView ? 1.0 : 0.0,
-          child: FloatingActionButton(
-            child: const Icon(Icons.add),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => CurrencyDetailScreen()));
-            },
-          ),
-        ),*/
         floatingActionButton: ScaleTransition(
           scale: _animationController,
           child: FloatingActionButton(
@@ -105,88 +86,59 @@ class _State extends State<CurrencyListScreen> with TickerProviderStateMixin {
           ),
         ),
       ),
-      onWillPop: () async {
-        bool returnFlag = false;
-        if (_selectMode) {
-          setState(() {
-            for (var element in currencyList) {
-              element.selected = false;
-            }
-            _selectMode = false;
-            _visibleDelButton = false;
-          });
-        } else {
-          returnFlag = true;
-        }
-        return returnFlag;
-      },
+      onWillPop: _onWillPop,
     );
   }
 
-  bool _handleScrollNotify(ScrollNotification notification) {
-    if (notification.depth == 0) {
-      if (notification is UserScrollNotification) {
-        final UserScrollNotification userScroll = notification;
-        switch (userScroll.direction) {
-          case ScrollDirection.forward:
-            if (userScroll.metrics.maxScrollExtent != userScroll.metrics.minScrollExtent) {
-              _animationController.forward();
-            }
-            break;
-          case ScrollDirection.reverse:
-            if (userScroll.metrics.maxScrollExtent != userScroll.metrics.minScrollExtent) {
-              _animationController.reverse();
-            }
-            break;
-          case ScrollDirection.idle:
-            break;
-        }
-      }
-    }
-    return false;
-  }
-
-  PreferredSizeWidget _buildAppBar() {
-    return ScrollHandledAppBar(
-      leading: AnimatedOpacity(
-        duration: const Duration(milliseconds: 450),
-        //vsync: this,
-        curve: Curves.easeInOutQuint,
-        opacity: _selectMode ? 1 : 0,
-        child: _selectMode ? const BackButton() : null,
-      ),
-      title: Text(
-        t('currency.list.title'),
-        style: TextStyle(color: Theme.of(context).primaryTextTheme.headline6?.color),
-      ),
+  /* =========================AppBar=================================== */
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
+    return AppBarBuilder.buildAppBar(
+      context: context,
+      title: Text(t('currency.list.title')),
       scrollController: widget._scrollController,
-      action: [
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 450),
-          curve: Curves.easeInOut,
-          width: _visibleDelButton ? 48 : 0,
-          //vsync: this,
-          child: AnimatedOpacity(
-            opacity: _visibleDelButton ? 1 : 0,
-            duration: const Duration(milliseconds: 350),
-            child: IconButton(
-              icon: const Icon(Icons.delete_rounded),
-              onPressed: () {
-                List<String> idLst = [];
-                for (var element in currencyList) {
-                  if (element.selected) {
-                    idLst.add(element.id);
-                  }
-                }
-                _deleteElements(idLst);
-              },
-            ),
-          ),
-        )
-      ],
+      leading: _buildAppBarLeading(context),
+      action: [_buildAppBarActionContainer()],
     );
   }
 
+  Widget? _buildAppBarLeading(BuildContext context) {
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 450),
+      child: _selectMode
+          ? const BackButton()
+          : IconButton(icon: const Icon(Icons.menu), onPressed: () => _scaffoldState.currentState?.openDrawer()),
+    );
+    /*return AnimatedIcon(
+      icon: AnimatedIcons.home_menu,
+      progress: _animationController,
+    );*/
+  }
+
+  AnimatedContainer _buildAppBarActionContainer() {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 450),
+      curve: Curves.easeInOut,
+      width: _visibleDelButton ? 48 : 0,
+      child: AnimatedOpacity(
+        opacity: _visibleDelButton ? 1 : 0,
+        duration: const Duration(milliseconds: 350),
+        child: IconButton(
+          icon: const Icon(Icons.delete_rounded),
+          onPressed: () {
+            List<String> idLst = [];
+            for (var element in currencyList) {
+              if (element.selected) {
+                idLst.add(element.id);
+              }
+            }
+            _deleteElements(idLst);
+          },
+        ),
+      ),
+    );
+  }
+
+  /* =========================Item===================================== */
   Widget _buildItem({required int index}) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -202,50 +154,18 @@ class _State extends State<CurrencyListScreen> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildSelectedCheckbox({required int index}) {
-    return AnimatedSize(
-      duration: const Duration(milliseconds: 350),
-      //vsync: this,
-      child: Column(
-        children: [
-          SizedBox(
-            width: _selectMode ? 28 : 0,
-            height: 28,
-            child: AnimatedOpacity(
-              opacity: _selectMode ? 1 : 0,
-              duration: const Duration(milliseconds: 350),
-              child: Checkbox(
-                value: currencyList[index].selected,
-                shape: const CircleBorder(),
-                onChanged: (value) {
-                  setState(
-                    () {
-                      currencyList[index].selected = value!;
-                      _visibleDelButton = currencyList.any((element) => element.selected);
-                    },
-                  );
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildItemContent({required int index}) {
     bool isNotDefault = !currencyList[index].isDefault;
     return Padding(
-      padding: const EdgeInsets.all(3), //currencyList[index].selected ? .5 : 4),
+      padding: const EdgeInsets.all(3),
       child: AnimatedContainer(
-        //padding: EdgeInsets.all(currencyList[index].selected ? 3 : 1),
         decoration: BoxDecoration(
           color: currencyList[index].selected ? Colors.blue.shade100 : Colors.white,
           borderRadius: BorderRadius.circular(5),
           boxShadow: [
             currencyList[index].selected
-                ? BoxShadow(color: Colors.grey.shade400, blurRadius: 3, spreadRadius: 3, offset: Offset(3, 3))
-                : BoxShadow(color: Colors.grey.shade400, blurRadius: 1, spreadRadius: 1, offset: Offset(1, 1))
+                ? BoxShadow(color: Colors.grey.shade400, blurRadius: 3, spreadRadius: 3, offset: const Offset(3, 3))
+                : BoxShadow(color: Colors.grey.shade400, blurRadius: 1, spreadRadius: 1, offset: const Offset(1, 1))
           ],
         ),
         duration: const Duration(milliseconds: 350),
@@ -356,6 +276,79 @@ class _State extends State<CurrencyListScreen> with TickerProviderStateMixin {
     );
   }
 
+  // if selectedMode
+  Widget _buildSelectedCheckbox({required int index}) {
+    return AnimatedSize(
+      duration: const Duration(milliseconds: 350),
+      //vsync: this,
+      child: Column(
+        children: [
+          SizedBox(
+            width: _selectMode ? 28 : 0,
+            height: 28,
+            child: AnimatedOpacity(
+              opacity: _selectMode ? 1 : 0,
+              duration: const Duration(milliseconds: 350),
+              child: Checkbox(
+                value: currencyList[index].selected,
+                shape: const CircleBorder(),
+                onChanged: (value) {
+                  setState(() {
+                    currencyList[index].selected = value!;
+                    _visibleDelButton = currencyList.any((element) => element.selected);
+                  });
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /* =============================logic============================== */
+  //BackButton
+  Future<bool> _onWillPop() async {
+    bool returnFlag = false;
+    if (_selectMode) {
+      setState(() {
+        for (var element in currencyList) {
+          element.selected = false;
+        }
+        _selectMode = false;
+        _visibleDelButton = false;
+      });
+    } else {
+      returnFlag = true;
+    }
+    return returnFlag;
+  }
+
+  //Show/hide FAB
+  bool _handleScrollNotify(ScrollNotification notification) {
+    if (notification.depth == 0) {
+      if (notification is UserScrollNotification) {
+        final UserScrollNotification userScroll = notification;
+        switch (userScroll.direction) {
+          case ScrollDirection.forward:
+            if (userScroll.metrics.maxScrollExtent != userScroll.metrics.minScrollExtent) {
+              _animationController.forward();
+            }
+            break;
+          case ScrollDirection.reverse:
+            if (userScroll.metrics.maxScrollExtent != userScroll.metrics.minScrollExtent) {
+              _animationController.reverse();
+            }
+            break;
+          case ScrollDirection.idle:
+            break;
+        }
+      }
+    }
+    return false;
+  }
+
+  //Listener change currency list
   void _viewModelEventDispatch(CurrencyListNotification event) {
     if (event is ResultCurrencyListNotification) {
       return setState(() {
@@ -365,6 +358,7 @@ class _State extends State<CurrencyListScreen> with TickerProviderStateMixin {
     }
   }
 
+  //Context menu:
   void _contextMenuDispatch(MenuItem item, int index) {
     if (item == MenuItem.edit) {
       _openElement(index);
@@ -377,13 +371,7 @@ class _State extends State<CurrencyListScreen> with TickerProviderStateMixin {
     }
   }
 
-  @override
-  void dispose() {
-    viewModel.dispose();
-    _animationController.dispose();
-    super.dispose();
-  }
-
+  //element(s) action
   void _setAsDefault(int index) {
     viewModel.setAsDefault(currencyList[index].id);
   }
@@ -429,6 +417,7 @@ class _State extends State<CurrencyListScreen> with TickerProviderStateMixin {
     });
   }
 
+  //list action
   void _itemOnTap(int index) {
     if (_selectMode) {
       setState(() {

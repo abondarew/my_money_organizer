@@ -1,6 +1,6 @@
-enum MonetaryMovementType{
-  receipt,  //приход
+enum MonetaryMovementType {
+  receipt, //приход
   spending, //расход
   transfer, //перевод
-  all       //все движения
+  all //все движения ??
 }

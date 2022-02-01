@@ -11,7 +11,7 @@ class CurrencyDatabaseRepository implements CurrencyBaseRepository {
 
   @override
   Future<void> save(CurrencyDomainModel model) async {
-    await _databaseBaseConnection.transaction((txn) async {
+    await _databaseBaseConnection.transaction((DataBaseTransaction txn) async {
       if (!model.isNew) {
         txn.update(_tableName, model.toMap(), where: "id = ?", whereArgs: [model.id]);
       } else {
