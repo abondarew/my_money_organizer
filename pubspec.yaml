@@ -24,10 +24,11 @@ dependencies:
   flutter:
     sdk: flutter
   uuid: ^3.0.5
-  sqflite: ^2.0.1
-  sqflite_common_ffi: ^2.1.0
+  sqflite: ^2.0.2
+  sqflite_common_ffi: ^2.1.0+2
   path: ^1.8.0
-  currency_picker: ^2.0.6
+  currency_picker: ^2.0.7
+  badges: ^2.0.2
   intl: ^0.17.0
   flutter_translate: ^3.0.1
   flutter_localizations:

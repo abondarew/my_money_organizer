@@ -7,8 +7,8 @@ import 'package:mymoneyorganizer/app/core/common/model/read/currency_model.dart'
 import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/command/validator/exception/create_command_exception.dart';
 import 'package:mymoneyorganizer/app/lib/localization/utils.dart';
 import 'package:mymoneyorganizer/app/view/common/app_bar/scroll_handled_appbar.dart';
-import 'package:mymoneyorganizer/app/view/common/card_with_avatar.dart';
 import 'package:mymoneyorganizer/app/view/common/dialog/color_picker.dart';
+import 'package:mymoneyorganizer/app/view/common/widget/card_with_avatar.dart';
 import 'package:mymoneyorganizer/app/viewmodel/currency/currency_detail.dart';
 
 class CurrencyDetailScreen extends StatefulWidget {
@@ -34,7 +34,6 @@ class _State extends State<CurrencyDetailScreen> {
   final Map<String, String?> _errorDetail = {};
   bool _isModified = false;
 
-  //List<Color> _colorList = [...Colors.primaries, ...Colors.accents];
   Color? dropdownValue;
   late Color _currentColor;
 
@@ -42,60 +41,62 @@ class _State extends State<CurrencyDetailScreen> {
   void initState() {
     viewModel.event.listen((event) => dispatch(event));
     viewModel.load(id: widget.currencyId);
-    _currentColor = Colors.white;
+    _currentColor = Colors.transparent;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: Colors.grey.shade300,
       appBar: ScrollHandledAppBar(
         scrollController: widget._scrollController,
-        title: Text(t('currency.form.title.detail')),
+        title: Text(t('currency.form.title.detail').toTitleCase()),
         action: [
           Visibility(
-            child: IconButton(icon: const Icon(Icons.save_alt), onPressed: () => saveData()),
+            child: IconButton(
+              icon: const Icon(Icons.save_alt),
+              onPressed: () => saveData(),
+            ),
             visible: _isModified,
           ),
         ],
       ),
-      body: CardWithAvatar(
-        cardBody: formBuild(),
-        onTap: () => _pickColor(),
-        avatarText: _symbolController.text == '' ? ' ' : _symbolController.text,
-        /*Text(
-          '${_symbolController.text == '' ? '?' : _symbolController.text}',
-          style: TextStyle(
-              fontSize: 400,
-              fontWeight: FontWeight.bold,
-              color: ColorUtils.contrastText(_currentColor, Colors.grey.shade100, Colors.grey.shade900)),
-        ),*/
-        avatarBackgroundColor: _currentColor,
-        buttonChild: const Icon(Icons.color_lens_rounded),
+      body: Padding(
+        padding: const EdgeInsets.all(0),
+        child: CardWithAvatar(
+          cardBody: formBuild(),
+          avatarSetting: AvatarSetting(
+            onTap: () => _pickColor(),
+            avatarText: _symbolController.text.isEmpty ? ' ' : _symbolController.text,
+            avatarBackgroundColor: _currentColor,
+            badge: Icons.color_lens_outlined,
+          ),
+        ),
       ),
-      floatingActionButton: (viewModel.isNew)
-          ? FloatingActionButton(
-              heroTag: 'selectFromList',
-              child: const Icon(Icons.list_sharp),
-              onPressed: () => {
-                showCurrencyPicker(
-                  context: context,
-                  onSelect: (Currency currency) {
-                    setState(() {
-                      _idController.text = currency.code;
-                      _nameController.text = currency.name;
-                      _symbolController.text = currency.symbol;
-                      _fractionController.text = currency.decimalDigits.toString();
-                    });
-                  },
-                  showCurrencyCode: true,
-                  showCurrencyName: true,
-                  showFlag: true,
-                ),
-              },
-            )
-          : Container(),
+      floatingActionButton: (viewModel.isNew) ? _buildFloatingActionButton(context) : Container(),
+    );
+  }
+
+  StatelessWidget _buildFloatingActionButton(BuildContext context) {
+    return FloatingActionButton(
+      heroTag: 'selectFromList',
+      child: const Icon(Icons.list_sharp),
+      onPressed: () => {
+        showCurrencyPicker(
+          context: context,
+          onSelect: (Currency currency) {
+            setState(() {
+              _idController.text = currency.code;
+              _nameController.text = currency.name;
+              _symbolController.text = currency.symbol;
+              _fractionController.text = currency.decimalDigits.toString();
+            });
+          },
+          showCurrencyCode: true,
+          showCurrencyName: true,
+          showFlag: true,
+        ),
+      },
     );
   }
 
@@ -132,8 +133,8 @@ class _State extends State<CurrencyDetailScreen> {
             textCapitalization: TextCapitalization.characters,
             onChanged: (val) => setModified(),
             decoration: InputDecoration(
-              labelText: t('currency.form.code'), //S.of(context).code(S.of(context).currency),
-              hintText: t('currency.form.code.hint'), //S.of(context).code(''),
+              labelText: t('currency.form.code'),
+              hintText: t('currency.form.code.hint'),
               errorBorder: _getErrorBorder(),
               counterText: '',
               errorText: _errorDetail['id'],
@@ -157,10 +158,11 @@ class _State extends State<CurrencyDetailScreen> {
               }),
             },
             decoration: InputDecoration(
-                labelText: t('currency.form.symbol'),
-                hintText: t('currency.form.symbol.hint'),
-                errorBorder: _getErrorBorder(),
-                errorText: _errorDetail['symbol']),
+              labelText: t('currency.form.symbol'),
+              hintText: t('currency.form.symbol.hint'),
+              errorBorder: _getErrorBorder(),
+              errorText: _errorDetail['symbol'],
+            ),
           ),
           TextField(
             controller: _fractionController,

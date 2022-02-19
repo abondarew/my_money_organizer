@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:mymoneyorganizer/app/lib/localization/utils.dart';
+import 'package:mymoneyorganizer/app/routes/routes.dart';
 
 class DefaultAppDrawer extends StatelessWidget {
   const DefaultAppDrawer({Key? key}) : super(key: key);
@@ -10,105 +11,24 @@ class DefaultAppDrawer extends StatelessWidget {
     return (Drawer(
       child: Column(
         children: [
-          /*UserAccountsDrawerHeader(
-            accountName: Text('accountName'),
-            accountEmail: Text('accountEmail'),
-            currentAccountPicture: CircleAvatar(
-              child: Text('CU'),
-            ),
-          ),*/
           _buildHeader(),
           Expanded(
-            /*child: Column(
-              children: [
-                MaterialButton(
-                  onPressed: () => null,
-                  child: Text('button'),
-                ),
-                Text('111111'),
-                Text('22222'),
-              ],
-            ),*/
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                Divider(
-                  indent: 48,
-                  endIndent: 48,
-                  thickness: 3,
+                _buildDrawerItem(
+                  text: t('home').toTitleCase(),
+                  icon: Icons.home,
+                  onTap: () => Navigator.pushNamed(context, Routes.homePage),
                 ),
-                Row(
-                  children: [
-                    Divider(
-                      indent: 0,
-                      endIndent: 16,
-                      thickness: 5,
-                    ),
-                    /*Text('Entities'),
-                    Divider(),*/
-                  ],
+                const Divider(),
+                _buildDrawerItem(
+                  text: t('currency.name').toTitleCase(),
+                  icon: Icons.attach_money_rounded,
+                  onTap: () => Navigator.pushNamed(context, Routes.currencyList),
                 ),
-                MaterialButton(
-                  onPressed: () => null,
-                  child: Text('button'),
-                ),
-                MaterialButton(
-                  onPressed: () => null,
-                  child: Text('button'),
-                ),
-                MaterialButton(
-                  onPressed: () => null,
-                  child: Text('button'),
-                ),
-                Divider(),
-                MaterialButton(
-                  onPressed: () => null,
-                  child: Text('button'),
-                ),
-                MaterialButton(
-                  onPressed: () => null,
-                  child: Text('button'),
-                ),
-                MaterialButton(
-                  onPressed: () => null,
-                  child: Text('button'),
-                ),
-                MaterialButton(
-                  onPressed: () => null,
-                  child: Text('button'),
-                ),
-                MaterialButton(
-                  onPressed: () => null,
-                  child: Text('button'),
-                ),
-                MaterialButton(
-                  onPressed: () => null,
-                  child: Text('button'),
-                ),
-                MaterialButton(
-                  onPressed: () => null,
-                  child: Text('button'),
-                ),
-                MaterialButton(
-                  onPressed: () => null,
-                  child: Text('button'),
-                ),
-                MaterialButton(
-                  onPressed: () => null,
-                  child: Text('button'),
-                ),
-                MaterialButton(
-                  onPressed: () => null,
-                  child: Text('button'),
-                ),
-                MaterialButton(
-                  onPressed: () => null,
-                  child: Text('button'),
-                ),
-                MaterialButton(
-                  onPressed: () => null,
-                  child: Text('button'),
-                ),
+                _buildDrawerItem(text: t('shared.account').toTitleCase(), onTap: () => {}),
+                const Divider(),
               ],
             ),
           ),
@@ -119,22 +39,37 @@ class DefaultAppDrawer extends StatelessWidget {
 
   Widget _buildHeader() {
     return DrawerHeader(
-        /*padding: EdgeInsets.zero,
+      /*padding: EdgeInsets.zero,
       child: Text('test'),
       decoration: BoxDecoration(
         backgroundBlendMode: BlendMode.luminosity,
         color: Colors.amber,
       ),
     );*/
-        margin: EdgeInsets.zero,
-        padding: EdgeInsets.zero,
-        decoration: BoxDecoration(color: Colors.amber),
-        child: Stack(children: <Widget>[
+      margin: EdgeInsets.zero,
+      padding: EdgeInsets.zero,
+      decoration: const BoxDecoration(color: Colors.amber),
+      child: Stack(
+        children: const <Widget>[
           Positioned(
-              bottom: 12.0,
+              //bottom: 12.0,
+              top: 12.0,
               left: 16.0,
               height: 24,
-              child: Text("Flutter Step-by-Step", style: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w500))),
-        ]));
+              child: Text("Money organizer", style: TextStyle(color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w500))),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDrawerItem({IconData? icon, required String text, required GestureTapCallback onTap}) {
+    return ListTile(
+      leading: icon == null ? null : Icon(icon),
+      title: Text(
+        text,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+      onTap: onTap,
+    );
   }
 }

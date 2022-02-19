@@ -40,7 +40,7 @@ class _State extends State<ScrollHandledAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      elevation: displayElevation ? null : 0,
+      elevation: displayElevation ? null : Theme.of(context).appBarTheme.elevation,
       leading: widget.leading,
       title: widget.title,
       actions: widget.action,

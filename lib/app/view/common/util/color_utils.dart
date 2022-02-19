@@ -2,14 +2,24 @@ import 'dart:math';
 import 'dart:ui';
 
 class ColorUtils {
-  static Color contrastText(Color bg, Color color1, Color color2) {
-    int contrastColor1 = _colorDiff(bg, color1);
-    int contrastColor2 = _colorDiff(bg, color2);
+  static Color contrastColor({required Color bg, required Color c1, required Color c2}) {
+    int contrastColor1 = _colorDiff(bg, c1);
+    int contrastColor2 = _colorDiff(bg, c2);
 
     if (contrastColor1 >= contrastColor2) {
-      return color1;
+      return c1;
     }
-    return color2;
+    return c2;
+  }
+
+  static Color similarColor({required Color bg, required Color c1, required Color c2}) {
+    int contrastColor1 = _colorDiff(bg, c1);
+    int contrastColor2 = _colorDiff(bg, c2);
+
+    if (contrastColor1 >= contrastColor2) {
+      return c2;
+    }
+    return c1;
   }
 
   static int _colorDiff(Color color1, Color color2) {
