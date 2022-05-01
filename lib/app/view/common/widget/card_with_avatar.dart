@@ -1,191 +1,385 @@
+/*
+import 'dart:math';
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
-import 'package:mymoneyorganizer/app/view/common/util/color_utils.dart';
-import 'package:mymoneyorganizer/app/view/common/util/crossfade_animation.dart';
+
+enum AvatarLocation {
+  topLeft,
+  topCenter,
+  topRight,
+  leftTop,
+  leftCenter,
+  leftBottom,
+  bottomLeft,
+  bottomCenter,
+  bottomRight,
+  rightTop,
+  rightCenter,
+  rightBottom,
+  topLeftCoroner,
+  topRightCoroner,
+  bottomLeftCoroner,
+  bottomRightCoroner
+}
 
 class CardWithAvatar extends StatelessWidget {
+  final Widget? avatar;
+  final AvatarLocation avatarLocation;
+  final double avatarYCenterOffset;
+  final EdgeInsets avatarPadding;
+  final Size avatarSize;
+  final Widget? child;
+  final FloatingActionButton? actionButton;
+  final FloatingActionButtonLocation actionButtonLocation;
+  final double elevation;
+  final double rRound;
+  final Color? backgroundColor;
+
   const CardWithAvatar({
     Key? key,
-    required this.cardBody,
-    required this.avatarSetting,
-    this.elevation,
-  }) : super(key: key);
-
-  final Widget cardBody;
-  final AvatarSetting avatarSetting;
-  final double? elevation;
+    this.avatar,
+    this.avatarLocation = AvatarLocation.topLeft,
+    this.avatarYCenterOffset = 0.0,
+    this.avatarPadding = const EdgeInsets.only(left: 16, right: 16),
+    this.avatarSize = const Size(90.0, 90.0),
+    this.child,
+    this.actionButton,
+    this.actionButtonLocation = FloatingActionButtonLocation.endDocked,
+    this.elevation = 4.0,
+    this.rRound = 4.0,
+    this.backgroundColor,
+  })  : assert(elevation >= 0),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData _theme = Theme.of(context);
-    final CardTheme _cardTheme = CardTheme.of(context);
-    return SizedBox(
-      width: double.infinity,
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Stack(
-            children: [
-              //Background circle
-              _buildAvatar(
-                withBorder: true,
-                backgroundColor: _cardTheme.color ?? _theme.cardColor,
-                elevation: elevation ?? _cardTheme.elevation ?? 4.0,
-              ),
-              //Card content
-              Padding(
-                padding: EdgeInsets.only(top: avatarSetting.avatarHeight / 3),
-                child: Card(
-                  elevation: elevation ?? _cardTheme.elevation ?? 4.0,
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(8, avatarSetting.avatarHeight - avatarSetting.avatarHeight / 3, 8, 8),
-                    child: cardBody,
-                  ),
-                ),
-              ),
-              //Foreground + avatar content circle
-              _buildAvatar(
-                withBorder: false,
-                backgroundColor: _cardTheme.color ?? _theme.cardColor,
-                child: _buildAvatarContent(shadowColor: _cardTheme.shadowColor ?? _theme.shadowColor),
-                elevation: 0,
-              ),
-              //Badge
-              _buildBadge(
-                canvasColor: _cardTheme.color ?? _theme.cardColor,
-              ),
-            ],
-          ),
-        ),
+    ThemeData themeData = Theme.of(context);
+    return Material(
+      elevation: elevation,
+      type: MaterialType.card,
+      color: backgroundColor,
+      shape: _CardShape(*/
+/*avatarSize: avatarSize, rRound: rRound,*/ /*
+ fromCard: this, themeData: themeData),
+      child: Stack(
+        children: [
+          //CircleAvatar(),
+        ],
       ),
     );
   }
+}
 
-  Widget _buildAvatar({bool withBorder = false, Widget? child, required Color backgroundColor, required double elevation}) {
-    return Align(
-      alignment: avatarSetting.avatarAlignment,
-      child: Padding(
-        padding: avatarSetting.avatarPadding,
-        child: SizedBox.fromSize(
-          size: avatarSetting.avatarSize,
-          child: Material(
-            type: MaterialType.circle,
-            color: backgroundColor,
-            elevation: elevation,
-            child: Padding(
-              padding: const EdgeInsets.all(4),
-              child: child,
-            ),
-          ),
-        ),
-      ),
-    );
+class _CardShape extends ShapeBorder {
+  final CardWithAvatar fromCard;
+  final ThemeData themeData;
+
+  static const List<AvatarLocation> locatedOnTopSide = [
+    AvatarLocation.topLeftCoroner,
+    AvatarLocation.topRightCoroner,
+    AvatarLocation.topLeft,
+    AvatarLocation.topCenter,
+    AvatarLocation.topRight
+  ];
+
+  static const List<AvatarLocation> locatedOnLeftSide = [
+    AvatarLocation.leftBottom,
+    AvatarLocation.leftCenter,
+    AvatarLocation.leftTop,
+    AvatarLocation.topLeftCoroner,
+    AvatarLocation.bottomLeftCoroner
+  ];
+
+  static const List<AvatarLocation> locatedOnBottomSide = [
+    AvatarLocation.bottomCenter,
+    AvatarLocation.bottomLeft,
+    AvatarLocation.bottomRight,
+    AvatarLocation.bottomLeftCoroner,
+    AvatarLocation.bottomRightCoroner
+  ];
+
+  static const List<AvatarLocation> locatedOnRightSide = [
+    AvatarLocation.bottomRightCoroner,
+    AvatarLocation.topRightCoroner,
+    AvatarLocation.rightTop,
+    AvatarLocation.rightCenter,
+    AvatarLocation.rightBottom
+  ];
+
+*/
+/*
+  static const List<AvatarLocation> topFacet = [
+    AvatarLocation.topLeft,
+    AvatarLocation.topCenter,
+    AvatarLocation.topRight,
+    AvatarLocation.topLeftCoroner,
+    AvatarLocation.topRightCoroner
+  ];
+
+  static const List<AvatarLocation> bottomFacet = [
+    AvatarLocation.bottomLeft,
+    AvatarLocation.bottomCenter,
+    AvatarLocation.bottomRight,
+    AvatarLocation.bottomLeftCoroner,
+    AvatarLocation.bottomRightCoroner
+  ];
+
+  static const List<AvatarLocation> leftFacet = [
+    AvatarLocation.leftBottom,
+    AvatarLocation.leftCenter,
+    AvatarLocation.leftTop,
+    AvatarLocation.bottomLeftCoroner,
+    AvatarLocation.topLeftCoroner
+  ];
+
+  static const List<AvatarLocation> rightFacet = [
+    AvatarLocation.rightBottom,
+    AvatarLocation.rightCenter,
+    AvatarLocation.rightTop,
+    AvatarLocation.bottomRightCoroner,
+    AvatarLocation.topRightCoroner
+  ];
+
+  static const List<AvatarLocation> center = [
+    AvatarLocation.bottomCenter,
+    AvatarLocation.rightCenter,
+    AvatarLocation.leftCenter,
+    AvatarLocation.topCenter
+  ];
+*/ /*
+
+
+  const _CardShape({required this.fromCard, required this.themeData});
+
+  @override
+  // TODO: implement dimensions
+  EdgeInsetsGeometry get dimensions => throw UnimplementedError();
+
+  @override
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) => Path();
+
+  @override
+  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
+    return _getCardPath(rect);
+    */
+/*rect = Rect.fromPoints(rect.topLeft + Offset(0, fromCard.avatarSize.height / 2), rect.bottomRight);
+    return Path()
+      ..addRRect(RRect.fromRectAndRadius(rect, Radius.circular(fromCard.rRound)));
+      //..moveTo(0, 0)
+      */ /*
+ */
+/*..addArc(
+        */ /*
+ */
+/**/ /*
+ */
+/*Rect.fromPoints(
+          rect.topLeft - Offset(-avatarLocationPadding.left, 45),
+          rect.topLeft - Offset(-avatarSize.width - avatarLocationPadding.left, -45),
+        ),*/ /*
+ */
+/**/ /*
+ */
+/*
+        0,
+        -pi,
+      );*/ /*
+
   }
 
-  List<BoxShadow> _buildBoxShadow({required Color shadowColor}) {
-    return [
-      BoxShadow(
-        blurRadius: 4,
-        spreadRadius: .5,
-        color: shadowColor,
-        offset: const Offset(1, 4),
+  @override
+  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {
+    // TODO: implement paint
+  }
+
+  @override
+  ShapeBorder scale(double t) => this;
+
+  //  *=======================================================================*
+  Path _getCardPath(Rect rect) {
+    //Get rect
+    _RectPoint mainRect = _RectPoint(
+      xStartPoint: rect.topLeft.dx,
+      yStartPoint: rect.topLeft.dy,
+      xEndPoint: rect.bottomRight.dx,
+      yEndPoint: rect.bottomRight.dy - _getFABHeight() / 2,
+    );
+    //Get avatar
+    _RectPoint avatarRect = _RectPoint();
+    //Get FAB
+    _RectPoint fabRect = _RectPoint();
+
+    if (locatedOnTopSide.contains(fromCard.avatarLocation)) {
+      mainRect.yStartPoint = fromCard.avatarSize.height / 2;
+    }
+
+    if (locatedOnLeftSide.contains(fromCard.avatarLocation)) {
+      mainRect.xStartPoint = fromCard.avatarSize.width / 2;
+    }
+
+    if (locatedOnRightSide.contains(fromCard.avatarLocation)) {
+      mainRect.xEndPoint = rect.bottomRight.dx - fromCard.avatarSize.width / 2;
+    }
+
+    if (locatedOnBottomSide.contains(fromCard.avatarLocation)) {
+      mainRect.yEndPoint = rect.bottomRight.dy - fromCard.avatarSize.height / 2;
+    }
+
+    return Path()
+      ..addRRect(
+          RRect.fromRectAndRadius(Rect.fromPoints(mainRect.getStartOffset(), mainRect.getEndOffset()), Radius.circular(fromCard.rRound)))
+      ..addPath(_getAvatarPath(rect), const Offset(0, 0))
+      ..fillType = PathFillType.evenOdd;
+  }
+
+  Path _getAvatarPath(Rect rect) {
+    */
+/*double xStartDelta = 0;
+    double yStartDelta = 0;
+    double xEndDelta = 0;
+    double yEndDelta = 0;*/ /*
+
+
+    _RectPoint _avatarRect = _RectPoint(
+      xStartPoint: 0,
+      yStartPoint: 0,
+      xEndPoint: fromCard.avatarSize.width,
+      yEndPoint: fromCard.avatarSize.height,
+    );
+    final Map<String, double> _angle = _getAngle();
+
+    if (locatedOnBottomSide.contains(fromCard.avatarLocation)) {
+      _avatarRect.setOffset(_getAvatarOffsetX(rect), rect.bottomLeft.dy - fromCard.avatarSize.height);
+    }
+
+    if (locatedOnTopSide.contains(fromCard.avatarLocation)) {
+      _avatarRect.setOffsetDx(_getAvatarOffsetX(rect));
+      */
+/*switch (fromCard.avatarLocation){
+        case AvatarLocation.leftBottom:{
+
+        }
+      }*/ /*
+
+    }
+
+*/
+/*    if (fromCard.avatarLocation == AvatarLocation.topLeft || fromCard.avatarLocation == AvatarLocation.bottomLeft) {
+      xStartDelta = fromCard.avatarPadding.left + fromCard.rRound;
+      xEndDelta = xStartDelta + fromCard.avatarSize.width;
+    }
+    yEndDelta = fromCard.avatarSize.height;
+    return Path()
+      ..addArc(
+        Rect.fromPoints(Offset(xStartDelta, yStartDelta), Offset(xEndDelta, yEndDelta)),
+        _angle['startPoint']!,
+        _angle['endPoint']!,
+      );*/ /*
+
+
+    Rect r = Rect.fromPoints(_avatarRect.getStartOffset(), _avatarRect.getEndOffset());
+    return Path()
+      ..addArc(
+        r,
+        _angle['startPoint']!,
+        _angle['endPoint']!,
       )
-    ];
+      ..lineTo(r.center.dx, r.center.dy); //TODO artefact on round angle
   }
 
-  AnimatedContainer _buildAvatarContent({required Color shadowColor}) {
-    return AnimatedContainer(
-      decoration: BoxDecoration(
-        color: avatarSetting.avatarBackgroundColor,
-        borderRadius: BorderRadius.circular(avatarSetting.avatarWidth),
-        boxShadow: avatarSetting.shadowOnContent ? _buildBoxShadow(shadowColor: shadowColor) : null,
-      ),
-      duration: const Duration(milliseconds: 250),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(avatarSetting.avatarWidth),
-          onTap: avatarSetting.onTap,
-          child: Padding(
-            padding: const EdgeInsets.all(16), //TODO
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: CrossFade<String>(
-                builder: (val) => Text(val!,
-                    style: TextStyle(
-                      fontSize: 400,
-                      fontWeight: FontWeight.bold,
-                      color: ColorUtils.contrastColor(
-                          bg: avatarSetting.avatarBackgroundColor!, c1: Colors.grey.shade200, c2: Colors.grey.shade800),
-                    )),
-                initialData: avatarSetting.avatarText,
-                data: avatarSetting.avatarText,
-                duration: const Duration(milliseconds: 250),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBadge({required Color canvasColor}) {
-    if (avatarSetting.badge != null) {
-      return Align(
-        alignment: avatarSetting.avatarAlignment,
-        child: Padding(
-          padding: EdgeInsets.only(
-            left: avatarSetting.avatarPadding.left + avatarSetting.avatarWidth - avatarSetting.avatarWidth / 3,
-            top: avatarSetting.avatarHeight - avatarSetting.avatarHeight / 3,
-          ),
-          child: Material(
-            type: MaterialType.circle,
-            color: canvasColor,
-            elevation: 0,
-            child: InkWell(
-              borderRadius: BorderRadius.circular(30),
-              onTap: avatarSetting.onTap,
-              child: Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: Icon(
-                  avatarSetting.badge!,
-                  //color: Colors.grey.shade500,
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-    } else {
-      return Container();
+  double _getAvatarOffsetX(Rect rect) {
+    switch (fromCard.avatarLocation) {
+      case AvatarLocation.bottomLeftCoroner:
+      case AvatarLocation.topLeftCoroner:
+      case AvatarLocation.leftBottom:
+      case AvatarLocation.leftCenter:
+      case AvatarLocation.leftTop:
+        return 0;
+      case AvatarLocation.bottomRightCoroner:
+      case AvatarLocation.topRightCoroner:
+      case AvatarLocation.rightBottom:
+      case AvatarLocation.rightCenter:
+      case AvatarLocation.rightTop:
+        return rect.bottomRight.dx - fromCard.avatarSize.width;
+      case AvatarLocation.bottomLeft:
+      case AvatarLocation.topLeft:
+        return fromCard.rRound + fromCard.avatarPadding.left;
+      default:
+        return 50;
     }
   }
+
+  double _getFABHeight() {
+    //TODO hardcode FAB size
+    if (fromCard.actionButton == null) {
+      return 0;
+    }
+    if (fromCard.actionButton!.mini) {
+      return 40.0;
+    }
+    if (fromCard.actionButton!.isExtended) {
+      return 48.0;
+    }
+    return 56;
+  }
+
+  Map<String, double> _getAngle() {
+    final Map<String, double> ret = {'startPoint': 0, 'endPoint': 0};
+    if (fromCard.avatarLocation == AvatarLocation.topLeft ||
+        fromCard.avatarLocation == AvatarLocation.topCenter ||
+        fromCard.avatarLocation == AvatarLocation.topRight) {
+      ret['startPoint'] = 0;
+      ret['endPoint'] = -pi;
+    }
+    if (fromCard.avatarLocation == AvatarLocation.bottomLeft ||
+        fromCard.avatarLocation == AvatarLocation.bottomCenter ||
+        fromCard.avatarLocation == AvatarLocation.bottomRight) {
+      ret['startPoint'] = 0;
+      ret['endPoint'] = pi;
+    }
+
+    if (fromCard.avatarLocation == AvatarLocation.topLeftCoroner) {
+      ret['startPoint'] = 0;
+      ret['endPoint'] = -3 * pi / 2;
+    }
+    return ret;
+  }
 }
 
-class AvatarSetting {
-  final Size avatarSize;
-  final String avatarText;
-  final Color? avatarBackgroundColor;
-  final IconData? badge;
-  final VoidCallback onTap;
-  final EdgeInsets avatarPadding;
-  final Alignment avatarAlignment;
-  final bool shadowOnContent;
+class _RectPoint {
+  double yStartPoint;
+  double xStartPoint;
+  double yEndPoint;
+  double xEndPoint;
 
-  AvatarSetting({
-    this.avatarPadding = const EdgeInsets.only(left: 16, right: 16),
-    this.avatarAlignment = Alignment.topLeft,
-    this.avatarSize = const Size(90.0, 90.0),
-    required this.avatarText,
-    required this.onTap,
-    this.avatarBackgroundColor,
-    this.badge,
-    this.shadowOnContent = false,
+  _RectPoint({
+    this.xStartPoint = 0,
+    this.yStartPoint = 0,
+    this.xEndPoint = 0,
+    this.yEndPoint = 0,
   });
 
-  double get avatarWidth => avatarSize.width;
+  //factory _RectPoint.fromCentr
 
-  double get avatarHeight => avatarSize.height;
+  void setOffset(double dx, double dy) {
+    xStartPoint += dx;
+    xEndPoint += dx;
+    yStartPoint += dy;
+    yEndPoint += dy;
+  }
+
+  void setOffsetDx(double dx) {
+    setOffset(dx, 0);
+  }
+
+  void setOffsetDy(double dy) {
+    setOffset(0, dy);
+  }
+
+  Offset getStartOffset() => Offset(xStartPoint, yStartPoint);
+
+  Offset getEndOffset() => Offset(xEndPoint, yEndPoint);
 }
+*/

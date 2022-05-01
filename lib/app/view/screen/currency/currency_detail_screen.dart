@@ -8,7 +8,7 @@ import 'package:mymoneyorganizer/app/core/entities_of_accounting/currency/comman
 import 'package:mymoneyorganizer/app/lib/localization/utils.dart';
 import 'package:mymoneyorganizer/app/view/common/app_bar/scroll_handled_appbar.dart';
 import 'package:mymoneyorganizer/app/view/common/dialog/color_picker.dart';
-import 'package:mymoneyorganizer/app/view/common/widget/card_with_avatar.dart';
+import 'package:mymoneyorganizer/app/view/common/widget/card_with_avatar_old.dart';
 import 'package:mymoneyorganizer/app/viewmodel/currency/currency_detail.dart';
 
 class CurrencyDetailScreen extends StatefulWidget {
@@ -63,7 +63,7 @@ class _State extends State<CurrencyDetailScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(0),
-        child: CardWithAvatar(
+        child: CardWithAvatarOld(
           cardBody: formBuild(),
           avatarSetting: AvatarSetting(
             onTap: () => _pickColor(),

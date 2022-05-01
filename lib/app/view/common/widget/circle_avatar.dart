@@ -48,17 +48,23 @@ class _State<T> extends State<ExCircleAvatar<T>> {
     if (widget.visibleAdditionalControl) _visibleAddon = true;
     return AnimatedContainer(
       duration: kThemeAnimationDuration,
-      decoration: BoxDecoration(
+      /*decoration: BoxDecoration(
         color: widget.avatarSetting.backgroundColor,
         borderRadius: BorderRadius.circular(widget.avatarSetting.avatarSize.width),
+      ),*/
+      decoration: ShapeDecoration(
+        shape: CircleBorder(), //StadiumBorder(),
+        color: widget.avatarSetting.backgroundColor,
       ),
       child: Stack(
         children: [
           Material(
+            shape: StadiumBorder(),
             color: Colors.transparent,
             child: InkWell(
               onTap: widget.onTap,
-              borderRadius: BorderRadius.circular(widget.avatarSetting.avatarSize.width),
+              //borderRadius: BorderRadius.circular(widget.avatarSetting.avatarSize.width),
+              customBorder: StadiumBorder(),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Center(
